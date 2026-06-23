@@ -284,6 +284,7 @@
             <div class="flex justify-between font-bold"><span>Voucher ID:</span> <span id="print-id"></span></div>
             <div class="flex justify-between"><span>Sale Type:</span> <span id="print-type" class="uppercase"></span></div>
             <div class="flex justify-between" id="print-payment-row"><span>Method:</span> <span id="print-payment"></span></div>
+            <div class="flex justify-between hidden" id="print-due-date-row"><span class="font-bold">Due Date:</span> <span id="print-due-date" class="font-bold"></span></div>
             <div class="flex justify-between hidden" id="print-customer-row"><span>Customer:</span> <span id="print-customer"></span></div>
         </div>
 
@@ -597,6 +598,15 @@
             const paymentInfo = currentSaleType === 'Credit' ? document.getElementById('credit-period').value : document.getElementById('payment-method').value;
 
             const now = new Date();
+            
+            // Calculate Due Date for Credit Sales
+            let dueDateStr = "";
+            if (currentSaleType === 'Credit') {
+                const days = parseInt(paymentInfo) || 0;
+                const dueDate = new Date(now.getTime() + (days * 24 * 60 * 60 * 1000));
+                dueDateStr = dueDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+
             const saleRecord = {
                 id: voucherId,
                 date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
@@ -616,6 +626,14 @@
             document.getElementById('print-type').innerText = saleRecord.saleType;
             document.getElementById('print-payment-row').querySelector('span').innerText = saleRecord.saleType === 'Credit' ? "Credit Period:" : "Method:";
             document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
+            
+            const dueDateRow = document.getElementById('print-due-date-row');
+            if (saleRecord.saleType === 'Credit' && dueDateStr) {
+                dueDateRow.classList.remove('hidden');
+                document.getElementById('print-due-date').innerText = dueDateStr;
+            } else {
+                dueDateRow.classList.add('hidden');
+            }
             
             if(customerName || customerPhone) {
                 document.getElementById('print-customer-row').classList.remove('hidden');

@@ -37,7 +37,7 @@
         /* Print Styles - Thermal Receipt */
         @media print {
             aside, main, header, #toast-container, .mobile-cart-toggle, #mobile-floating-cart { display: none !important; }
-            body { background-color: white !important; display: block !important; height: auto !important; overflow: visible !important; }
+            body { background-color: white !important; display: block !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
             #print-area { display: block !important; position: relative !important; width: 100% !important; max-width: 80mm !important; margin: 0 auto !important; padding: 10px !important; background: white !important; color: black !important; font-family: 'Quicksand', 'Padauk', sans-serif !important; }
             #print-area * { visibility: visible !important; }
             .no-print { display: none !important; }
@@ -48,6 +48,7 @@
 </head>
 <body class="text-slate-800 h-screen flex overflow-hidden">
 
+    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col z-20">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -66,6 +67,7 @@
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
         
+        <!-- Mobile Header -->
         <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20">
             <div class="flex items-center gap-2">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -77,6 +79,7 @@
             </div>
         </header>
 
+        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
                 
@@ -107,7 +110,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-semibold text-slate-600 mb-1">Price (MMK)</label>
+                                <label class="block text-sm font-semibold text-slate-600 mb-1">Base Price (MMK)</label>
                                 <input type="number" id="item-price" required min="0" placeholder="0" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none cursor-not-allowed font-bold">
                             </div>
                             <div>
@@ -120,6 +123,7 @@
                 </div>
             </div>
 
+            <!-- Slide-out Cart Panel -->
             <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:w-[400px] xl:w-[450px] flex flex-col md:border-l md:border-slate-200">
                 <div class="md:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md">
                     <h2 class="font-bold text-lg">Checkout</h2>
@@ -137,6 +141,7 @@
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Method</label>
                                 <select id="payment-method" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
                                     <option>Cash</option>
+                                    <option>Cash on Delivery</option>
                                     <option>KBZPay</option>
                                     <option>AYAPay</option>
                                     <option>CBPay</option>
@@ -173,12 +178,9 @@
                         <div class="flex justify-between text-slate-500">
                             <span>Subtotal</span><span id="summary-subtotal" class="font-medium text-slate-800">0 MMK</span>
                         </div>
-                        <div id="summary-auto-discount-row" class="flex justify-between text-rose-500 font-medium hidden">
-                            <span>Bulk Auto-Discount</span><span id="summary-auto-discount">- 0 MMK</span>
-                        </div>
                         <div class="flex justify-between items-center text-slate-500 pt-1">
                             <span>Manual Discount (MMK)</span>
-                            <input type="number" id="summary-discount" value="0" min="0" onchange="calculateTotals()" class="w-24 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
+                            <input type="number" id="summary-discount" value="0" min="0" onchange="renderCart()" class="w-24 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
                         </div>
                         <div class="pt-2 border-t border-slate-200 flex justify-between items-end mt-2">
                             <span class="text-base font-bold text-slate-800">Total</span>
@@ -203,6 +205,7 @@
             </div>
         </section>
 
+        <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto">
             <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block">
                 <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
@@ -261,10 +264,10 @@
             </div>
         </section>
         
-        <!-- Toast Notification Container -->
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
+    <!-- Print Template -->
     <div id="print-area" class="hidden">
         <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
             <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
@@ -293,7 +296,6 @@
 
         <div class="border-t-2 border-dashed border-gray-300 pt-3 text-sm space-y-1">
             <div class="flex justify-between"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
-            <div class="flex justify-between text-gray-600 hidden" id="print-auto-discount-row"><span>Bulk Discount:</span> <span id="print-auto-discount"></span></div>
             <div class="flex justify-between text-gray-600"><span>Manual Discount:</span> <span id="print-discount"></span></div>
             <div class="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-gray-200"><span>Grand Total:</span> <span id="print-total"></span></div>
         </div>
@@ -306,8 +308,8 @@
         </div>
     </div>
 
+    <!-- Core POS Logic Script -->
     <script>
-        // --- Core State ---
         let currentCart = [];
         let sessionSales = []; 
         let allFirebaseSales = []; 
@@ -328,7 +330,6 @@
             "Sleeper": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 18500 }, { size: "XL", price: 18500 }]
         };
 
-        // --- Helpers ---
         function formatMMK(num) { return Number(num).toLocaleString('en-US'); }
 
         function showToast(message, type = 'success') {
@@ -341,7 +342,6 @@
             setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
-        // --- Initialization ---
         window.onload = function() {
             const productSelect = document.getElementById('item-product');
             for (const product in productData) {
@@ -364,7 +364,6 @@
             renderCart();
         };
 
-        // --- UI Interactions ---
         function switchTab(tabId) {
             document.getElementById('pos-tab').classList.add('hidden');
             document.getElementById('sales-tab').classList.add('hidden');
@@ -406,7 +405,6 @@
             renderCart();
         }
 
-        // --- Cart Logic ---
         function updateSizeDropdown() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
@@ -432,14 +430,29 @@
         }
 
         function addItem() {
-            const prod = document.getElementById('item-product').value;
+            const prodSelect = document.getElementById('item-product');
             const sizeSel = document.getElementById('item-size');
+            const prod = prodSelect.value;
+            const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].text : "";
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
 
-            if (prod && sizeSel.value !== "" && price >= 0 && qty > 0) {
-                currentCart.push({ id: Date.now(), category: prod, size: sizeSel.options[sizeSel.selectedIndex].text, price: price, qty: qty, total: price * qty });
-                document.getElementById('item-product').value = ''; 
+            if (prod && sizeText && !isNaN(price) && price >= 0 && qty > 0) {
+                const existingItem = currentCart.find(i => i.category === prod && i.size === sizeText);
+                
+                if (existingItem) {
+                    existingItem.qty += qty;
+                } else {
+                    currentCart.push({ 
+                        id: Date.now(), 
+                        category: prod, 
+                        size: sizeText, 
+                        basePrice: price, 
+                        qty: qty 
+                    });
+                }
+                
+                prodSelect.value = ''; 
                 updateSizeDropdown();
                 document.getElementById('item-qty').value = '1';
                 renderCart();
@@ -451,7 +464,6 @@
             if (item) {
                 item.qty += delta;
                 if (item.qty <= 0) currentCart = currentCart.filter(i => i.id !== id);
-                else item.total = item.price * item.qty;
                 renderCart();
             }
         }
@@ -470,56 +482,73 @@
         }
 
         function calculateTotals() {
-            let subtotal = 0, autoDiscountTotal = 0;
             const productQtys = {};
-            
-            // Group quantities by category (ignoring size)
             currentCart.forEach(item => {
                 productQtys[item.category] = (productQtys[item.category] || 0) + item.qty;
+            });
+
+            let subtotal = 0;
+            currentCart.forEach(item => {
+                const totalCategoryQty = productQtys[item.category];
+                const discountRate = getDiscountRate(totalCategoryQty, currentSaleType);
+                
+                item.discountRate = discountRate;
+                item.effectivePrice = item.basePrice * (1 - discountRate);
+                item.total = item.effectivePrice * item.qty;
+                
                 subtotal += item.total;
             });
 
-            // Apply discounts based on total category quantity
-            currentCart.forEach(item => {
-                const totalQty = productQtys[item.category];
-                const rate = getDiscountRate(totalQty, currentSaleType);
-                autoDiscountTotal += (item.total * rate);
-            });
-
             const manualDiscount = parseFloat(document.getElementById('summary-discount').value) || 0;
-            const grandTotal = Math.max(0, subtotal - autoDiscountTotal - manualDiscount);
+            const grandTotal = Math.max(0, subtotal - manualDiscount);
 
             document.getElementById('summary-subtotal').innerText = formatMMK(subtotal) + " MMK";
             document.getElementById('summary-total').innerText = formatMMK(grandTotal) + " MMK";
             
-            const autoDiscRow = document.getElementById('summary-auto-discount-row');
-            if (autoDiscountTotal > 0) {
-                autoDiscRow.classList.remove('hidden');
-                document.getElementById('summary-auto-discount').innerText = "- " + formatMMK(autoDiscountTotal) + " MMK";
-            } else autoDiscRow.classList.add('hidden');
-
             const totalItems = currentCart.reduce((sum, i) => sum + i.qty, 0);
             const floatCart = document.getElementById('mobile-floating-cart');
-            document.getElementById('mobile-cart-badge').innerText = totalItems;
-            document.getElementById('mobile-cart-total').innerText = formatMMK(grandTotal) + " MMK";
-            if (totalItems > 0) floatCart.classList.remove('hidden'); else floatCart.classList.add('hidden');
+            const badge = document.getElementById('mobile-cart-badge');
+            const mTotal = document.getElementById('mobile-cart-total');
+            
+            if(badge) badge.innerText = totalItems;
+            if(mTotal) mTotal.innerText = formatMMK(grandTotal) + " MMK";
+            if(floatCart) {
+                if (totalItems > 0) floatCart.classList.remove('hidden'); 
+                else floatCart.classList.add('hidden');
+            }
 
-            document.getElementById('checkout-btn').disabled = currentCart.length === 0;
-            return { subtotal, autoDiscount: autoDiscountTotal, manualDiscount, grandTotal };
+            const btn = document.getElementById('checkout-btn');
+            if(btn) btn.disabled = currentCart.length === 0;
+
+            return { subtotal, manualDiscount, grandTotal };
         }
 
         function renderCart() {
+            calculateTotals(); 
+
             const container = document.getElementById('cart-items');
             const emptyMsg = document.getElementById('empty-cart-msg');
+            if (!container || !emptyMsg) return;
+
             if (currentCart.length === 0) {
-                container.classList.add('hidden'); emptyMsg.classList.remove('hidden');
+                container.classList.add('hidden'); 
+                emptyMsg.classList.remove('hidden');
+                emptyMsg.classList.add('flex');
             } else {
-                container.classList.remove('hidden'); emptyMsg.classList.add('hidden');
-                container.innerHTML = currentCart.map(item => `
+                container.classList.remove('hidden'); 
+                emptyMsg.classList.add('hidden');
+                emptyMsg.classList.remove('flex');
+                
+                container.innerHTML = currentCart.map(item => {
+                    const priceHtml = item.discountRate > 0 
+                        ? `<p class="text-xs text-slate-500"><span class="line-through text-slate-400 mr-1">${formatMMK(item.basePrice)}</span> <span class="font-bold text-rose-500">${formatMMK(item.effectivePrice)} MMK</span> <span class="text-[10px] text-rose-500">(-${Math.round(item.discountRate*100)}%)</span></p>`
+                        : `<p class="text-xs text-slate-500">${formatMMK(item.basePrice)} MMK</p>`;
+                        
+                    return `
                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="flex-1">
                             <h4 class="font-semibold text-slate-800 text-sm">${item.category} <span class="text-xs text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded-full ml-1">${item.size}</span></h4>
-                            <p class="text-xs text-slate-500">${formatMMK(item.price)} MMK</p>
+                            ${priceHtml}
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden h-8">
@@ -533,9 +562,8 @@
                             </button>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
             }
-            calculateTotals();
         }
 
         function generateSequentialVoucherId() {
@@ -558,7 +586,7 @@
             return `${prefix}${String(maxSeq + 1).padStart(3, '0')}`;
         }
 
-        async function processCheckout() {
+        function processCheckout() {
             if (currentCart.length === 0) return;
 
             const totals = calculateTotals();
@@ -578,11 +606,11 @@
                 customer: customerName || 'Guest',
                 phone: customerPhone || '-',
                 notes: notes,
-                items: [...currentCart],
+                items: currentCart.map(i => ({ category: i.category, size: i.size, qty: i.qty, price: i.effectivePrice, total: i.total })),
                 totals: totals
             };
 
-            // Setup Print
+            // Setup Print Template
             document.getElementById('print-date').innerText = saleRecord.date + ' ' + now.toLocaleTimeString();
             document.getElementById('print-id').innerText = saleRecord.id;
             document.getElementById('print-type').innerText = saleRecord.saleType;
@@ -594,14 +622,18 @@
                 document.getElementById('print-customer').innerText = (customerName || 'Guest') + (customerPhone ? ` (${customerPhone})` : '');
             } else document.getElementById('print-customer-row').classList.add('hidden');
 
-            document.getElementById('print-items').innerHTML = currentCart.map(item => `<tr class="border-b border-gray-100"><td class="py-1 pr-2">${item.category} (${item.size})</td><td class="text-center py-1">${item.qty}</td><td class="text-right py-1">${formatMMK(item.total)}</td></tr>`).join('');
+            document.getElementById('print-items').innerHTML = currentCart.map(item => `
+                <tr class="border-b border-gray-100">
+                    <td class="py-1 pr-2">
+                        ${item.category} (${item.size})
+                        ${item.discountRate > 0 ? `<br><span style="font-size: 10px; color: #666;">Unit: ${formatMMK(item.effectivePrice)} (-${Math.round(item.discountRate*100)}%)</span>` : ''}
+                    </td>
+                    <td class="text-center py-1 align-top">${item.qty}</td>
+                    <td class="text-right py-1 align-top">${formatMMK(item.total)}</td>
+                </tr>
+            `).join('');
+            
             document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
-            
-            if(totals.autoDiscount > 0) {
-                document.getElementById('print-auto-discount-row').classList.remove('hidden');
-                document.getElementById('print-auto-discount').innerText = "- " + formatMMK(totals.autoDiscount);
-            } else document.getElementById('print-auto-discount-row').classList.add('hidden');
-            
             document.getElementById('print-discount').innerText = formatMMK(totals.manualDiscount);
             document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
 
@@ -610,11 +642,11 @@
                 document.getElementById('print-notes').innerText = notes;
             } else document.getElementById('print-notes-container').classList.add('hidden');
 
-            // Save locally immediately so history updates
+            // Save locally
             allFirebaseSales.unshift(saleRecord);
             applyDateFilter();
             
-            // Push to integrations
+            // Push to APIs
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
             if (window.pushToFirebase) window.pushToFirebase(saleRecord);
 
@@ -660,11 +692,12 @@
                             <td class="p-4 font-mono text-sm">${sale.id}</td>
                             <td class="p-4 text-sm"><span class="font-medium text-slate-800">${sale.customer || 'Guest'}</span><br><span class="text-xs text-slate-500">${methodStr}</span></td>
                             <td class="p-4"><ul class="text-xs text-slate-500 space-y-1 font-medium min-w-[150px]">${(sale.items||[]).map(i => `<li>• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></td>
-                            <td class="p-4 text-right whitespace-nowrap"><span class="font-bold text-slate-800">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span>${sale.totals&&sale.totals.autoDiscount>0?`<br><span class="text-xs text-rose-500">- ${formatMMK(sale.totals.autoDiscount)} (Bulk)</span>`:''}</td>
+                            <td class="p-4 text-right whitespace-nowrap"><span class="font-bold text-slate-800">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span></td>
                         </tr>`;
                 });
             }
         }
+        
         function saveSettings() {
             window.webAppUrl = document.getElementById('sheet-url').value.trim();
             localStorage.setItem('khaymay_sheet_url', window.webAppUrl);
@@ -672,6 +705,7 @@
         }
     </script>
     
+    <!-- Firebase Background Sync -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";

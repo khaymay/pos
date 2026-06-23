@@ -321,92 +321,13 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        let currentCart = [];
-        let sessionSales = []; 
-        let webAppUrl = "";
-
-        // Configuration for GitHub Pages (Real Khay May Firebase Database)
-        let firebaseConfig = {
-            apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
-            authDomain: "khay-may-pos.firebaseapp.com",
-            projectId: "khay-may-pos",
-            storageBucket: "khay-may-pos.firebasestorage.app",
-            messagingSenderId: "1058775733436",
-            appId: "1:1058775733436:web:a932499046aa82816aacb9",
-            measurementId: "G-WEFG804QQK"
-        };
-
-        // Use environment config if available (works inside this chat preview)
-        if (typeof __firebase_config !== 'undefined') {
-            firebaseConfig = JSON.parse(__firebase_config);
-        }
-        
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'khaymay-pos-system';
-        let app, db, auth, isFirebaseReady = false;
-
-        try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                async function setupAuth() {
-                    if (typeof __initial_auth_token !== 'undefined') {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    isFirebaseReady = true;
-                    startCloudSync();
-                }
-                setupAuth();
-            } else {
-                // Fallback mode if Firebase isn't configured on GitHub
-                const syncStatus = document.getElementById('sync-status');
-                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-300 mr-1"></span> Cloud Sync Offline (Setup Required)';
-            }
-        } catch(e) {
-            console.error("Cloud Database Initialization Error:", e);
-        }
-
-        function startCloudSync() {
-            if (!auth.currentUser) return;
-            const salesRef = collection(db, 'artifacts', appId, 'public', 'data', 'sales');
-            
-            onSnapshot(salesRef, (snapshot) => {
-                const allSales = [];
-                snapshot.forEach(doc => allSales.push(doc.data()));
-                
-                const now = new Date();
-                // Filter for this week (last 7 days)
-                const recentSales = allSales.filter(sale => {
-                    if (!sale.isoDate) return true;
-                    const saleDate = new Date(sale.isoDate);
-                    const diffTime = Math.abs(now - saleDate);
-                    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-                    return diffDays <= 7;
-                });
-                
-                // Sort by newest first
-                recentSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
-                
-                sessionSales = recentSales;
-                window.updateDashboardStats();
-                window.renderHistory();
-
-                const syncStatus = document.getElementById('sync-status');
-                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced (Last 7 Days)';
-            }, (error) => {
-                console.error("Sync error:", error);
-                const syncStatus = document.getElementById('sync-status');
-                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Sync Disconnected';
-            });
-        }
+    <!-- 1. CORE POS LOGIC (No Firebase dependencies, guaranteed to work) -->
+    <script>
+        // State Variables
+        window.currentCart = [];
+        window.sessionSales = []; 
+        window.webAppUrl = "";
+        window.pushToFirebase = null; // Will be defined by Firebase script later
 
         const productData = {
             "Footie Pants": [
@@ -446,11 +367,11 @@
             ]
         };
 
-        window.formatMMK = function(num) {
+        function formatMMK(num) {
             return Number(num).toLocaleString('en-US');
         }
 
-        window.showToast = function(message, type = 'success') {
+        function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if(!container) return;
             const toast = document.createElement('div');
@@ -467,7 +388,7 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-        
+
         function initializeAppUI() {
             const yearElement = document.getElementById('current-year');
             if(yearElement) yearElement.innerText = new Date().getFullYear();
@@ -484,14 +405,14 @@
 
             const savedUrl = localStorage.getItem('khaymay_sheet_url');
             if (savedUrl) {
-                webAppUrl = savedUrl;
+                window.webAppUrl = savedUrl;
                 const sheetUrlElement = document.getElementById('sheet-url');
                 const connStatusElement = document.getElementById('connection-status');
                 if(sheetUrlElement) sheetUrlElement.value = savedUrl;
                 if(connStatusElement) connStatusElement.classList.remove('hidden');
             }
             
-            window.renderCart();
+            renderCart();
             window.updateDashboardStats();
         }
 
@@ -501,7 +422,7 @@
             initializeAppUI();
         }
 
-        window.switchTab = function(tabId) {
+        function switchTab(tabId) {
             document.getElementById('pos-tab').classList.add('hidden');
             document.getElementById('sales-tab').classList.add('hidden');
             document.getElementById(tabId).classList.remove('hidden');
@@ -518,19 +439,19 @@
             }
         }
 
-        window.saveSettings = function() {
+        function saveSettings() {
             const urlInput = document.getElementById('sheet-url').value.trim();
             if (urlInput) {
-                webAppUrl = urlInput;
+                window.webAppUrl = urlInput;
                 localStorage.setItem('khaymay_sheet_url', urlInput);
                 document.getElementById('connection-status').classList.remove('hidden');
-                window.showToast('Connection Saved!');
+                showToast('Connection Saved!');
             } else {
-                window.showToast('Please enter a valid URL', 'error');
+                showToast('Please enter a valid URL', 'error');
             }
         }
 
-        window.updateSizeDropdown = function() {
+        function updateSizeDropdown() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             const selectedProduct = productSelect.value;
@@ -556,7 +477,7 @@
             }
         }
 
-        window.updatePrice = function() {
+        function updatePrice() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             const priceInput = document.getElementById('item-price');
@@ -570,24 +491,23 @@
             }
         }
 
-        window.addItem = function() {
+        function addItem() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             
             if (!productSelect.value || sizeSelect.value === "") {
-                window.showToast("Please select a product and size.", "error");
+                showToast("Please select a product and size.", "error");
                 return;
             }
 
             const selectedProduct = productSelect.value;
             const selectedSizeText = sizeSelect.options[sizeSelect.selectedIndex].text;
-            const fullName = `${selectedProduct} (${selectedSizeText})`;
             
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
 
-            if (fullName && price >= 0 && qty > 0) {
-                currentCart.push({
+            if (selectedProduct && price >= 0 && qty > 0) {
+                window.currentCart.push({
                     id: Date.now(),
                     productName: selectedProduct,
                     size: selectedSizeText,
@@ -597,62 +517,62 @@
                 });
 
                 productSelect.value = '';
-                window.updateSizeDropdown();
+                updateSizeDropdown();
                 document.getElementById('item-qty').value = '1';
                 
-                window.renderCart();
+                renderCart();
             }
         }
 
-        window.removeItem = function(id) {
-            currentCart = currentCart.filter(item => item.id !== id);
-            window.renderCart();
+        function removeItem(id) {
+            window.currentCart = window.currentCart.filter(item => item.id !== id);
+            renderCart();
         }
 
-        window.updateQuantity = function(id, delta) {
-            const item = currentCart.find(i => i.id === id);
+        function updateQuantity(id, delta) {
+            const item = window.currentCart.find(i => i.id === id);
             if (item) {
                 item.qty += delta;
                 if (item.qty <= 0) {
-                    window.removeItem(id);
+                    removeItem(id);
                 } else {
                     item.total = item.price * item.qty;
-                    window.renderCart();
+                    renderCart();
                 }
             }
         }
 
-        window.calculateTotals = function() {
-            const subtotal = currentCart.reduce((sum, item) => sum + item.total, 0);
+        function calculateTotals() {
+            const subtotal = window.currentCart.reduce((sum, item) => sum + item.total, 0);
             const discountInput = parseFloat(document.getElementById('summary-discount').value) || 0;
             const grandTotal = Math.max(0, subtotal - discountInput);
 
-            document.getElementById('summary-subtotal').innerText = window.formatMMK(subtotal) + " MMK";
-            document.getElementById('summary-total').innerText = window.formatMMK(grandTotal) + " MMK";
+            document.getElementById('summary-subtotal').innerText = formatMMK(subtotal) + " MMK";
+            document.getElementById('summary-total').innerText = formatMMK(grandTotal) + " MMK";
 
             const checkoutBtn = document.getElementById('checkout-btn');
-            if(checkoutBtn) checkoutBtn.disabled = currentCart.length === 0;
+            if(checkoutBtn) checkoutBtn.disabled = window.currentCart.length === 0;
 
             return { subtotal, discount: discountInput, grandTotal };
         }
 
-        window.renderCart = function() {
+        function renderCart() {
             const container = document.getElementById('cart-items');
             const emptyMsg = document.getElementById('empty-cart-msg');
             if(!container || !emptyMsg) return;
 
-            if (currentCart.length === 0) {
+            if (window.currentCart.length === 0) {
                 container.classList.add('hidden');
                 emptyMsg.classList.remove('hidden');
             } else {
                 container.classList.remove('hidden');
                 emptyMsg.classList.add('hidden');
                 
-                container.innerHTML = currentCart.map(item => `
+                container.innerHTML = window.currentCart.map(item => `
                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="flex-1">
                             <h4 class="font-semibold text-slate-800">${item.productName} <span class="text-xs text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full ml-1">${item.size}</span></h4>
-                            <p class="text-sm text-slate-500">${window.formatMMK(item.price)} MMK</p>
+                            <p class="text-sm text-slate-500">${formatMMK(item.price)} MMK</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden">
@@ -661,7 +581,7 @@
                                 <button onclick="updateQuantity(${item.id}, 1)" class="px-2 py-1 text-slate-500 hover:bg-slate-100">+</button>
                             </div>
                             <div class="text-right min-w-[80px]">
-                                <p class="font-bold text-slate-800">${window.formatMMK(item.total)}</p>
+                                <p class="font-bold text-slate-800">${formatMMK(item.total)}</p>
                             </div>
                             <button onclick="removeItem(${item.id})" class="text-red-400 hover:text-red-600 p-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -670,10 +590,10 @@
                     </div>
                 `).join('');
             }
-            window.calculateTotals();
+            calculateTotals();
         }
 
-        window.generateVoucherId = function() {
+        function generateVoucherId() {
             const now = new Date();
             const dateStr = now.getFullYear().toString().slice(-2) + 
                             String(now.getMonth() + 1).padStart(2, '0') + 
@@ -682,11 +602,11 @@
             return `KM-${dateStr}-${random}`;
         }
 
-        window.processCheckout = async function() {
-            if (currentCart.length === 0) return;
+        async function processCheckout() {
+            if (window.currentCart.length === 0) return;
 
-            const totals = window.calculateTotals();
-            const voucherId = window.generateVoucherId();
+            const totals = calculateTotals();
+            const voucherId = generateVoucherId();
             const customerName = document.getElementById('cust-name').value.trim() || 'Guest';
             const customerPhone = document.getElementById('cust-phone').value.trim() || '-';
             const now = new Date();
@@ -698,7 +618,7 @@
                 isoDate: now.toISOString(),
                 customer: customerName,
                 phone: customerPhone,
-                items: [...currentCart],
+                items: [...window.currentCart],
                 totals: totals
             };
 
@@ -713,77 +633,71 @@
                 document.getElementById('print-customer-row').style.display = 'none';
             }
 
-            document.getElementById('print-items').innerHTML = currentCart.map(item => `
+            document.getElementById('print-items').innerHTML = window.currentCart.map(item => `
                 <tr class="border-b border-gray-100">
                     <td class="py-2 pr-2">${item.productName} (${item.size})</td>
                     <td class="text-center py-2">${item.qty}</td>
-                    <td class="text-right py-2">${window.formatMMK(item.total)}</td>
+                    <td class="text-right py-2">${formatMMK(item.total)}</td>
                 </tr>
             `).join('');
 
-            document.getElementById('print-subtotal').innerText = window.formatMMK(totals.subtotal);
-            document.getElementById('print-discount').innerText = window.formatMMK(totals.discount);
-            document.getElementById('print-total').innerText = window.formatMMK(totals.grandTotal) + " MMK";
+            document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
+            document.getElementById('print-discount').innerText = formatMMK(totals.discount);
+            document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
 
             // Save Locally immediately for fast UI update
-            sessionSales.unshift(saleRecord);
+            window.sessionSales.unshift(saleRecord);
             window.updateDashboardStats();
             window.renderHistory();
             
-            // 1. Push to Google Sheets (For permanent weekly backup)
-            if (webAppUrl) {
-                fetch(webAppUrl, {
+            // 1. Push to Google Sheets (For permanent backup)
+            if (window.webAppUrl) {
+                fetch(window.webAppUrl, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(saleRecord)
-                }).then(() => {
-                    console.log("Sent to Google Sheets");
-                }).catch(error => console.error('Error:', error));
+                }).then(() => console.log("Sent to Google Sheets"))
+                  .catch(error => console.error('Sheet Error:', error));
             }
 
-            // 2. Push to Firestore Real-time Cloud (For staff syncing)
-            if (isFirebaseReady && auth.currentUser) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'sales', voucherId);
-                    setDoc(docRef, saleRecord).catch(e => console.error("Cloud Save Error:", e));
-                } catch(e) {
-                    console.error("Cloud Execution Error", e);
-                }
+            // 2. Push to Firebase Cloud (If connected)
+            if (window.pushToFirebase) {
+                window.pushToFirebase(saleRecord);
             }
 
             window.print();
 
             // Clear Cart
-            currentCart = [];
+            window.currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
             document.getElementById('summary-discount').value = '0';
-            window.renderCart();
+            renderCart();
             
-            window.showToast('Sale Completed!');
+            showToast('Sale Completed!');
         }
 
+        // Expose to window so Firebase module can call these safely
         window.updateDashboardStats = function() {
-            const totalVouchers = sessionSales.length;
-            const totalRevenue = sessionSales.reduce((sum, sale) => sum + sale.totals.grandTotal, 0);
+            const totalVouchers = window.sessionSales.length;
+            const totalRevenue = window.sessionSales.reduce((sum, sale) => sum + sale.totals.grandTotal, 0);
 
             const statVouchers = document.getElementById('stat-total-vouchers');
             const statRevenue = document.getElementById('stat-total-revenue');
             
             if (statVouchers) statVouchers.innerText = totalVouchers;
-            if (statRevenue) statRevenue.innerText = window.formatMMK(totalRevenue) + " MMK";
-        }
+            if (statRevenue) statRevenue.innerText = formatMMK(totalRevenue) + " MMK";
+        };
 
         window.renderHistory = function() {
             const tbody = document.getElementById('history-body');
             const emptyMsg = document.getElementById('empty-history-msg');
-            
             if (!tbody) return;
             
             tbody.innerHTML = "";
             
-            if (sessionSales.length === 0) {
+            if (window.sessionSales.length === 0) {
                 if (emptyMsg) {
                     emptyMsg.classList.remove('hidden');
                     emptyMsg.classList.add('flex');
@@ -794,8 +708,7 @@
                     emptyMsg.classList.remove('flex');
                 }
                 
-                sessionSales.forEach(sale => {
-                    // Use ISO Date for exact formatting, fallback to raw string if older sale
+                window.sessionSales.forEach(sale => {
                     const dateObj = new Date(sale.isoDate || sale.date);
                     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -816,10 +729,89 @@
                                 ${sale.items.map(i => `<li>• ${i.productName} (${i.size}) x ${i.qty}</li>`).join('')}
                             </ul>
                         </td>
-                        <td class="p-4 text-right font-bold text-slate-800">${window.formatMMK(sale.totals.grandTotal)}</td>
+                        <td class="p-4 text-right font-bold text-slate-800">${formatMMK(sale.totals.grandTotal)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
+        };
+    </script>
+
+    <!-- 2. FIREBASE SYNC LOGIC (Runs independently in the background) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Your exact Firebase keys
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
+            authDomain: "khay-may-pos.firebaseapp.com",
+            projectId: "khay-may-pos",
+            storageBucket: "khay-may-pos.firebasestorage.app",
+            messagingSenderId: "1058775733436",
+            appId: "1:1058775733436:web:a932499046aa82816aacb9",
+            measurementId: "G-WEFG804QQK"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+
+            // Give the POS script a way to push data here securely
+            window.pushToFirebase = async function(saleRecord) {
+                if (auth.currentUser) {
+                    try {
+                        const docRef = doc(db, 'sales', saleRecord.id);
+                        await setDoc(docRef, saleRecord);
+                    } catch(e) {
+                        console.error("Cloud Save Error:", e);
+                    }
+                }
+            };
+
+            // Login anonymously and start syncing history
+            signInAnonymously(auth).then(() => {
+                const salesRef = collection(db, 'sales');
+                
+                onSnapshot(salesRef, (snapshot) => {
+                    const allSales = [];
+                    snapshot.forEach(doc => allSales.push(doc.data()));
+                    
+                    const now = new Date();
+                    // Filter only the last 7 days to keep the app fast
+                    const recentSales = allSales.filter(sale => {
+                        if (!sale.isoDate) return true;
+                        const saleDate = new Date(sale.isoDate);
+                        const diffTime = Math.abs(now - saleDate);
+                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                        return diffDays <= 7;
+                    });
+                    
+                    // Sort newest at the top
+                    recentSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
+                    
+                    // Update POS view
+                    window.sessionSales = recentSales;
+                    if(window.updateDashboardStats) window.updateDashboardStats();
+                    if(window.renderHistory) window.renderHistory();
+
+                    const syncStatus = document.getElementById('sync-status');
+                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced (Last 7 Days)';
+                }, (error) => {
+                    console.error("Sync error:", error);
+                    const syncStatus = document.getElementById('sync-status');
+                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Sync Disconnected';
+                });
+            }).catch(error => {
+                console.error("Auth error:", error);
+                const syncStatus = document.getElementById('sync-status');
+                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Authentication Failed';
+            });
+        } catch (e) {
+            console.error("Firebase init error:", e);
         }
     </script>
+</body>
+</html>

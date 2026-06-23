@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khay May - Point of Sale</title>
     
-    <!-- App Icons -->
+    <!-- App Icons for Mobile -->
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <meta name="theme-color" content="#e11d48">
@@ -18,17 +18,23 @@
     <style>
         :root { --brand-color: #e11d48; }
         body { font-family: 'Quicksand', 'Padauk', sans-serif; background-color: #f8fafc; }
+        
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Logo color tinting */
         .logo-tint { filter: invert(24%) sepia(90%) saturate(3015%) hue-rotate(334deg) brightness(92%) contrast(97%); }
+        
+        /* Toast Animations */
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Print Styles */
+        /* Print Styles - Thermal Receipt */
         @media print {
             aside, main, header, #toast-container, .mobile-cart-toggle, #mobile-floating-cart { display: none !important; }
             body { background-color: white !important; display: block !important; height: auto !important; overflow: visible !important; }
@@ -42,7 +48,6 @@
 </head>
 <body class="text-slate-800 h-screen flex overflow-hidden">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col z-20">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -60,6 +65,7 @@
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
+        
         <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20">
             <div class="flex items-center gap-2">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -73,7 +79,7 @@
 
         <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
-                <!-- Sale Type Switcher -->
+                
                 <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5">
                     <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all">Retail</button>
                     <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Wholesale</button>
@@ -120,7 +126,6 @@
                     <button onclick="toggleMobileCart()" class="p-1 hover:bg-slate-700 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
 
-                <!-- Customer Details & Settings -->
                 <div class="p-4 border-b border-slate-100 bg-slate-50 overflow-y-auto max-h-[40vh] md:max-h-none">
                     <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Order Details</h3>
                     <div class="space-y-3">
@@ -255,6 +260,8 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Toast Notification Container -->
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
@@ -300,7 +307,7 @@
     </div>
 
     <script>
-        // State
+        // --- Core State ---
         let currentCart = [];
         let sessionSales = []; 
         let allFirebaseSales = []; 
@@ -321,6 +328,7 @@
             "Sleeper": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 18500 }, { size: "XL", price: 18500 }]
         };
 
+        // --- Helpers ---
         function formatMMK(num) { return Number(num).toLocaleString('en-US'); }
 
         function showToast(message, type = 'success') {
@@ -333,6 +341,7 @@
             setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
+        // --- Initialization ---
         window.onload = function() {
             const productSelect = document.getElementById('item-product');
             for (const product in productData) {
@@ -355,6 +364,7 @@
             renderCart();
         };
 
+        // --- UI Interactions ---
         function switchTab(tabId) {
             document.getElementById('pos-tab').classList.add('hidden');
             document.getElementById('sales-tab').classList.add('hidden');
@@ -396,6 +406,7 @@
             renderCart();
         }
 
+        // --- Cart Logic ---
         function updateSizeDropdown() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
@@ -462,11 +473,13 @@
             let subtotal = 0, autoDiscountTotal = 0;
             const productQtys = {};
             
+            // Group quantities by category (ignoring size)
             currentCart.forEach(item => {
                 productQtys[item.category] = (productQtys[item.category] || 0) + item.qty;
                 subtotal += item.total;
             });
 
+            // Apply discounts based on total category quantity
             currentCart.forEach(item => {
                 const totalQty = productQtys[item.category];
                 const rate = getDiscountRate(totalQty, currentSaleType);

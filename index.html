@@ -38,10 +38,11 @@
         @media print {
             aside, main, header, #toast-container, .mobile-cart-toggle, #mobile-floating-cart { display: none !important; }
             body { background-color: white !important; display: block !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
-            #print-area { display: block !important; position: relative !important; width: 100% !important; max-width: 80mm !important; margin: 0 auto !important; padding: 10px !important; background: white !important; color: black !important; font-family: 'Quicksand', 'Padauk', sans-serif !important; }
-            #print-area * { visibility: visible !important; }
+            .print-template { display: none !important; }
+            .print-template.active-print { display: block !important; position: relative !important; width: 100% !important; max-width: 80mm !important; margin: 0 auto !important; padding: 10px !important; background: white !important; color: black !important; font-family: 'Quicksand', 'Padauk', sans-serif !important; }
+            .print-template.active-print * { visibility: visible !important; }
             .no-print { display: none !important; }
-            #print-area .print-logo { filter: none !important; }
+            .print-template .print-logo { filter: none !important; }
             @page { margin: 0; }
         }
     </style>
@@ -219,10 +220,16 @@
                 <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-800 mb-2">Shared Sales History</h2>
-                        <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200 inline-flex flex-wrap">
-                            <input type="date" id="filter-start" onchange="applyDateFilter()" class="bg-transparent font-medium text-slate-700 outline-none">
-                            <span class="text-slate-400">to</span>
-                            <input type="date" id="filter-end" onchange="applyDateFilter()" class="bg-transparent font-medium text-slate-700 outline-none">
+                        <div class="flex flex-wrap items-center gap-3 mt-2">
+                            <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                <input type="date" id="filter-start" onchange="applyFilters()" class="bg-transparent font-medium text-slate-700 outline-none">
+                                <span class="text-slate-400">to</span>
+                                <input type="date" id="filter-end" onchange="applyFilters()" class="bg-transparent font-medium text-slate-700 outline-none">
+                            </div>
+                            <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200 flex-1 min-w-[200px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                                <input type="text" id="search-history" placeholder="Search ID, Customer, or Phone..." onkeyup="applyFilters()" class="bg-transparent font-medium text-slate-700 outline-none w-full">
+                            </div>
                         </div>
                         <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
                             <span class="relative flex h-2 w-2 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
@@ -238,6 +245,10 @@
                             <p class="text-xs font-bold text-rose-400 uppercase">Revenue</p>
                             <p class="text-2xl font-bold text-rose-600" id="stat-total-revenue">0 MMK</p>
                         </div>
+                        <button onclick="printDailySummary()" class="bg-slate-800 hover:bg-slate-900 text-white p-3 rounded-xl flex items-center justify-center gap-2 transition-colors font-bold text-sm shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                            Print Summary
+                        </button>
                     </div>
                 </div>
             </div>
@@ -268,7 +279,7 @@
     </main>
 
     <!-- Print Template -->
-    <div id="print-area" class="hidden">
+    <div id="print-area" class="hidden print-template">
         <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
             <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
             <h1 class="text-2xl font-bold mb-1">Khay May</h1>
@@ -306,6 +317,35 @@
         </div>
         <div class="text-center mt-6">
             <p class="text-sm font-bold">Thank You!</p>
+        </div>
+    </div>
+
+    <!-- Print Summary Template -->
+    <div id="print-summary-area" class="hidden print-template">
+        <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
+            <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
+            <h1 class="text-xl font-bold mb-1">Sales Summary</h1>
+            <p class="text-xs mb-1" id="print-summary-date-range"></p>
+        </div>
+
+        <div class="mb-4 text-sm space-y-2">
+            <div class="flex justify-between font-bold"><span>Total Vouchers:</span> <span id="print-summary-vouchers"></span></div>
+            <div class="flex justify-between font-bold text-rose-600"><span>Total Revenue:</span> <span id="print-summary-revenue"></span></div>
+        </div>
+
+        <h3 class="font-bold text-sm border-b border-gray-200 pb-1 mb-2">Payment Breakdown</h3>
+        <table class="w-full text-sm mb-4">
+            <tbody id="print-summary-payments"></tbody>
+        </table>
+
+        <h3 class="font-bold text-sm border-b border-gray-200 pb-1 mb-2">Sale Types</h3>
+        <table class="w-full text-sm mb-4">
+            <tbody id="print-summary-types"></tbody>
+        </table>
+
+        <div class="text-center mt-6">
+            <p class="text-xs text-gray-500">Generated on: <span id="print-summary-now"></span></p>
+            <p class="text-sm font-bold mt-2">End of Report</p>
         </div>
     </div>
 
@@ -660,9 +700,12 @@
                 document.getElementById('print-notes').innerText = notes;
             } else document.getElementById('print-notes-container').classList.add('hidden');
 
+            document.getElementById('print-summary-area').classList.remove('active-print');
+            document.getElementById('print-area').classList.add('active-print');
+
             // Save locally
             allFirebaseSales.unshift(saleRecord);
-            applyDateFilter();
+            applyFilters();
             
             // Push to APIs
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
@@ -681,23 +724,80 @@
             showToast('Sale Completed successfully!');
         }
 
-        function applyDateFilter() {
+        function printDailySummary() {
+            if (sessionSales.length === 0) {
+                showToast("No sales in selected range to print.", "error");
+                return;
+            }
+
+            let totalRevenue = 0;
+            let payments = {};
+            let types = {};
+
+            sessionSales.forEach(sale => {
+                const total = sale.totals ? sale.totals.grandTotal : 0;
+                totalRevenue += total;
+                
+                const pm = sale.saleType === 'Credit' ? 'Credit (' + sale.paymentMethod + ')' : (sale.paymentMethod || 'Cash');
+                payments[pm] = (payments[pm] || 0) + total;
+                
+                const st = sale.saleType || 'Retail';
+                types[st] = (types[st] || 0) + total;
+            });
+
+            const startNode = document.getElementById('filter-start').value;
+            const endNode = document.getElementById('filter-end').value;
+            document.getElementById('print-summary-date-range').innerText = (startNode === endNode) ? startNode : `${startNode} to ${endNode}`;
+            
+            document.getElementById('print-summary-vouchers').innerText = sessionSales.length;
+            document.getElementById('print-summary-revenue').innerText = formatMMK(totalRevenue) + " MMK";
+
+            document.getElementById('print-summary-payments').innerHTML = Object.entries(payments)
+                .sort((a,b)=>b[1]-a[1])
+                .map(([k,v]) => `<tr><td class="py-1">${k}</td><td class="text-right py-1 font-bold">${formatMMK(v)}</td></tr>`).join('');
+                
+            document.getElementById('print-summary-types').innerHTML = Object.entries(types)
+                .sort((a,b)=>b[1]-a[1])
+                .map(([k,v]) => `<tr><td class="py-1">${k}</td><td class="text-right py-1 font-bold">${formatMMK(v)}</td></tr>`).join('');
+
+            document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-US');
+
+            document.getElementById('print-area').classList.remove('active-print');
+            document.getElementById('print-summary-area').classList.add('active-print');
+
+            window.print();
+        }
+
+        function applyFilters() {
             const start = new Date(document.getElementById('filter-start').value);
             const end = new Date(document.getElementById('filter-end').value);
             end.setHours(23, 59, 59, 999);
+
+            const searchInput = document.getElementById('search-history');
+            const searchTxt = searchInput ? searchInput.value.toLowerCase() : "";
 
             if (Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) > 7) {
                 showToast("Maximum date range is 7 days.", "error");
                 const fixedEnd = new Date(start); fixedEnd.setDate(fixedEnd.getDate() + 6);
                 document.getElementById('filter-end').value = fixedEnd.toISOString().split('T')[0];
-                return applyDateFilter();
+                return applyFilters();
             }
 
-            sessionSales = allFirebaseSales.filter(s => { const d = new Date(s.isoDate || s.date); return d >= start && d <= end; });
+            sessionSales = allFirebaseSales.filter(s => { 
+                const d = new Date(s.isoDate || s.date); 
+                const inDate = (d >= start && d <= end); 
+                if (!inDate) return false;
+                if (!searchTxt) return true;
+                
+                const searchStr = `${s.id} ${s.customer} ${s.phone}`.toLowerCase();
+                return searchStr.includes(searchTxt);
+            });
+            
             document.getElementById('stat-total-vouchers').innerText = sessionSales.length;
             document.getElementById('stat-total-revenue').innerText = formatMMK(sessionSales.reduce((sum, s) => sum + (s.totals ? s.totals.grandTotal : 0), 0)) + " MMK";
             
             const tbody = document.getElementById('history-body');
+            if(!tbody) return;
             tbody.innerHTML = "";
             if (sessionSales.length === 0) document.getElementById('empty-history-msg').classList.remove('hidden');
             else {
@@ -727,7 +827,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
@@ -744,6 +844,11 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
 
+            // Enable Offline Persistence
+            enableIndexedDbPersistence(db).catch((err) => {
+                console.warn("Offline persistence issue:", err.code);
+            });
+
             window.pushToFirebase = async function(saleRecord) {
                 if (auth.currentUser) {
                     try { await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); } 
@@ -757,9 +862,9 @@
                     snapshot.forEach(d => loadedSales.push(d.data()));
                     loadedSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
                     window.allFirebaseSales = loadedSales;
-                    if(window.applyDateFilter) window.applyDateFilter();
+                    if(window.applyFilters) window.applyFilters();
                     const syncStatus = document.getElementById('sync-status');
-                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced';
+                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced (Offline Ready)';
                 });
             });
         } catch (e) { console.error("Firebase init error:", e); }

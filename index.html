@@ -391,11 +391,15 @@
                 productSelect.appendChild(option);
             }
 
+            // Set default date filter to CURRENT DAY (Local Timezone Safe)
             const today = new Date();
-            const lastWeek = new Date(today);
-            lastWeek.setDate(today.getDate() - 7);
-            document.getElementById('filter-end').value = today.toISOString().split('T')[0];
-            document.getElementById('filter-start').value = lastWeek.toISOString().split('T')[0];
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const localDateString = `${year}-${month}-${day}`;
+            
+            document.getElementById('filter-end').value = localDateString;
+            document.getElementById('filter-start').value = localDateString;
 
             if (localStorage.getItem('khaymay_sheet_url')) {
                 window.webAppUrl = localStorage.getItem('khaymay_sheet_url');
@@ -769,9 +773,16 @@
         }
 
         function applyFilters() {
-            const start = new Date(document.getElementById('filter-start').value);
-            const end = new Date(document.getElementById('filter-end').value);
-            end.setHours(23, 59, 59, 999);
+            const startVal = document.getElementById('filter-start').value;
+            const endVal = document.getElementById('filter-end').value;
+            if(!startVal || !endVal) return;
+            
+            // Parse dates safely in local time to prevent UTC shift bugs
+            const startParts = startVal.split('-');
+            const start = new Date(startParts[0], startParts[1] - 1, startParts[2], 0, 0, 0);
+            
+            const endParts = endVal.split('-');
+            const end = new Date(endParts[0], endParts[1] - 1, endParts[2], 23, 59, 59, 999);
 
             const searchInput = document.getElementById('search-history');
             const searchTxt = searchInput ? searchInput.value.toLowerCase() : "";
@@ -779,7 +790,12 @@
             if (Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) > 7) {
                 showToast("Maximum date range is 7 days.", "error");
                 const fixedEnd = new Date(start); fixedEnd.setDate(fixedEnd.getDate() + 6);
-                document.getElementById('filter-end').value = fixedEnd.toISOString().split('T')[0];
+                
+                const fYear = fixedEnd.getFullYear();
+                const fMonth = String(fixedEnd.getMonth() + 1).padStart(2, '0');
+                const fDay = String(fixedEnd.getDate()).padStart(2, '0');
+                
+                document.getElementById('filter-end').value = `${fYear}-${fMonth}-${fDay}`;
                 return applyFilters();
             }
 
@@ -849,11 +865,12 @@
                 console.warn("Offline persistence issue:", err.code);
             });
 
+            // Make it globally accessible - Removed auth.currentUser check to prevent race conditions dropping the save
             window.pushToFirebase = async function(saleRecord) {
-                if (auth.currentUser) {
-                    try { await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); } 
-                    catch(e) { console.error("Cloud Save Error:", e); }
-                }
+                try { 
+                    await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); 
+                } 
+                catch(e) { console.error("Cloud Save Error:", e); }
             };
 
             signInAnonymously(auth).then(() => {

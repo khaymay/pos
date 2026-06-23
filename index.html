@@ -209,8 +209,15 @@
 
             <div class="flex justify-between items-end mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-800">Session Sales History</h2>
-                    <p class="text-slate-500">Sales tracked since you opened the app.</p>
+                    <h2 class="text-2xl font-bold text-slate-800">Shared Sales History</h2>
+                    <p class="text-slate-500">Sales from all staff over the last 7 days.</p>
+                    <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
+                        <span class="relative flex h-2 w-2 mr-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span>
+                        </span>
+                        Connecting to Real-time Cloud...
+                    </div>
                 </div>
                 <div class="text-right flex gap-6">
                     <div>
@@ -314,10 +321,92 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
         let currentCart = [];
         let sessionSales = []; 
         let webAppUrl = "";
+
+        // Configuration for GitHub Pages (You will need to paste your own Firebase Config here later)
+        let firebaseConfig = {
+  apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
+  authDomain: "khay-may-pos.firebaseapp.com",
+  projectId: "khay-may-pos",
+  storageBucket: "khay-may-pos.firebasestorage.app",
+  messagingSenderId: "1058775733436",
+  appId: "1:1058775733436:web:a932499046aa82816aacb9",
+  measurementId: "G-WEFG804QQK"
+};
+
+        // Use environment config if available (works inside this chat preview)
+        if (typeof __firebase_config !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+        }
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'khaymay-pos-system';
+        let app, db, auth, isFirebaseReady = false;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                async function setupAuth() {
+                    if (typeof __initial_auth_token !== 'undefined') {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    isFirebaseReady = true;
+                    startCloudSync();
+                }
+                setupAuth();
+            } else {
+                // Fallback mode if Firebase isn't configured on GitHub
+                const syncStatus = document.getElementById('sync-status');
+                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-300 mr-1"></span> Cloud Sync Offline (Setup Required)';
+            }
+        } catch(e) {
+            console.error("Cloud Database Initialization Error:", e);
+        }
+
+        function startCloudSync() {
+            if (!auth.currentUser) return;
+            const salesRef = collection(db, 'artifacts', appId, 'public', 'data', 'sales');
+            
+            onSnapshot(salesRef, (snapshot) => {
+                const allSales = [];
+                snapshot.forEach(doc => allSales.push(doc.data()));
+                
+                const now = new Date();
+                // Filter for this week (last 7 days)
+                const recentSales = allSales.filter(sale => {
+                    if (!sale.isoDate) return true;
+                    const saleDate = new Date(sale.isoDate);
+                    const diffTime = Math.abs(now - saleDate);
+                    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                    return diffDays <= 7;
+                });
+                
+                // Sort by newest first
+                recentSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
+                
+                sessionSales = recentSales;
+                window.updateDashboardStats();
+                window.renderHistory();
+
+                const syncStatus = document.getElementById('sync-status');
+                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced (Last 7 Days)';
+            }, (error) => {
+                console.error("Sync error:", error);
+                const syncStatus = document.getElementById('sync-status');
+                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Sync Disconnected';
+            });
+        }
 
         const productData = {
             "Footie Pants": [
@@ -357,12 +446,13 @@
             ]
         };
 
-        function formatMMK(num) {
+        window.formatMMK = function(num) {
             return Number(num).toLocaleString('en-US');
         }
 
-        function showToast(message, type = 'success') {
+        window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
+            if(!container) return;
             const toast = document.createElement('div');
             const bgColor = type === 'success' ? 'bg-green-600' : (type === 'error' ? 'bg-red-600' : 'bg-slate-800');
             
@@ -378,16 +468,18 @@
             }, 3000);
         }
         
-        window.onload = function() {
+        function initializeAppUI() {
             const yearElement = document.getElementById('current-year');
             if(yearElement) yearElement.innerText = new Date().getFullYear();
             
             const productSelect = document.getElementById('item-product');
-            for (const product in productData) {
-                const option = document.createElement('option');
-                option.value = product;
-                option.text = product;
-                productSelect.appendChild(option);
+            if(productSelect) {
+                for (const product in productData) {
+                    const option = document.createElement('option');
+                    option.value = product;
+                    option.text = product;
+                    productSelect.appendChild(option);
+                }
             }
 
             const savedUrl = localStorage.getItem('khaymay_sheet_url');
@@ -399,11 +491,17 @@
                 if(connStatusElement) connStatusElement.classList.remove('hidden');
             }
             
-            renderCart();
-            updateDashboardStats();
-        };
+            window.renderCart();
+            window.updateDashboardStats();
+        }
 
-        function switchTab(tabId) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeAppUI);
+        } else {
+            initializeAppUI();
+        }
+
+        window.switchTab = function(tabId) {
             document.getElementById('pos-tab').classList.add('hidden');
             document.getElementById('sales-tab').classList.add('hidden');
             document.getElementById(tabId).classList.remove('hidden');
@@ -420,19 +518,19 @@
             }
         }
 
-        function saveSettings() {
+        window.saveSettings = function() {
             const urlInput = document.getElementById('sheet-url').value.trim();
             if (urlInput) {
                 webAppUrl = urlInput;
                 localStorage.setItem('khaymay_sheet_url', urlInput);
                 document.getElementById('connection-status').classList.remove('hidden');
-                showToast('Connection Saved!');
+                window.showToast('Connection Saved!');
             } else {
-                showToast('Please enter a valid URL', 'error');
+                window.showToast('Please enter a valid URL', 'error');
             }
         }
 
-        function updateSizeDropdown() {
+        window.updateSizeDropdown = function() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             const selectedProduct = productSelect.value;
@@ -458,7 +556,7 @@
             }
         }
 
-        function updatePrice() {
+        window.updatePrice = function() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             const priceInput = document.getElementById('item-price');
@@ -472,12 +570,12 @@
             }
         }
 
-        function addItem() {
+        window.addItem = function() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
             
             if (!productSelect.value || sizeSelect.value === "") {
-                showToast("Please select a product and size.", "error");
+                window.showToast("Please select a product and size.", "error");
                 return;
             }
 
@@ -499,48 +597,49 @@
                 });
 
                 productSelect.value = '';
-                updateSizeDropdown();
+                window.updateSizeDropdown();
                 document.getElementById('item-qty').value = '1';
                 
-                renderCart();
+                window.renderCart();
             }
         }
 
-        function removeItem(id) {
+        window.removeItem = function(id) {
             currentCart = currentCart.filter(item => item.id !== id);
-            renderCart();
+            window.renderCart();
         }
 
-        function updateQuantity(id, delta) {
+        window.updateQuantity = function(id, delta) {
             const item = currentCart.find(i => i.id === id);
             if (item) {
                 item.qty += delta;
                 if (item.qty <= 0) {
-                    removeItem(id);
+                    window.removeItem(id);
                 } else {
                     item.total = item.price * item.qty;
-                    renderCart();
+                    window.renderCart();
                 }
             }
         }
 
-        function calculateTotals() {
+        window.calculateTotals = function() {
             const subtotal = currentCart.reduce((sum, item) => sum + item.total, 0);
             const discountInput = parseFloat(document.getElementById('summary-discount').value) || 0;
             const grandTotal = Math.max(0, subtotal - discountInput);
 
-            document.getElementById('summary-subtotal').innerText = formatMMK(subtotal) + " MMK";
-            document.getElementById('summary-total').innerText = formatMMK(grandTotal) + " MMK";
+            document.getElementById('summary-subtotal').innerText = window.formatMMK(subtotal) + " MMK";
+            document.getElementById('summary-total').innerText = window.formatMMK(grandTotal) + " MMK";
 
             const checkoutBtn = document.getElementById('checkout-btn');
-            checkoutBtn.disabled = currentCart.length === 0;
+            if(checkoutBtn) checkoutBtn.disabled = currentCart.length === 0;
 
             return { subtotal, discount: discountInput, grandTotal };
         }
 
-        function renderCart() {
+        window.renderCart = function() {
             const container = document.getElementById('cart-items');
             const emptyMsg = document.getElementById('empty-cart-msg');
+            if(!container || !emptyMsg) return;
 
             if (currentCart.length === 0) {
                 container.classList.add('hidden');
@@ -553,7 +652,7 @@
                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="flex-1">
                             <h4 class="font-semibold text-slate-800">${item.productName} <span class="text-xs text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full ml-1">${item.size}</span></h4>
-                            <p class="text-sm text-slate-500">${formatMMK(item.price)} MMK</p>
+                            <p class="text-sm text-slate-500">${window.formatMMK(item.price)} MMK</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden">
@@ -562,7 +661,7 @@
                                 <button onclick="updateQuantity(${item.id}, 1)" class="px-2 py-1 text-slate-500 hover:bg-slate-100">+</button>
                             </div>
                             <div class="text-right min-w-[80px]">
-                                <p class="font-bold text-slate-800">${formatMMK(item.total)}</p>
+                                <p class="font-bold text-slate-800">${window.formatMMK(item.total)}</p>
                             </div>
                             <button onclick="removeItem(${item.id})" class="text-red-400 hover:text-red-600 p-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -571,10 +670,10 @@
                     </div>
                 `).join('');
             }
-            calculateTotals();
+            window.calculateTotals();
         }
 
-        function generateVoucherId() {
+        window.generateVoucherId = function() {
             const now = new Date();
             const dateStr = now.getFullYear().toString().slice(-2) + 
                             String(now.getMonth() + 1).padStart(2, '0') + 
@@ -583,11 +682,11 @@
             return `KM-${dateStr}-${random}`;
         }
 
-        async function processCheckout() {
+        window.processCheckout = async function() {
             if (currentCart.length === 0) return;
 
-            const totals = calculateTotals();
-            const voucherId = generateVoucherId();
+            const totals = window.calculateTotals();
+            const voucherId = window.generateVoucherId();
             const customerName = document.getElementById('cust-name').value.trim() || 'Guest';
             const customerPhone = document.getElementById('cust-phone').value.trim() || '-';
             const now = new Date();
@@ -596,12 +695,14 @@
                 id: voucherId,
                 date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
                 time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                isoDate: now.toISOString(),
                 customer: customerName,
                 phone: customerPhone,
                 items: [...currentCart],
                 totals: totals
             };
 
+            // Setup Print Layout
             document.getElementById('print-date').innerText = saleRecord.date + ' ' + saleRecord.time;
             document.getElementById('print-id').innerText = saleRecord.id;
             
@@ -616,18 +717,20 @@
                 <tr class="border-b border-gray-100">
                     <td class="py-2 pr-2">${item.productName} (${item.size})</td>
                     <td class="text-center py-2">${item.qty}</td>
-                    <td class="text-right py-2">${formatMMK(item.total)}</td>
+                    <td class="text-right py-2">${window.formatMMK(item.total)}</td>
                 </tr>
             `).join('');
 
-            document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
-            document.getElementById('print-discount').innerText = formatMMK(totals.discount);
-            document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
+            document.getElementById('print-subtotal').innerText = window.formatMMK(totals.subtotal);
+            document.getElementById('print-discount').innerText = window.formatMMK(totals.discount);
+            document.getElementById('print-total').innerText = window.formatMMK(totals.grandTotal) + " MMK";
 
+            // Save Locally immediately for fast UI update
             sessionSales.unshift(saleRecord);
-            updateDashboardStats();
-            renderHistory();
+            window.updateDashboardStats();
+            window.renderHistory();
             
+            // 1. Push to Google Sheets (For permanent weekly backup)
             if (webAppUrl) {
                 fetch(webAppUrl, {
                     method: 'POST',
@@ -639,18 +742,29 @@
                 }).catch(error => console.error('Error:', error));
             }
 
+            // 2. Push to Firestore Real-time Cloud (For staff syncing)
+            if (isFirebaseReady && auth.currentUser) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'sales', voucherId);
+                    setDoc(docRef, saleRecord).catch(e => console.error("Cloud Save Error:", e));
+                } catch(e) {
+                    console.error("Cloud Execution Error", e);
+                }
+            }
+
             window.print();
 
+            // Clear Cart
             currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
             document.getElementById('summary-discount').value = '0';
-            renderCart();
+            window.renderCart();
             
-            showToast('Sale Completed!');
+            window.showToast('Sale Completed!');
         }
 
-        function updateDashboardStats() {
+        window.updateDashboardStats = function() {
             const totalVouchers = sessionSales.length;
             const totalRevenue = sessionSales.reduce((sum, sale) => sum + sale.totals.grandTotal, 0);
 
@@ -658,10 +772,10 @@
             const statRevenue = document.getElementById('stat-total-revenue');
             
             if (statVouchers) statVouchers.innerText = totalVouchers;
-            if (statRevenue) statRevenue.innerText = formatMMK(totalRevenue) + " MMK";
+            if (statRevenue) statRevenue.innerText = window.formatMMK(totalRevenue) + " MMK";
         }
 
-        function renderHistory() {
+        window.renderHistory = function() {
             const tbody = document.getElementById('history-body');
             const emptyMsg = document.getElementById('empty-history-msg');
             
@@ -681,10 +795,17 @@
                 }
                 
                 sessionSales.forEach(sale => {
+                    // Use ISO Date for exact formatting, fallback to raw string if older sale
+                    const dateObj = new Date(sale.isoDate || sale.date);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
                     const tr = document.createElement('tr');
                     tr.className = "border-b border-slate-50 hover:bg-slate-50 transition-colors text-slate-600";
                     tr.innerHTML = `
-                        <td class="p-4">${sale.time}</td>
+                        <td class="p-4">
+                            <span class="font-semibold text-slate-800">${formattedDate}</span><br>
+                            <span class="text-xs text-slate-400">${sale.time}</span>
+                        </td>
                         <td class="p-4 font-mono text-sm">${sale.id}</td>
                         <td class="p-4">
                             ${sale.customer}
@@ -695,12 +816,10 @@
                                 ${sale.items.map(i => `<li>• ${i.productName} (${i.size}) x ${i.qty}</li>`).join('')}
                             </ul>
                         </td>
-                        <td class="p-4 text-right font-bold text-slate-800">${formatMMK(sale.totals.grandTotal)}</td>
+                        <td class="p-4 text-right font-bold text-slate-800">${window.formatMMK(sale.totals.grandTotal)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
         }
     </script>
-</body>
-</html>

@@ -60,7 +60,6 @@
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
-        <!-- Mobile Header -->
         <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20">
             <div class="flex items-center gap-2">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -72,9 +71,7 @@
             </div>
         </header>
 
-        <!-- POS Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
-            
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
                 <!-- Sale Type Switcher -->
                 <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5">
@@ -117,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- Cart Panel -->
             <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:w-[400px] xl:w-[450px] flex flex-col md:border-l md:border-slate-200">
                 <div class="md:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md">
                     <h2 class="font-bold text-lg">Checkout</h2>
@@ -135,14 +131,21 @@
                             <div id="payment-method-box">
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Method</label>
                                 <select id="payment-method" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
-                                    <option>Cash</option><option>KBZPay</option><option>AYAPay</option>
-                                    <option>CBPay</option><option>WavePay</option><option>Bank Transfer</option><option>Other</option>
+                                    <option>Cash</option>
+                                    <option>KBZPay</option>
+                                    <option>AYAPay</option>
+                                    <option>CBPay</option>
+                                    <option>WavePay</option>
+                                    <option>Bank Transfer</option>
+                                    <option>Other</option>
                                 </select>
                             </div>
                             <div id="credit-period-box" class="hidden">
                                 <label class="block text-xs font-semibold text-rose-500 mb-1">Credit Period</label>
                                 <select id="credit-period" class="w-full px-3 py-2 rounded-lg border border-rose-200 text-sm focus:outline-none bg-rose-50 text-rose-700 font-medium">
-                                    <option>30 Days</option><option>45 Days</option><option>60 Days</option>
+                                    <option>30 Days</option>
+                                    <option>45 Days</option>
+                                    <option>60 Days</option>
                                 </select>
                             </div>
                         </div>
@@ -183,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- Mobile Floating Cart -->
             <div id="mobile-floating-cart" onclick="toggleMobileCart()" class="md:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer hover:bg-slate-900 transition-colors hidden">
                 <div class="flex items-center gap-3">
                     <div class="relative">
@@ -192,11 +194,10 @@
                     </div>
                     <span class="font-semibold" id="mobile-cart-total">0 MMK</span>
                 </div>
-                <span class="text-sm font-bold bg-white text-slate-800 px-4 py-2 rounded-xl">View Cart</span>
+                <span class="text-sm font-bold bg-white text-slate-800 px-4 py-2 rounded-xl">View Cart / Checkout</span>
             </div>
         </section>
 
-        <!-- Sales History Tab -->
         <section id="sales-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto">
             <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block">
                 <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
@@ -257,7 +258,6 @@
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
-    <!-- Print Layout (Hidden on screen) -->
     <div id="print-area" class="hidden">
         <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
             <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
@@ -299,7 +299,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP SCRIPT -->
     <script>
         // State
         let currentCart = [];
@@ -428,7 +427,7 @@
             const qty = parseInt(document.getElementById('item-qty').value);
 
             if (prod && sizeSel.value !== "" && price >= 0 && qty > 0) {
-                currentCart.push({ id: Date.now(), productName: prod, size: sizeSel.options[sizeSel.selectedIndex].text, price: price, qty: qty, total: price * qty });
+                currentCart.push({ id: Date.now(), category: prod, size: sizeSel.options[sizeSel.selectedIndex].text, price: price, qty: qty, total: price * qty });
                 document.getElementById('item-product').value = ''; 
                 updateSizeDropdown();
                 document.getElementById('item-qty').value = '1';
@@ -462,13 +461,14 @@
         function calculateTotals() {
             let subtotal = 0, autoDiscountTotal = 0;
             const productQtys = {};
+            
             currentCart.forEach(item => {
-                productQtys[item.productName] = (productQtys[item.productName] || 0) + item.qty;
+                productQtys[item.category] = (productQtys[item.category] || 0) + item.qty;
                 subtotal += item.total;
             });
 
             currentCart.forEach(item => {
-                const totalQty = productQtys[item.productName];
+                const totalQty = productQtys[item.category];
                 const rate = getDiscountRate(totalQty, currentSaleType);
                 autoDiscountTotal += (item.total * rate);
             });
@@ -505,7 +505,7 @@
                 container.innerHTML = currentCart.map(item => `
                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="flex-1">
-                            <h4 class="font-semibold text-slate-800 text-sm">${item.productName} <span class="text-xs text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded-full ml-1">${item.size}</span></h4>
+                            <h4 class="font-semibold text-slate-800 text-sm">${item.category} <span class="text-xs text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded-full ml-1">${item.size}</span></h4>
                             <p class="text-xs text-slate-500">${formatMMK(item.price)} MMK</p>
                         </div>
                         <div class="flex items-center gap-2">
@@ -525,7 +525,6 @@
             calculateTotals();
         }
 
-        // Sequential ID Generator
         function generateSequentialVoucherId() {
             const now = new Date();
             const dd = String(now.getDate()).padStart(2, '0');
@@ -582,7 +581,7 @@
                 document.getElementById('print-customer').innerText = (customerName || 'Guest') + (customerPhone ? ` (${customerPhone})` : '');
             } else document.getElementById('print-customer-row').classList.add('hidden');
 
-            document.getElementById('print-items').innerHTML = currentCart.map(item => `<tr class="border-b border-gray-100"><td class="py-1 pr-2">${item.productName} (${item.size})</td><td class="text-center py-1">${item.qty}</td><td class="text-right py-1">${formatMMK(item.total)}</td></tr>`).join('');
+            document.getElementById('print-items').innerHTML = currentCart.map(item => `<tr class="border-b border-gray-100"><td class="py-1 pr-2">${item.category} (${item.size})</td><td class="text-center py-1">${item.qty}</td><td class="text-right py-1">${formatMMK(item.total)}</td></tr>`).join('');
             document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
             
             if(totals.autoDiscount > 0) {
@@ -598,16 +597,17 @@
                 document.getElementById('print-notes').innerText = notes;
             } else document.getElementById('print-notes-container').classList.add('hidden');
 
-            // Save & Print
+            // Save locally immediately so history updates
             allFirebaseSales.unshift(saleRecord);
             applyDateFilter();
             
+            // Push to integrations
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
             if (window.pushToFirebase) window.pushToFirebase(saleRecord);
 
             window.print();
 
-            // Clear
+            // Clear Cart
             currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
@@ -646,7 +646,7 @@
                             <td class="p-4 whitespace-nowrap"><span class="font-bold text-slate-800">${new Date(sale.isoDate || sale.date).toLocaleDateString('en-US', {month:'short',day:'numeric'})}</span><br><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${sale.saleType==='Credit'?'bg-amber-100 text-amber-700':(sale.saleType==='Wholesale'?'bg-blue-100 text-blue-700':'bg-rose-50 text-rose-600')}">${sale.saleType||'Retail'}</span></td>
                             <td class="p-4 font-mono text-sm">${sale.id}</td>
                             <td class="p-4 text-sm"><span class="font-medium text-slate-800">${sale.customer || 'Guest'}</span><br><span class="text-xs text-slate-500">${methodStr}</span></td>
-                            <td class="p-4"><ul class="text-xs text-slate-500 space-y-1 font-medium min-w-[150px]">${(sale.items||[]).map(i => `<li>• ${i.productName||i.category} (${i.size}) x ${i.qty||i.quantity}</li>`).join('')}</ul></td>
+                            <td class="p-4"><ul class="text-xs text-slate-500 space-y-1 font-medium min-w-[150px]">${(sale.items||[]).map(i => `<li>• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></td>
                             <td class="p-4 text-right whitespace-nowrap"><span class="font-bold text-slate-800">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span>${sale.totals&&sale.totals.autoDiscount>0?`<br><span class="text-xs text-rose-500">- ${formatMMK(sale.totals.autoDiscount)} (Bulk)</span>`:''}</td>
                         </tr>`;
                 });
@@ -659,7 +659,6 @@
         }
     </script>
     
-    <!-- FIREBASE SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -702,77 +701,3 @@
     </script>
 </body>
 </html>
-```
-
-### Part 2: The Google Apps Script Update
-
-Because we added Sale Types, Payment/Credit Methods, Auto Discounts, and Notes, we **must** update your Google Sheet Script to catch this new data!
-
-1. Go to your **Google Apps Script** editor.
-2. Delete the current code and paste this fully updated version.
-3. **CRITICAL:** Click Save -> Deploy -> Manage Deployments -> Edit (pencil icon) -> change version to **"New Version"** -> click Deploy.
-
-```javascript:Google Apps Script Code:code.gs
-function doPost(e) {
-  try {
-    var sheetName = Utilities.formatDate(new Date(), "GMT+6:30", "MMMM yyyy");
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = doc.getSheetByName(sheetName);
-    
-    // Add new columns to track the new features
-    if (!sheet) {
-      sheet = doc.insertSheet(sheetName);
-      sheet.appendRow([
-        "Date", "Voucher ID", "Sale Type", "Customer", "Phone", 
-        "Payment/Credit", "Product", "Size", "Quantity", "Unit Price", 
-        "Subtotal", "Auto-Discount", "Manual Discount", "Grand Total", "Notes"
-      ]);
-      sheet.getRange("A1:O1").setFontWeight("bold");
-    }
-    
-    var data = JSON.parse(e.postData.contents);
-    var items = data.items || [];
-    var totals = data.totals || { subtotal: 0, autoDiscount: 0, manualDiscount: 0, grandTotal: 0 };
-    
-    var voucherId = data.id || "No ID";
-    var saleDate = data.date || Utilities.formatDate(new Date(), "GMT+6:30", "MMM dd, yyyy");
-    var saleType = data.saleType || "Retail";
-    var paymentInfo = saleType === 'Credit' ? data.paymentMethod : data.paymentMethod;
-    
-    // Loop through each item in the cart
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      var productName = item["productName"] || item["name"] || item["category"] || "Unknown Product";
-      var quantity = item["qty"] || item["quantity"] || 1;
-      var size = item["size"] || "-";
-      var price = item["price"] || 0;
-      
-      sheet.appendRow([
-        saleDate,
-        voucherId,
-        saleType,
-        data.customer || "-",
-        data.phone || "-",
-        paymentInfo || "-",
-        productName,
-        size,
-        quantity,
-        price,
-        totals.subtotal,
-        totals.autoDiscount,
-        totals.manualDiscount,
-        totals.grandTotal,
-        data.notes || ""
-      ]);
-    }
-    
-    // Draw a bottom border across all 15 columns
-    var lastRow = sheet.getLastRow();
-    var range = sheet.getRange(lastRow, 1, 1, 15);
-    range.setBorder(null, null, true, null, null, null, "black", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-    
-    return ContentService.createTextOutput(JSON.stringify({"result":"success"})).setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({"result":"error", "error": error.message})).setMimeType(ContentService.MimeType.JSON);
-  }
-}

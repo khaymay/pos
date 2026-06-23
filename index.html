@@ -2,49 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khay May - Point of Sale</title>
     
-    <!-- Favicon and Mobile Home Screen Icons -->
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <meta name="theme-color" content="#e11d48">
     
-    <!-- Google Fonts: Quicksand for English, Padauk for Myanmar text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        :root {
-            --brand-color: #e11d48; /* Rose 600 - Pinkish Red */
-        }
-        body {
-            font-family: 'Quicksand', 'Padauk', sans-serif;
-            background-color: #f8fafc;
-        }
-        
-        /* Custom scrollbar */
+        :root { --brand-color: #e11d48; }
+        body { font-family: 'Quicksand', 'Padauk', sans-serif; background-color: #f8fafc; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Filter to turn black logo into brand color */
         .logo-tint { filter: invert(24%) sepia(90%) saturate(3015%) hue-rotate(334deg) brightness(92%) contrast(97%); }
-
-        /* Toast animation */
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Print Styles */
+        /* Print Styles configured for Thermal/Receipt Printers */
         @media print {
-            aside, main, header, #toast-container { display: none !important; }
+            aside, main, header, #toast-container, .mobile-cart-toggle { display: none !important; }
             body { background-color: white !important; display: block !important; height: auto !important; overflow: visible !important; }
             #print-area { display: block !important; position: relative !important; width: 100% !important; max-width: 80mm !important; margin: 0 auto !important; padding: 10px !important; background: white !important; color: black !important; font-family: 'Quicksand', 'Padauk', sans-serif !important; }
             #print-area * { visibility: visible !important; }
@@ -56,7 +42,6 @@
 </head>
 <body class="text-slate-800 h-screen flex overflow-hidden">
 
-    <!-- Sidebar (Desktop) -->
     <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col z-20">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -67,7 +52,7 @@
         <nav class="flex-1 px-4 py-6 space-y-2">
             <button onclick="switchTab('pos-tab')" id="nav-pos-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-semibold transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                Point of Sale
+                Sales Terminal
             </button>
             <button onclick="switchTab('sales-tab')" id="nav-sales-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
@@ -76,14 +61,12 @@
         </nav>
         
         <div class="p-4 border-t border-slate-100 text-center">
-            <p class="text-xs text-slate-400">&copy; <span id="current-year">2026</span> Khay May</p>
+            <p class="text-xs text-slate-400">&copy; <span id="current-year"></span> Khay May</p>
         </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
         
-        <!-- Mobile Header -->
         <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20">
             <div class="flex items-center gap-2">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -99,12 +82,19 @@
             </div>
         </header>
 
-        <!-- TAB 1: POS Section -->
-        <section id="pos-tab" class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
             
-            <!-- Left: Add Items -->
-            <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <!-- Left: Items Input Area -->
+            <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
+                
+                <!-- Sale Type Switcher -->
+                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5">
+                    <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all">Retail</button>
+                    <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Wholesale</button>
+                    <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Credit Sales</button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4">
                     <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                         Add Item to Cart
@@ -128,7 +118,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Price (MMK)</label>
-                                <input type="number" id="item-price" required min="0" placeholder="0" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none transition-all cursor-not-allowed text-slate-500">
+                                <input type="number" id="item-price" required min="0" placeholder="0" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none transition-all cursor-not-allowed text-slate-500 font-bold">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Quantity</label>
@@ -142,39 +132,78 @@
                 </div>
             </div>
 
-            <!-- Right: Cart & Checkout -->
-            <div class="w-full lg:w-[400px] xl:w-[450px] bg-white border-l border-slate-200 flex flex-col z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.05)]">
+            <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:w-[400px] xl:w-[450px] flex flex-col md:border-l md:border-slate-200">
                 
-                <!-- Customer Info -->
-                <div class="p-4 border-b border-slate-100 bg-slate-50">
-                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Customer Details</h3>
+                <!-- Mobile Header for Cart Panel -->
+                <div class="md:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md">
+                    <h2 class="font-bold text-lg">Checkout</h2>
+                    <button onclick="toggleMobileCart()" class="p-1 hover:bg-slate-700 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Customer Details & Settings -->
+                <div class="p-4 border-b border-slate-100 bg-slate-50 overflow-y-auto max-h-[40vh] md:max-h-none">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Order Details</h3>
                     <div class="space-y-3">
-                        <input type="text" id="cust-name" placeholder="Customer Name (Optional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
-                        <input type="text" id="cust-phone" placeholder="Phone Number (Optional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <input type="text" id="cust-name" placeholder="Customer Name (Optional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white">
+                        <input type="text" id="cust-phone" placeholder="Phone Number (Optional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white">
+                        
+                        <!-- Dynamic Payment/Credit Options -->
+                        <div id="payment-container" class="grid grid-cols-2 gap-2 pt-1">
+                            <div id="payment-method-box">
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Method</label>
+                                <select id="payment-method" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
+                                    <option>Cash</option>
+                                    <option>KBZPay</option>
+                                    <option>AYAPay</option>
+                                    <option>CBPay</option>
+                                    <option>WavePay</option>
+                                    <option>Bank Transfer</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div id="credit-period-box" class="hidden">
+                                <label class="block text-xs font-semibold text-rose-500 mb-1">Credit Period</label>
+                                <select id="credit-period" class="w-full px-3 py-2 rounded-lg border border-rose-200 text-sm focus:outline-none bg-rose-50 text-rose-700 font-medium">
+                                    <option>30 Days</option>
+                                    <option>45 Days</option>
+                                    <option>60 Days</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <textarea id="sale-notes" rows="2" placeholder="Transaction IDs or extra notes..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white resize-none"></textarea>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Cart Items -->
+                <!-- Cart Items Container -->
                 <div class="flex-1 overflow-y-auto p-4 bg-white" id="cart-container">
                     <div id="empty-cart-msg" class="h-full flex flex-col items-center justify-center text-slate-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                        <p class="font-medium">Cart is empty</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        <p class="font-medium text-sm">Cart is empty</p>
                     </div>
                     <div id="cart-items" class="space-y-3 hidden"></div>
                 </div>
 
                 <!-- Totals & Actions -->
-                <div class="p-4 lg:p-6 bg-slate-50 border-t border-slate-200">
-                    <div class="space-y-2 mb-4 text-sm">
+                <div class="p-4 bg-slate-50 border-t border-slate-200">
+                    <div class="space-y-1.5 mb-4 text-sm">
                         <div class="flex justify-between text-slate-500">
                             <span>Subtotal</span>
                             <span id="summary-subtotal" class="font-medium text-slate-800">0 MMK</span>
                         </div>
-                        <div class="flex justify-between items-center text-slate-500">
-                            <span>Discount (MMK)</span>
+                        <div id="summary-auto-discount-row" class="flex justify-between text-rose-500 font-medium hidden">
+                            <span>Bulk Auto-Discount</span>
+                            <span id="summary-auto-discount">- 0 MMK</span>
+                        </div>
+                        <div class="flex justify-between items-center text-slate-500 pt-1">
+                            <span>Manual Discount (MMK)</span>
                             <input type="number" id="summary-discount" value="0" min="0" onchange="calculateTotals()" class="w-24 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
                         </div>
-                        <div class="pt-3 border-t border-slate-200 flex justify-between items-end mt-2">
+                        <div class="pt-2 border-t border-slate-200 flex justify-between items-end mt-2">
                             <span class="text-base font-bold text-slate-800">Total</span>
                             <span id="summary-total" class="text-2xl font-bold text-rose-600">0 MMK</span>
                         </div>
@@ -182,85 +211,90 @@
 
                     <button onclick="processCheckout()" id="checkout-btn" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg rounded-xl shadow-lg shadow-rose-200 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-                        Save & Print Voucher
+                        Save & Print
                     </button>
                 </div>
             </div>
+
+            <div id="mobile-floating-cart" onclick="toggleMobileCart()" class="md:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer hover:bg-slate-900 transition-colors hidden">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        <span id="mobile-cart-badge" class="absolute -top-2 -right-2 bg-rose-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
+                    </div>
+                    <span class="font-semibold" id="mobile-cart-total">0 MMK</span>
+                </div>
+                <span class="text-sm font-bold bg-white text-slate-800 px-4 py-2 rounded-xl">View Cart</span>
+            </div>
+
         </section>
 
-        <!-- TAB 2: Sales Tracking Section -->
         <section id="sales-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto">
             
-            <div class="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
-                <p class="text-slate-500 mb-4">Connect this app to Google Sheets to automatically save all your sales data. Data shown below is for the current active session only.</p>
-                
+            <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block">
+                <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
                 <div class="flex flex-col md:flex-row gap-3">
-                    <input type="url" id="sheet-url" placeholder="Paste your Google Apps Script Web App URL here..." class="flex-1 px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                    <button onclick="saveSettings()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-bold whitespace-nowrap transition-colors">
+                    <input type="url" id="sheet-url" placeholder="Paste your Google Apps Script Web App URL here..." class="flex-1 px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <button onclick="saveSettings()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 text-sm rounded-xl font-bold whitespace-nowrap transition-colors">
                         Save Connection
                     </button>
                 </div>
-                <p id="connection-status" class="mt-2 text-sm text-amber-600 font-medium flex items-center gap-1 hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    URL Saved. Sales will be synced to Google Sheets.
-                </p>
             </div>
 
-            <div class="flex justify-between items-end mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800">Shared Sales History</h2>
-                    <p class="text-slate-500">Sales from all staff over the last 7 days.</p>
-                    <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
-                        <span class="relative flex h-2 w-2 mr-2">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span>
-                        </span>
-                        Connecting to Real-time Cloud...
-                    </div>
-                </div>
-                <div class="text-right flex gap-6">
+            <!-- Dashboard Stats & Filters -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-6">
+                <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
                     <div>
-                        <p class="text-sm text-slate-500">Total Vouchers</p>
-                        <p class="text-2xl font-bold text-slate-800" id="stat-total-vouchers">0</p>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Shared Sales History</h2>
+                        <!-- Date Filter -->
+                        <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200 inline-flex">
+                            <input type="date" id="filter-start" onchange="applyDateFilter()" class="bg-transparent font-medium text-slate-700 outline-none">
+                            <span class="text-slate-400">to</span>
+                            <input type="date" id="filter-end" onchange="applyDateFilter()" class="bg-transparent font-medium text-slate-700 outline-none">
+                        </div>
+                        <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
+                            <span class="relative flex h-2 w-2 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
+                            Cloud Sync Offline (Setup Required)
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm text-slate-500">Session Revenue</p>
-                        <p class="text-2xl font-bold text-rose-600" id="stat-total-revenue">0 MMK</p>
+                    <div class="flex gap-6">
+                        <div class="bg-slate-50 p-3 rounded-xl min-w-[120px]">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Vouchers</p>
+                            <p class="text-2xl font-bold text-slate-800" id="stat-total-vouchers">0</p>
+                        </div>
+                        <div class="bg-rose-50 p-3 rounded-xl min-w-[150px]">
+                            <p class="text-xs font-bold text-rose-400 uppercase tracking-wider">Filtered Revenue</p>
+                            <p class="text-2xl font-bold text-rose-600" id="stat-total-revenue">0 MMK</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
-                                <th class="p-4 font-semibold">Time</th>
+                            <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="p-4 font-semibold">Date / Type</th>
                                 <th class="p-4 font-semibold">Voucher ID</th>
-                                <th class="p-4 font-semibold">Customer</th>
-                                <th class="p-4 font-semibold">Items Purchased</th>
-                                <th class="p-4 font-semibold text-right">Grand Total</th>
+                                <th class="p-4 font-semibold">Customer & Method</th>
+                                <th class="p-4 font-semibold">Items</th>
+                                <th class="p-4 font-semibold text-right">Totals</th>
                             </tr>
                         </thead>
-                        <tbody id="history-body" class="divide-y divide-slate-100">
-                            <!-- History populated here -->
-                        </tbody>
+                        <tbody id="history-body" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
                 <div id="empty-history-msg" class="p-12 flex flex-col items-center justify-center text-slate-400">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                    <p>No sales recorded in this session yet.</p>
+                    <p>No sales found in this date range.</p>
                 </div>
             </div>
         </section>
         
-        <!-- Toast Notification Container -->
-        <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
-
+        <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
-    <!-- HIDDEN PRINT AREA -->
     <div id="print-area" class="hidden">
         <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
             <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
@@ -272,18 +306,21 @@
             <p class="text-xs mb-0">Viber: 09668414343 / 09673314907</p>
         </div>
 
-        <div class="mb-4 text-sm">
-            <div class="flex justify-between mb-1">
-                <span>Date:</span>
-                <span id="print-date"></span>
+        <div class="mb-4 text-sm space-y-1">
+            <div class="flex justify-between">
+                <span>Date:</span> <span id="print-date"></span>
             </div>
-            <div class="flex justify-between mb-1">
-                <span>Voucher ID:</span>
-                <span id="print-id" class="font-mono"></span>
+            <div class="flex justify-between font-bold">
+                <span>Voucher ID:</span> <span id="print-id"></span>
             </div>
-            <div class="flex justify-between" id="print-customer-row">
-                <span>Customer:</span>
-                <span id="print-customer"></span>
+            <div class="flex justify-between">
+                <span>Sale Type:</span> <span id="print-type" class="uppercase"></span>
+            </div>
+            <div class="flex justify-between" id="print-payment-row">
+                <span>Method:</span> <span id="print-payment"></span>
+            </div>
+            <div class="flex justify-between hidden" id="print-customer-row">
+                <span>Customer:</span> <span id="print-customer"></span>
             </div>
         </div>
 
@@ -295,40 +332,44 @@
                     <th class="text-right py-2">Amount</th>
                 </tr>
             </thead>
-            <tbody id="print-items">
-                <!-- Items populated here -->
-            </tbody>
+            <tbody id="print-items"></tbody>
         </table>
 
         <div class="border-t-2 border-dashed border-gray-300 pt-3 text-sm space-y-1">
             <div class="flex justify-between">
-                <span>Subtotal:</span>
-                <span id="print-subtotal"></span>
+                <span>Subtotal:</span> <span id="print-subtotal"></span>
+            </div>
+            <div class="flex justify-between text-gray-600 hidden" id="print-auto-discount-row">
+                <span>Bulk Discount:</span> <span id="print-auto-discount"></span>
             </div>
             <div class="flex justify-between text-gray-600">
-                <span>Discount:</span>
-                <span id="print-discount"></span>
+                <span>Manual Discount:</span> <span id="print-discount"></span>
             </div>
-            <div class="flex justify-between font-bold text-base mt-2 pt-2 border-t border-gray-200">
-                <span>Grand Total:</span>
-                <span id="print-total"></span>
+            <div class="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-gray-200">
+                <span>Grand Total:</span> <span id="print-total"></span>
             </div>
         </div>
         
-        <div class="text-center mt-6 pt-4 border-t-2 border-dashed border-gray-300">
+        <div class="text-sm mt-4 pt-4 border-t-2 border-dashed border-gray-300 hidden" id="print-notes-container">
+            <strong>Notes:</strong> <span id="print-notes"></span>
+        </div>
+
+        <div class="text-center mt-6">
             <p class="text-sm font-bold">Thank You!</p>
             <p class="text-xs mt-1 text-gray-500">Please come again.</p>
         </div>
     </div>
 
-    <!-- 1. CORE POS LOGIC (No Firebase dependencies, guaranteed to work) -->
     <script>
-        // State Variables
-        window.currentCart = [];
-        window.sessionSales = []; 
-        window.webAppUrl = "";
-        window.pushToFirebase = null; // Will be defined by Firebase script later
+        // App State
+        let currentCart = [];
+        let sessionSales = []; // Stores currently filtered sales
+        let allFirebaseSales = []; // Stores all sales pulled from Cloud
+        let webAppUrl = "";
+        let currentSaleType = "Retail"; // Retail, Wholesale, Credit
+        let isMobileCartOpen = false;
 
+        // SKUs and Pricing Data
         const productData = {
             "Footie Pants": [
                 { size: "0-3 m", price: 15000 }, { size: "3-6 m", price: 15000 }, { size: "6-9 m", price: 15000 }, 
@@ -376,12 +417,8 @@
             if(!container) return;
             const toast = document.createElement('div');
             const bgColor = type === 'success' ? 'bg-green-600' : (type === 'error' ? 'bg-red-600' : 'bg-slate-800');
-            
             toast.className = `${bgColor} text-white px-6 py-3 rounded-xl shadow-lg font-medium text-sm toast-enter flex items-center gap-2`;
-            toast.innerHTML = `
-                ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
-                ${message}
-            `;
+            toast.innerHTML = message;
             container.appendChild(toast);
             setTimeout(() => {
                 toast.classList.replace('toast-enter', 'toast-exit');
@@ -389,7 +426,7 @@
             }, 3000);
         }
 
-        function initializeAppUI() {
+        window.onload = function() {
             const yearElement = document.getElementById('current-year');
             if(yearElement) yearElement.innerText = new Date().getFullYear();
             
@@ -397,30 +434,29 @@
             if(productSelect) {
                 for (const product in productData) {
                     const option = document.createElement('option');
-                    option.value = product;
-                    option.text = product;
+                    option.value = product; option.text = product;
                     productSelect.appendChild(option);
                 }
             }
+
+            // Setup Default Date Filters (7 days)
+            const today = new Date();
+            const lastWeek = new Date(today);
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            
+            document.getElementById('filter-end').value = today.toISOString().split('T')[0];
+            document.getElementById('filter-start').value = lastWeek.toISOString().split('T')[0];
 
             const savedUrl = localStorage.getItem('khaymay_sheet_url');
             if (savedUrl) {
                 window.webAppUrl = savedUrl;
                 const sheetUrlElement = document.getElementById('sheet-url');
-                const connStatusElement = document.getElementById('connection-status');
                 if(sheetUrlElement) sheetUrlElement.value = savedUrl;
-                if(connStatusElement) connStatusElement.classList.remove('hidden');
             }
             
+            setSaleType('Retail'); // Default
             renderCart();
-            window.updateDashboardStats();
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeAppUI);
-        } else {
-            initializeAppUI();
-        }
+        };
 
         function switchTab(tabId) {
             document.getElementById('pos-tab').classList.add('hidden');
@@ -439,16 +475,43 @@
             }
         }
 
-        function saveSettings() {
-            const urlInput = document.getElementById('sheet-url').value.trim();
-            if (urlInput) {
-                window.webAppUrl = urlInput;
-                localStorage.setItem('khaymay_sheet_url', urlInput);
-                document.getElementById('connection-status').classList.remove('hidden');
-                showToast('Connection Saved!');
+        function toggleMobileCart() {
+            const panel = document.getElementById('cart-panel');
+            isMobileCartOpen = !isMobileCartOpen;
+            if(isMobileCartOpen) {
+                panel.classList.remove('translate-x-full');
             } else {
-                showToast('Please enter a valid URL', 'error');
+                panel.classList.add('translate-x-full');
             }
+        }
+
+        function setSaleType(type) {
+            currentSaleType = type;
+            
+            // Update UI Buttons
+            const types = ['Retail', 'Wholesale', 'Credit'];
+            types.forEach(t => {
+                const btn = document.getElementById(`btn-type-${t}`);
+                if(t === type) {
+                    btn.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all";
+                } else {
+                    btn.className = "flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all";
+                }
+            });
+
+            // Toggle Payment vs Credit Period
+            const paymentBox = document.getElementById('payment-method-box');
+            const creditBox = document.getElementById('credit-period-box');
+            
+            if (type === 'Credit') {
+                paymentBox.classList.add('hidden');
+                creditBox.classList.remove('hidden');
+            } else {
+                paymentBox.classList.remove('hidden');
+                creditBox.classList.add('hidden');
+            }
+
+            renderCart(); // Recalculate any wholesale/credit discounts
         }
 
         function updateSizeDropdown() {
@@ -466,14 +529,12 @@
                 
                 productData[selectedProduct].forEach((item, index) => {
                     const option = document.createElement('option');
-                    option.value = index; 
-                    option.text = item.size;
+                    option.value = index; option.text = item.size;
                     sizeSelect.appendChild(option);
                 });
             } else {
                 sizeSelect.disabled = true;
                 sizeSelect.classList.add('bg-slate-50', 'disabled:cursor-not-allowed');
-                sizeSelect.classList.remove('bg-white');
             }
         }
 
@@ -482,11 +543,8 @@
             const sizeSelect = document.getElementById('item-size');
             const priceInput = document.getElementById('item-price');
             
-            const selectedProduct = productSelect.value;
-            const selectedSizeIndex = sizeSelect.value;
-            
-            if (selectedProduct && selectedSizeIndex !== "") {
-                const itemData = productData[selectedProduct][selectedSizeIndex];
+            if (productSelect.value && sizeSelect.value !== "") {
+                const itemData = productData[productSelect.value][sizeSelect.value];
                 priceInput.value = itemData.price;
             }
         }
@@ -496,64 +554,97 @@
             const sizeSelect = document.getElementById('item-size');
             
             if (!productSelect.value || sizeSelect.value === "") {
-                showToast("Please select a product and size.", "error");
-                return;
+                showToast("Please select a product and size.", "error"); return;
             }
 
-            const selectedProduct = productSelect.value;
-            const selectedSizeText = sizeSelect.options[sizeSelect.selectedIndex].text;
-            
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
 
-            if (selectedProduct && price >= 0 && qty > 0) {
-                window.currentCart.push({
+            if (price >= 0 && qty > 0) {
+                currentCart.push({
                     id: Date.now(),
-                    productName: selectedProduct,
-                    size: selectedSizeText,
+                    productName: productSelect.value,
+                    size: sizeSelect.options[sizeSelect.selectedIndex].text,
                     price: price,
                     qty: qty,
                     total: price * qty
                 });
-
-                productSelect.value = '';
-                updateSizeDropdown();
+                productSelect.value = ''; updateSizeDropdown();
                 document.getElementById('item-qty').value = '1';
-                
                 renderCart();
             }
         }
 
-        function removeItem(id) {
-            window.currentCart = window.currentCart.filter(item => item.id !== id);
-            renderCart();
-        }
-
+        function removeItem(id) { currentCart = currentCart.filter(item => item.id !== id); renderCart(); }
+        
         function updateQuantity(id, delta) {
-            const item = window.currentCart.find(i => i.id === id);
+            const item = currentCart.find(i => i.id === id);
             if (item) {
                 item.qty += delta;
-                if (item.qty <= 0) {
-                    removeItem(id);
-                } else {
-                    item.total = item.price * item.qty;
-                    renderCart();
-                }
+                if (item.qty <= 0) removeItem(id);
+                else { item.total = item.price * item.qty; renderCart(); }
             }
         }
 
-        function calculateTotals() {
-            const subtotal = window.currentCart.reduce((sum, item) => sum + item.total, 0);
-            const discountInput = parseFloat(document.getElementById('summary-discount').value) || 0;
-            const grandTotal = Math.max(0, subtotal - discountInput);
+        function getDiscountRate(qty, type) {
+            if (type === 'Wholesale') {
+                if (qty >= 48) return 0.23;
+                if (qty >= 24) return 0.20;
+                if (qty >= 12) return 0.15;
+            } else if (type === 'Credit') {
+                if (qty >= 48) return 0.22;
+                if (qty >= 24) return 0.19;
+                if (qty >= 12) return 0.14;
+            }
+            return 0; // Retail or < 12
+        }
 
+        function calculateTotals() {
+            let subtotal = 0;
+            let autoDiscountTotal = 0;
+            
+            // 1. Group quantities by Product Name (regardless of size)
+            const productQtys = {};
+            currentCart.forEach(item => {
+                productQtys[item.productName] = (productQtys[item.productName] || 0) + item.qty;
+                subtotal += item.total;
+            });
+
+            // 2. Calculate discounts based on grouped quantities
+            currentCart.forEach(item => {
+                const totalQty = productQtys[item.productName];
+                const rate = getDiscountRate(totalQty, currentSaleType);
+                autoDiscountTotal += (item.total * rate);
+            });
+
+            const manualDiscount = parseFloat(document.getElementById('summary-discount').value) || 0;
+            const grandTotal = Math.max(0, subtotal - autoDiscountTotal - manualDiscount);
+
+            // Update UI Totals
             document.getElementById('summary-subtotal').innerText = formatMMK(subtotal) + " MMK";
             document.getElementById('summary-total').innerText = formatMMK(grandTotal) + " MMK";
+            
+            const autoDiscRow = document.getElementById('summary-auto-discount-row');
+            if (autoDiscountTotal > 0) {
+                autoDiscRow.classList.remove('hidden');
+                document.getElementById('summary-auto-discount').innerText = "- " + formatMMK(autoDiscountTotal) + " MMK";
+            } else {
+                autoDiscRow.classList.add('hidden');
+            }
+
+            // Update Mobile Floating Cart
+            const totalItems = currentCart.reduce((sum, i) => sum + i.qty, 0);
+            const floatCart = document.getElementById('mobile-floating-cart');
+            document.getElementById('mobile-cart-badge').innerText = totalItems;
+            document.getElementById('mobile-cart-total').innerText = formatMMK(grandTotal) + " MMK";
+            
+            if (totalItems > 0) floatCart.classList.remove('hidden');
+            else floatCart.classList.add('hidden');
 
             const checkoutBtn = document.getElementById('checkout-btn');
-            if(checkoutBtn) checkoutBtn.disabled = window.currentCart.length === 0;
+            if(checkoutBtn) checkoutBtn.disabled = currentCart.length === 0;
 
-            return { subtotal, discount: discountInput, grandTotal };
+            return { subtotal, autoDiscount: autoDiscountTotal, manualDiscount, grandTotal };
         }
 
         function renderCart() {
@@ -561,30 +652,27 @@
             const emptyMsg = document.getElementById('empty-cart-msg');
             if(!container || !emptyMsg) return;
 
-            if (window.currentCart.length === 0) {
-                container.classList.add('hidden');
-                emptyMsg.classList.remove('hidden');
+            if (currentCart.length === 0) {
+                container.classList.add('hidden'); emptyMsg.classList.remove('hidden');
             } else {
-                container.classList.remove('hidden');
-                emptyMsg.classList.add('hidden');
-                
-                container.innerHTML = window.currentCart.map(item => `
+                container.classList.remove('hidden'); emptyMsg.classList.add('hidden');
+                container.innerHTML = currentCart.map(item => `
                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="flex-1">
-                            <h4 class="font-semibold text-slate-800">${item.productName} <span class="text-xs text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full ml-1">${item.size}</span></h4>
-                            <p class="text-sm text-slate-500">${formatMMK(item.price)} MMK</p>
+                            <h4 class="font-semibold text-slate-800 text-sm">${item.productName} <span class="text-xs text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded-full ml-1">${item.size}</span></h4>
+                            <p class="text-xs text-slate-500">${formatMMK(item.price)} MMK</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden">
-                                <button onclick="updateQuantity(${item.id}, -1)" class="px-2 py-1 text-slate-500 hover:bg-slate-100">-</button>
-                                <span class="px-2 text-sm font-medium w-8 text-center">${item.qty}</span>
-                                <button onclick="updateQuantity(${item.id}, 1)" class="px-2 py-1 text-slate-500 hover:bg-slate-100">+</button>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden h-8">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="px-2 text-slate-500 hover:bg-slate-100">-</button>
+                                <span class="px-2 text-sm font-medium w-6 text-center">${item.qty}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="px-2 text-slate-500 hover:bg-slate-100">+</button>
                             </div>
-                            <div class="text-right min-w-[80px]">
-                                <p class="font-bold text-slate-800">${formatMMK(item.total)}</p>
+                            <div class="text-right min-w-[70px]">
+                                <p class="font-bold text-slate-800 text-sm">${formatMMK(item.total)}</p>
                             </div>
                             <button onclick="removeItem(${item.id})" class="text-red-400 hover:text-red-600 p-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                             </button>
                         </div>
                     </div>
@@ -593,157 +681,221 @@
             calculateTotals();
         }
 
-        function generateVoucherId() {
+        function generateSequentialVoucherId() {
             const now = new Date();
-            const dateStr = now.getFullYear().toString().slice(-2) + 
-                            String(now.getMonth() + 1).padStart(2, '0') + 
-                            String(now.getDate()).padStart(2, '0');
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            return `KM-${dateStr}-${random}`;
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const yy = String(now.getFullYear()).slice(-2);
+            const prefix = `KM-${dd}${mm}${yy}-`;
+
+            let maxSeq = 0;
+            // Scan all loaded sales to find today's highest sequence
+            allFirebaseSales.forEach(sale => {
+                if(sale.id && sale.id.startsWith(prefix)) {
+                    const parts = sale.id.split('-');
+                    if(parts.length === 3) {
+                        const seq = parseInt(parts[2], 10);
+                        if(seq > maxSeq) maxSeq = seq;
+                    }
+                }
+            });
+            
+            const nextSeq = String(maxSeq + 1).padStart(3, '0');
+            return `${prefix}${nextSeq}`;
         }
 
         async function processCheckout() {
-            if (window.currentCart.length === 0) return;
+            if (currentCart.length === 0) return;
 
             const totals = calculateTotals();
-            const voucherId = generateVoucherId();
-            const customerName = document.getElementById('cust-name').value.trim() || 'Guest';
-            const customerPhone = document.getElementById('cust-phone').value.trim() || '-';
-            const now = new Date();
+            const voucherId = generateSequentialVoucherId();
+            const customerName = document.getElementById('cust-name').value.trim();
+            const customerPhone = document.getElementById('cust-phone').value.trim();
+            const notes = document.getElementById('sale-notes').value.trim();
             
+            const paymentMethod = currentSaleType === 'Credit' ? 'Credit' : document.getElementById('payment-method').value;
+            const creditPeriod = currentSaleType === 'Credit' ? document.getElementById('credit-period').value : '-';
+
+            const now = new Date();
             const saleRecord = {
                 id: voucherId,
                 date: now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
                 time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
                 isoDate: now.toISOString(),
-                customer: customerName,
-                phone: customerPhone,
-                items: [...window.currentCart],
+                saleType: currentSaleType,
+                paymentMethod: paymentMethod,
+                creditPeriod: creditPeriod,
+                customer: customerName || 'Guest',
+                phone: customerPhone || '-',
+                notes: notes,
+                items: [...currentCart],
                 totals: totals
             };
 
-            // Setup Print Layout
+            // Setup Print Elements
             document.getElementById('print-date').innerText = saleRecord.date + ' ' + saleRecord.time;
             document.getElementById('print-id').innerText = saleRecord.id;
+            document.getElementById('print-type').innerText = saleRecord.saleType;
             
-            if(customerName !== 'Guest') {
-                document.getElementById('print-customer-row').style.display = 'flex';
-                document.getElementById('print-customer').innerText = customerName + (customerPhone !== '-' ? ` (${customerPhone})` : '');
+            if(saleRecord.saleType === 'Credit') {
+                document.getElementById('print-payment').innerText = saleRecord.creditPeriod;
+                document.getElementById('print-payment-row').querySelector('span').innerText = "Credit Period:";
             } else {
-                document.getElementById('print-customer-row').style.display = 'none';
+                document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
+                document.getElementById('print-payment-row').querySelector('span').innerText = "Method:";
             }
+            
+            if(customerName || customerPhone) {
+                document.getElementById('print-customer-row').classList.remove('hidden');
+                document.getElementById('print-customer').innerText = (customerName || 'Guest') + (customerPhone ? ` (${customerPhone})` : '');
+            } else document.getElementById('print-customer-row').classList.add('hidden');
 
-            document.getElementById('print-items').innerHTML = window.currentCart.map(item => `
-                <tr class="border-b border-gray-100">
-                    <td class="py-2 pr-2">${item.productName} (${item.size})</td>
-                    <td class="text-center py-2">${item.qty}</td>
-                    <td class="text-right py-2">${formatMMK(item.total)}</td>
-                </tr>
+            document.getElementById('print-items').innerHTML = currentCart.map(item => `
+                <tr class="border-b border-gray-100"><td class="py-1 pr-2">${item.productName} (${item.size})</td><td class="text-center py-1">${item.qty}</td><td class="text-right py-1">${formatMMK(item.total)}</td></tr>
             `).join('');
 
             document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
-            document.getElementById('print-discount').innerText = formatMMK(totals.discount);
+            if(totals.autoDiscount > 0) {
+                document.getElementById('print-auto-discount-row').classList.remove('hidden');
+                document.getElementById('print-auto-discount').innerText = "- " + formatMMK(totals.autoDiscount);
+            } else document.getElementById('print-auto-discount-row').classList.add('hidden');
+            
+            document.getElementById('print-discount').innerText = formatMMK(totals.manualDiscount);
             document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
 
-            // Save Locally immediately for fast UI update
-            window.sessionSales.unshift(saleRecord);
-            window.updateDashboardStats();
-            window.renderHistory();
+            if(notes) {
+                document.getElementById('print-notes-container').classList.remove('hidden');
+                document.getElementById('print-notes').innerText = notes;
+            } else document.getElementById('print-notes-container').classList.add('hidden');
+
+            // Optimistically update local view
+            allFirebaseSales.unshift(saleRecord);
+            applyDateFilter(); // This updates sessionSales and re-renders history
             
-            // 1. Push to Google Sheets (For permanent backup)
+            // 1. Google Sheets Push
             if (window.webAppUrl) {
-                fetch(window.webAppUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(saleRecord)
-                }).then(() => console.log("Sent to Google Sheets"))
+                fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) })
                   .catch(error => console.error('Sheet Error:', error));
             }
 
-            // 2. Push to Firebase Cloud (If connected)
-            if (window.pushToFirebase) {
-                window.pushToFirebase(saleRecord);
-            }
+            // 2. Firebase Push
+            if (window.pushToFirebase) window.pushToFirebase(saleRecord);
 
             window.print();
 
-            // Clear Cart
-            window.currentCart = [];
+            // Clear Form
+            currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
+            document.getElementById('sale-notes').value = '';
             document.getElementById('summary-discount').value = '0';
+            if(isMobileCartOpen) toggleMobileCart();
             renderCart();
-            
-            showToast('Sale Completed!');
+            showToast('Sale Completed successfully!');
         }
 
-        // Expose to window so Firebase module can call these safely
-        window.updateDashboardStats = function() {
-            const totalVouchers = window.sessionSales.length;
-            const totalRevenue = window.sessionSales.reduce((sum, sale) => sum + sale.totals.grandTotal, 0);
+        function applyDateFilter() {
+            const startInput = document.getElementById('filter-start').value;
+            const endInput = document.getElementById('filter-end').value;
+            if(!startInput || !endInput) return;
+
+            const start = new Date(startInput);
+            const end = new Date(endInput);
+            end.setHours(23, 59, 59, 999); // Include full end day
+
+            // Enforce max 7 days rule
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays > 7) {
+                showToast("Maximum date range is 7 days.", "error");
+                const fixedEnd = new Date(start);
+                fixedEnd.setDate(fixedEnd.getDate() + 6);
+                document.getElementById('filter-end').value = fixedEnd.toISOString().split('T')[0];
+                return applyDateFilter(); // Rerun with fixed date
+            }
+
+            // Filter the master list
+            sessionSales = allFirebaseSales.filter(sale => {
+                const saleDate = new Date(sale.isoDate || sale.date);
+                return saleDate >= start && saleDate <= end;
+            });
+            
+            updateDashboardStats();
+            renderHistory();
+        }
+
+        function updateDashboardStats() {
+            const totalVouchers = sessionSales.length;
+            const totalRevenue = sessionSales.reduce((sum, sale) => sum + (sale.totals ? sale.totals.grandTotal : 0), 0);
 
             const statVouchers = document.getElementById('stat-total-vouchers');
             const statRevenue = document.getElementById('stat-total-revenue');
-            
             if (statVouchers) statVouchers.innerText = totalVouchers;
             if (statRevenue) statRevenue.innerText = formatMMK(totalRevenue) + " MMK";
-        };
+        }
 
-        window.renderHistory = function() {
+        function renderHistory() {
             const tbody = document.getElementById('history-body');
             const emptyMsg = document.getElementById('empty-history-msg');
             if (!tbody) return;
             
             tbody.innerHTML = "";
-            
-            if (window.sessionSales.length === 0) {
-                if (emptyMsg) {
-                    emptyMsg.classList.remove('hidden');
-                    emptyMsg.classList.add('flex');
-                }
+            if (sessionSales.length === 0) {
+                if (emptyMsg) { emptyMsg.classList.remove('hidden'); emptyMsg.classList.add('flex'); }
             } else {
-                if (emptyMsg) {
-                    emptyMsg.classList.add('hidden');
-                    emptyMsg.classList.remove('flex');
-                }
+                if (emptyMsg) { emptyMsg.classList.add('hidden'); emptyMsg.classList.remove('flex'); }
                 
-                window.sessionSales.forEach(sale => {
+                sessionSales.forEach(sale => {
                     const dateObj = new Date(sale.isoDate || sale.date);
                     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    
+                    // Fallbacks for older data structures
+                    const type = sale.saleType || 'Retail';
+                    const method = type === 'Credit' ? (sale.creditPeriod || '-') : (sale.paymentMethod || 'Cash');
+                    const autoDisc = sale.totals && sale.totals.autoDiscount > 0 ? `<br><span class="text-xs text-rose-500">- ${formatMMK(sale.totals.autoDiscount)} (Bulk)</span>` : '';
 
                     const tr = document.createElement('tr');
                     tr.className = "border-b border-slate-50 hover:bg-slate-50 transition-colors text-slate-600";
                     tr.innerHTML = `
-                        <td class="p-4">
-                            <span class="font-semibold text-slate-800">${formattedDate}</span><br>
-                            <span class="text-xs text-slate-400">${sale.time}</span>
+                        <td class="p-4 whitespace-nowrap">
+                            <span class="font-bold text-slate-800">${formattedDate}</span><br>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${type==='Credit'?'bg-amber-100 text-amber-700':(type==='Wholesale'?'bg-blue-100 text-blue-700':'bg-rose-50 text-rose-600')}">${type}</span>
                         </td>
                         <td class="p-4 font-mono text-sm">${sale.id}</td>
-                        <td class="p-4">
-                            ${sale.customer}
-                            ${sale.phone !== '-' ? `<br><span class="text-xs text-slate-400">${sale.phone}</span>` : ''}
+                        <td class="p-4 text-sm">
+                            <span class="font-medium text-slate-800">${sale.customer || 'Guest'}</span><br>
+                            <span class="text-xs text-slate-500">${method}</span>
                         </td>
                         <td class="p-4">
-                            <ul class="text-xs text-slate-500 space-y-1 font-medium">
-                                ${sale.items.map(i => `<li>• ${i.productName} (${i.size}) x ${i.qty}</li>`).join('')}
+                            <ul class="text-xs text-slate-500 space-y-1 font-medium min-w-[150px]">
+                                ${(sale.items||[]).map(i => `<li>• ${i.productName || i.category} (${i.size}) x ${i.qty||i.quantity}</li>`).join('')}
                             </ul>
                         </td>
-                        <td class="p-4 text-right font-bold text-slate-800">${formatMMK(sale.totals.grandTotal)}</td>
+                        <td class="p-4 text-right whitespace-nowrap">
+                            <span class="font-bold text-slate-800">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span>
+                            ${autoDisc}
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
-        };
-    </script>
+        }
 
-    <!-- 2. FIREBASE SYNC LOGIC (Runs independently in the background) -->
+        function saveSettings() {
+            const urlInput = document.getElementById('sheet-url').value.trim();
+            if (urlInput) {
+                window.webAppUrl = urlInput; localStorage.setItem('khaymay_sheet_url', urlInput);
+                showToast('Google Sheets Linked!');
+            }
+        }
+    </script>
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Your exact Firebase keys
         const firebaseConfig = {
             apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
             authDomain: "khay-may-pos.firebaseapp.com",
@@ -759,59 +911,104 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
 
-            // Give the POS script a way to push data here securely
             window.pushToFirebase = async function(saleRecord) {
                 if (auth.currentUser) {
-                    try {
-                        const docRef = doc(db, 'sales', saleRecord.id);
-                        await setDoc(docRef, saleRecord);
-                    } catch(e) {
-                        console.error("Cloud Save Error:", e);
-                    }
+                    try { await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); } 
+                    catch(e) { console.error("Cloud Save Error:", e); }
                 }
             };
 
-            // Login anonymously and start syncing history
             signInAnonymously(auth).then(() => {
-                const salesRef = collection(db, 'sales');
-                
-                onSnapshot(salesRef, (snapshot) => {
-                    const allSales = [];
-                    snapshot.forEach(doc => allSales.push(doc.data()));
+                onSnapshot(collection(db, 'sales'), (snapshot) => {
+                    const loadedSales = [];
+                    snapshot.forEach(doc => loadedSales.push(doc.data()));
                     
-                    const now = new Date();
-                    // Filter only the last 7 days to keep the app fast
-                    const recentSales = allSales.filter(sale => {
-                        if (!sale.isoDate) return true;
-                        const saleDate = new Date(sale.isoDate);
-                        const diffTime = Math.abs(now - saleDate);
-                        const diffDays = diffTime / (1000 * 60 * 60 * 24);
-                        return diffDays <= 7;
-                    });
+                    // Sort newest first
+                    loadedSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
+                    window.allFirebaseSales = loadedSales;
                     
-                    // Sort newest at the top
-                    recentSales.sort((a, b) => new Date(b.isoDate || 0) - new Date(a.isoDate || 0));
-                    
-                    // Update POS view
-                    window.sessionSales = recentSales;
-                    if(window.updateDashboardStats) window.updateDashboardStats();
-                    if(window.renderHistory) window.renderHistory();
+                    // Re-apply the current date filter instead of just showing everything
+                    if(window.applyDateFilter) window.applyDateFilter();
 
                     const syncStatus = document.getElementById('sync-status');
-                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced (Last 7 Days)';
-                }, (error) => {
-                    console.error("Sync error:", error);
-                    const syncStatus = document.getElementById('sync-status');
-                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Sync Disconnected';
+                    if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 mr-1"></span> Live Synced';
                 });
-            }).catch(error => {
-                console.error("Auth error:", error);
-                const syncStatus = document.getElementById('sync-status');
-                if(syncStatus) syncStatus.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 mr-1"></span> Authentication Failed';
             });
-        } catch (e) {
-            console.error("Firebase init error:", e);
-        }
+        } catch (e) { console.error("Firebase init error:", e); }
     </script>
 </body>
 </html>
+```
+
+### Part 2: The Google Apps Script Update
+
+Because we are now sending Payment Methods, Notes, Sale Types, and Auto Discounts to Google Sheets, you **must update your Google Apps Script** so it doesn't drop the new data!
+
+1. Go to your **Google Apps Script** editor.
+2. Delete the current code and paste this fully updated version.
+3. **CRITICAL:** Click Save -> Deploy -> Manage Deployments -> Edit (pencil icon) -> change version to **"New Version"** -> click Deploy.
+
+```javascript:Google Apps Script Code:code.gs
+function doPost(e) {
+  try {
+    var sheetName = Utilities.formatDate(new Date(), "GMT+6:30", "MMMM yyyy");
+    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = doc.getSheetByName(sheetName);
+    
+    // Add new columns to track the new features
+    if (!sheet) {
+      sheet = doc.insertSheet(sheetName);
+      sheet.appendRow([
+        "Date", "Voucher ID", "Sale Type", "Customer", "Phone", 
+        "Payment/Credit", "Product", "Size", "Quantity", "Unit Price", 
+        "Subtotal", "Auto-Discount", "Manual Discount", "Grand Total", "Notes"
+      ]);
+      sheet.getRange("A1:O1").setFontWeight("bold");
+    }
+    
+    var data = JSON.parse(e.postData.contents);
+    var items = data.items || [];
+    var totals = data.totals || { subtotal: 0, autoDiscount: 0, manualDiscount: 0, grandTotal: 0 };
+    
+    var voucherId = data.id || "No ID";
+    var saleDate = data.date || Utilities.formatDate(new Date(), "GMT+6:30", "MMM dd, yyyy");
+    var saleType = data.saleType || "Retail";
+    var paymentInfo = saleType === 'Credit' ? data.creditPeriod : data.paymentMethod;
+    
+    // Loop through each item in the cart
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var productName = item["productName"] || item["name"] || item["category"] || "Unknown Product";
+      var quantity = item["qty"] || item["quantity"] || 1;
+      var size = item["size"] || "-";
+      var price = item["price"] || 0;
+      
+      sheet.appendRow([
+        saleDate,
+        voucherId,
+        saleType,
+        data.customer || "-",
+        data.phone || "-",
+        paymentInfo || "-",
+        productName,
+        size,
+        quantity,
+        price,
+        totals.subtotal,
+        totals.autoDiscount,
+        totals.manualDiscount,
+        totals.grandTotal,
+        data.notes || ""
+      ]);
+    }
+    
+    // Draw a bottom border across all 15 columns
+    var lastRow = sheet.getLastRow();
+    var range = sheet.getRange(lastRow, 1, 1, 15); 
+    range.setBorder(null, null, true, null, null, null, "black", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+    
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"})).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({"result":"error", "error": error.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}

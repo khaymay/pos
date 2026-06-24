@@ -85,13 +85,13 @@
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
                 
                 <!-- Sale Type Selector -->
-                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5">
+                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0">
                     <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all">Retail</button>
                     <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Wholesale</button>
                     <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Credit Sales</button>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4 shrink-0">
                     <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item to Cart
                     </h2>
@@ -199,7 +199,7 @@
             </div>
 
             <!-- Mobile Floating Cart Button -->
-            <div id="mobile-floating-cart" onclick="toggleMobileCart()" class="md:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer hover:bg-slate-900 transition-colors hidden">
+            <div id="mobile-floating-cart" onclick="toggleMobileCart()" class="md:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer hover:bg-slate-900 transition-colors hidden shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -334,42 +334,122 @@
         </div>
 
         <div class="mb-4 text-sm space-y-2">
+            <div class="flex justify-between"><span>Total Vouchers:</span> <span id="print-summary-vouchers" class="font-bold"></span></div>
+            <div class="flex justify-between text-lg mt-2 pt-2 border-t border-gray-200"><span>Total Revenue:</span> <span id="print-summary-revenue" class="font-bold text-rose-600"></span></div>
+        </div>
+
+        <h3 class="font-bold text-sm mb-2 mt-4">By Payment Method</h3>
+        <table class="w-full text-sm mb-4">
+            <tbody id="print-summary-payments" class="divide-y divide-dashed divide-gray-200"></tbody>
+        </table>
+
+        <h3 class="font-bold text-sm mb-2 mt-4">By Sale Type</h3>
+        <table class="w-full text-sm mb-4">
+            <tbody id="print-summary-types" class="divide-y divide-dashed divide-gray-200"></tbody>
+        </table>
+
+        <div class="text-center mt-6 pt-4 border-t-2 border-dashed border-gray-300">
+            <p class="text-xs text-gray-500">Printed on: <span id="print-summary-now"></span></p>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         // State Variables
         let currentCart = [];
         let sessionSales = []; 
         let webAppUrl = "";
-        
+        let currentSaleType = 'Retail';
+        let isMobileCartOpen = false;
+
+        // --- PRODUCT DATABASE ---
+        const productData = {
+            "Footie Pants": [
+                { size: "0-3 m", price: 15000 },
+                { size: "3-6 m", price: 15000 },
+                { size: "6-9 m", price: 15000 },
+                { size: "9-12 m", price: 15000 },
+                { size: "12-18 m", price: 15000 },
+                { size: "18-24 m", price: 15000 }
+            ],
+            "Wrap-Up Romper": [
+                { size: "S", price: 9900 },
+                { size: "M", price: 9900 },
+                { size: "L", price: 9900 }
+            ],
+            "Cozy Baby Set - လက်တို": [
+                { size: "XS", price: 13500 },
+                { size: "S", price: 13500 },
+                { size: "M", price: 13500 },
+                { size: "L", price: 13500 },
+                { size: "XL", price: 13500 }
+            ],
+            "Cozy Baby Set - လက်ရှည်": [
+                { size: "XS", price: 14500 },
+                { size: "S", price: 14500 },
+                { size: "M", price: 14500 },
+                { size: "L", price: 14500 },
+                { size: "XL", price: 14500 }
+            ],
+            "Girl's Stocking": [
+                { size: "S", price: 16500 },
+                { size: "M", price: 16500 },
+                { size: "L", price: 16500 },
+                { size: "XL", price: 18000 },
+                { size: "XXL", price: 18000 }
+            ],
+            "Legging": [
+                { size: "S", price: 16500 },
+                { size: "M", price: 16500 },
+                { size: "L", price: 16500 },
+                { size: "XL", price: 18000 },
+                { size: "XXL", price: 18000 }
+            ],
+            "Spant Set - လက်တို": [
+                { size: "S", price: 10500 },
+                { size: "M", price: 10500 },
+                { size: "L", price: 10500 },
+                { size: "XL", price: 10500 }
+            ],
+            "Spant Set - လက်ရှည်": [
+                { size: "S", price: 11500 },
+                { size: "M", price: 11500 },
+                { size: "L", price: 11500 },
+                { size: "XL", price: 11500 }
+            ],
+            "Flower Dress": [
+                { size: "S", price: 14500 },
+                { size: "M", price: 14500 },
+                { size: "L", price: 14500 }
+            ],
+            "Sleeper": [
+                { size: "S", price: 16500 },
+                { size: "M", price: 16500 },
+                { size: "L", price: 18500 },
+                { size: "XL", price: 18500 }
+            ]
+        };
+
         // --- UTILITY FUNCTIONS ---
         function formatMMK(num) {
             return Number(num).toLocaleString('en-US');
         }
 
         function triggerPrint(areaId) {
-            // iOS Safari Safari optimization to prevent 60-second print freeze.
-            // Physically hide the complex DOM app before triggering print to skip heavy layout math.
             const mainEl = document.querySelector('main');
             const asideEl = document.querySelector('aside');
             const bodyEl = document.body;
-            
-            // Save original states
             const originalBodyClass = bodyEl.className;
             
-            // Strip heavy flex/overflow classes and hide the app interface
             bodyEl.className = 'bg-white text-slate-800 block';
             mainEl.style.display = 'none';
             if (asideEl) asideEl.style.display = 'none';
             
-            // Set the correct receipt to be printed
             document.querySelectorAll('.print-template').forEach(el => el.classList.remove('active-print'));
             document.getElementById(areaId).classList.add('active-print');
 
-            // Wait 150ms for Safari's memory to clear the app out, then instantly trigger print
             setTimeout(() => {
                 window.print();
-                
-                // Restore the app interface immediately after the user closes the print dialog
                 mainEl.style.display = '';
                 if (asideEl) asideEl.style.display = '';
                 bodyEl.className = originalBodyClass;
@@ -397,7 +477,7 @@
 
             // Force Myanmar Local Time for the Date Picker Default
             const d = new Date();
-            const localDate = new Date(d.getTime() + (390 * 60000)); // +6:30 for MM
+            const localDate = new Date(d.getTime() + (390 * 60000)); 
             const localDateString = localDate.toISOString().split('T')[0];
             
             document.getElementById('filter-end').value = localDateString;
@@ -436,8 +516,6 @@
 
         function setSaleType(type) {
             currentSaleType = type;
-            
-            // Update the new mobile header label
             const headerLabel = document.getElementById('checkout-sale-type-label');
             if(headerLabel) headerLabel.innerText = type;
 
@@ -490,7 +568,6 @@
             const qty = parseInt(document.getElementById('item-qty').value);
 
             if (prod && sizeText && !isNaN(price) && price >= 0 && qty > 0) {
-                // Grouping Fix: Find exact product and size match in cart
                 const existingItem = currentCart.find(i => i.category === prod && i.size === sizeText);
                 
                 if (existingItem) {
@@ -628,7 +705,6 @@
             const prefix = `KM-${dd}${mm}${yy}-`;
 
             let maxSeq = 0;
-            // Scan through all locally synced history to find today's highest sequence number
             (window.allFirebaseSales || []).forEach(sale => {
                 if(sale.id && sale.id.startsWith(prefix)) {
                     const parts = sale.id.split('-');
@@ -651,12 +727,10 @@
             const notes = document.getElementById('sale-notes').value.trim();
             const paymentInfo = currentSaleType === 'Credit' ? document.getElementById('credit-period').value + ' Days' : document.getElementById('payment-method').value;
 
-            // Generate precise local time string
             const now = new Date();
             const localTime = new Date(now.getTime() + (390 * 60000));
-            const dateStr = localTime.toISOString().split('T')[0]; // YYYY-MM-DD format for easy sorting
+            const dateStr = localTime.toISOString().split('T')[0]; 
             
-            // Calculate Due Date for Credit Sales
             let dueDateStr = "";
             if (currentSaleType === 'Credit') {
                 const days = parseInt(document.getElementById('credit-period').value) || 0;
@@ -677,7 +751,6 @@
                 totals: totals
             };
 
-            // Setup Print Template
             document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) + ' ' + now.toLocaleTimeString();
             document.getElementById('print-id').innerText = saleRecord.id;
             document.getElementById('print-type').innerText = saleRecord.saleType;
@@ -717,19 +790,15 @@
                 document.getElementById('print-notes').innerText = notes;
             } else document.getElementById('print-notes-container').classList.add('hidden');
 
-            // Optimistically update local UI immediately
             if(!window.allFirebaseSales) window.allFirebaseSales = [];
             window.allFirebaseSales.unshift(saleRecord);
             applyFilters();
             
-            // Push to APIs
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
             if (window.pushToFirebase) window.pushToFirebase(saleRecord); 
 
-            // Trigger the Lightning-Fast iOS Print
             triggerPrint('print-area');
 
-            // Clear Cart
             currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
@@ -778,7 +847,6 @@
 
             document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-US');
 
-            // Trigger the Lightning-Fast iOS Print
             triggerPrint('print-summary-area');
         }
 
@@ -787,7 +855,6 @@
             const endVal = document.getElementById('filter-end').value;
             if(!startVal || !endVal || !window.allFirebaseSales) return;
             
-            // Limit Date Range to 7 days maximum
             const startD = new Date(startVal);
             const endD = new Date(endVal);
             if (Math.ceil(Math.abs(endD - startD) / (1000 * 60 * 60 * 24)) > 7) {
@@ -860,18 +927,15 @@
             const db = getFirestore(app);
             const auth = getAuth(app);
 
-            // Enable Offline Persistence so sales queue up if internet drops
             enableIndexedDbPersistence(db).catch((err) => {
                 console.warn("Offline persistence issue:", err.code);
             });
 
-            // Expose the save function globally so POS can call it instantly without waiting
             window.pushToFirebase = async function(saleRecord) {
                 try { await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); } 
                 catch(e) { console.error("Cloud Save Error (will retry when online):", e); }
             };
 
-            // Sign in silently in background, then load data
             signInAnonymously(auth).then(() => {
                 onSnapshot(collection(db, 'sales'), (snapshot) => {
                     const loadedSales = [];

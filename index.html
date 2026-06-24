@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khay May - Point of Sale</title>
     
-    <!-- App Icons for Mobile -->
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <meta name="theme-color" content="#e11d48">
@@ -33,7 +32,7 @@
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Aggressive iOS Print Fix - Completely hides the app UI during print to prevent freezing */
+        /* Aggressive iOS Print Fix - Hides everything except the active receipt template */
         @media print {
             body * { display: none !important; }
             body, html {
@@ -93,9 +92,9 @@
                 <h1 class="text-xl font-bold text-rose-600">Khay May</h1>
             </div>
             <div class="flex gap-2">
-                <button onclick="switchTab('pos-tab')" id="nav-mob-pos-tab" class="p-2 rounded-lg bg-rose-400 text-white shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
-                <button onclick="switchTab('sales-tab')" id="nav-mob-sales-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
-                <button onclick="switchTab('inventory-tab')" id="nav-mob-inventory-tab" class="relative p-2 rounded-lg bg-slate-100 text-slate-600">
+                <button onclick="switchTab('pos-tab')" id="nav-mob-pos-tab" class="p-2 rounded-lg bg-rose-400 text-white shadow-md transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
+                <button onclick="switchTab('sales-tab')" id="nav-mob-sales-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
+                <button onclick="switchTab('inventory-tab')" id="nav-mob-inventory-tab" class="relative p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                     <span id="mobile-stock-alert" class="hidden absolute -top-1 -right-1 bg-orange-500 w-3 h-3 rounded-full border-2 border-white"></span>
                 </button>
@@ -109,41 +108,8 @@
                 <!-- Sale Type Selector -->
                 <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0">
                     <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all">Retail</button>
-                    <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all">Wholesale</button>
-                    <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all">Credit Sales</button>
-                </div>
-                <span id="nav-stock-alert" class="hidden bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">!</span>
-            </button>
-        </nav>
-    </aside>
-
-    <main class="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-slate-50 relative z-10">
-        
-        <!-- Mobile Header -->
-        <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20 shrink-0">
-            <div class="flex items-center gap-2">
-                <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
-                <h1 class="text-xl font-bold text-rose-600">Khay May</h1>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="switchTab('pos-tab')" class="p-2 rounded-lg bg-rose-50 text-rose-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
-                <button onclick="switchTab('sales-tab')" class="p-2 rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
-                <button onclick="switchTab('inventory-tab')" class="relative p-2 rounded-lg bg-slate-100 text-slate-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                    <span id="mobile-stock-alert" class="hidden absolute -top-1 -right-1 bg-orange-500 w-3 h-3 rounded-full border-2 border-white"></span>
-                </button>
-            </div>
-        </header>
-
-        <!-- POS Terminal Tab -->
-        <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
-            <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
-                
-                <!-- Sale Type Selector -->
-                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0">
-                    <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all">Retail</button>
-                    <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Wholesale</button>
-                    <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Credit Sales</button>
+                    <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg bg-white text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Wholesale</button>
+                    <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg bg-white text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Credit Sales</button>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4 shrink-0">
@@ -172,7 +138,6 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Quantity</label>
-                                <!-- Changed to number input, strictly min 1, max 50 -->
                                 <input type="number" id="item-qty" required min="1" max="50" value="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
                             </div>
                         </div>
@@ -188,7 +153,6 @@
                     <button onclick="toggleMobileCart()" class="p-1 hover:bg-slate-700 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
 
-                <!-- Unified Scrollable Area for Cart and Order Details -->
                 <div class="flex-1 overflow-y-auto flex flex-col pb-4">
                     <div class="p-4 border-b border-slate-100 bg-slate-50 shrink-0">
                         <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Order Details</h3>
@@ -269,8 +233,7 @@
         </section>
 
         <!-- Sales Tracking Tab -->
-        <section id="sales-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
-            <!-- (Content remains exactly the same) -->
+        <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
             <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block">
                 <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
                 <div class="flex gap-3">
@@ -316,7 +279,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex-1">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[800px]">
                         <thead>
@@ -338,11 +301,11 @@
             </div>
         </section>
 
-        <!-- Inventory Tab (NEW) -->
-        <section id="inventory-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <!-- Inventory Tab -->
+        <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 flex-1">
                 <!-- Stock In Form -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:col-span-1 shrink-0 h-fit">
                     <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                         Adjust Stock
@@ -372,7 +335,7 @@
                 </div>
 
                 <!-- Master Inventory Table -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:col-span-2 flex flex-col h-[500px] md:h-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:col-span-2 flex flex-col h-[500px] md:h-full">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
                         <h2 class="text-lg font-bold text-slate-800">Master Inventory</h2>
                         <div class="flex items-center gap-2">
@@ -411,7 +374,6 @@
             <p style="font-size: 10px; margin: 0; line-height: 1.1;">Ph: 09421649505 | Viber: 09668414343</p>
         </div>
 
-        <!-- Section 1: Sale Info (Combined to save space) -->
         <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 2px 0; margin-bottom: 2px; font-size: 11px;">
             <div class="print-flex-row">
                 <span>Date: <span id="print-date"></span></span>
@@ -426,7 +388,6 @@
             </div>
         </div>
 
-        <!-- Section 2: Customer & Notes (Combined) -->
         <div style="border-bottom: 1px dashed #999; padding-bottom: 2px; margin-bottom: 2px; font-size: 11px;">
             <div class="print-flex-row">
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;">Name: <span id="print-customer-name" style="font-weight: bold;"></span></span>
@@ -437,7 +398,6 @@
             </div>
         </div>
 
-        <!-- Section 3: Items Table -->
         <table style="width: 100%; font-size: 11px; margin-bottom: 2px; border-collapse: collapse;">
             <thead>
                 <tr style="border-bottom: 1px dashed #999;">
@@ -449,7 +409,6 @@
             <tbody id="print-items"></tbody>
         </table>
 
-        <!-- Totals -->
         <div style="border-top: 1px dashed #999; padding-top: 2px; font-size: 11px;">
             <div class="print-flex-row"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
             <div class="print-flex-row" style="color: #444;"><span>Discount:</span> <span id="print-discount"></span></div>
@@ -465,7 +424,6 @@
 
     <!-- Print Summary Template -->
     <div id="print-summary-area" class="hidden print-template">
-        <!-- Kept original summary design, just formatted for new engine -->
         <div style="text-align: center; border-bottom: 1px dashed #999; padding-bottom: 5px; margin-bottom: 5px;">
             <h1 style="font-size: 16px; font-weight: bold; margin: 0 0 2px 0;">Sales Summary</h1>
             <p style="font-size: 11px; margin: 0;" id="print-summary-date-range"></p>
@@ -497,11 +455,9 @@
         let webAppUrl = "";
         let currentSaleType = 'Retail';
         let isMobileCartOpen = false;
-        
-        // NEW: Inventory Global State
         window.localInventory = {};
 
-        // --- PRODUCT DATABASE ---
+        // Product Database
         const productData = {
             "Footie Pants": [
                 { size: "0-3 m", price: 15000 }, { size: "3-6 m", price: 15000 }, { size: "6-9 m", price: 15000 },
@@ -540,7 +496,6 @@
             ]
         };
 
-        // --- UTILITY FUNCTIONS ---
         function formatMMK(num) {
             return Number(num).toLocaleString('en-US');
         }
@@ -555,13 +510,12 @@
             const container = document.getElementById('toast-container');
             if(!container) return;
             const toast = document.createElement('div');
-            toast.className = `${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm toast-enter`;
+            toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter`;
             toast.innerHTML = message;
             container.appendChild(toast);
             setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
-        // --- CORE LOGIC ---
         window.onload = function() {
             const productSelect = document.getElementById('item-product');
             const invProductSelect = document.getElementById('inv-product');
@@ -587,23 +541,30 @@
                 window.webAppUrl = localStorage.getItem('khaymay_sheet_url');
                 document.getElementById('sheet-url').value = window.webAppUrl;
             }
+            switchTab('pos-tab'); // Ensures perfect initial state
             setSaleType('Retail');
             renderCart();
             window.updateInventoryUI();
         };
 
         function switchTab(tabId) {
+            // Hide all tabs securely
             ['pos-tab', 'sales-tab', 'inventory-tab'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+                const el = document.getElementById(id);
+                if(el) {
+                    el.classList.add('hidden');
+                    // Remove flex display if it's there, to ensure hidden works perfectly
+                    el.classList.remove('flex'); 
+                }
                 
-                // Desktop Nav Reset
+                // Reset Desktop Nav Colors (Soft Gray)
                 const deskBtn = document.getElementById(`nav-desk-${id}`);
                 if(deskBtn) {
                     deskBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
-                    deskBtn.classList.add('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700', 'font-medium');
+                    deskBtn.classList.add('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700');
                 }
                 
-                // Mobile Nav Reset
+                // Reset Mobile Nav Colors (Soft Gray)
                 const mobBtn = document.getElementById(`nav-mob-${id}`);
                 if(mobBtn) {
                     mobBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md');
@@ -611,16 +572,21 @@
                 }
             });
             
-            document.getElementById(tabId).classList.remove('hidden');
+            // Show Active Tab
+            const activeEl = document.getElementById(tabId);
+            if(activeEl) {
+                activeEl.classList.remove('hidden');
+                activeEl.classList.add('flex'); // Safely restore layout
+            }
             
-            // Desktop Nav Active Highlight
+            // Highlight Desktop Active Button (Rose Pink - Option 1)
             const activeDeskBtn = document.getElementById(`nav-desk-${tabId}`);
             if(activeDeskBtn) {
-                activeDeskBtn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700', 'font-medium');
+                activeDeskBtn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700');
                 activeDeskBtn.classList.add('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
             }
             
-            // Mobile Nav Active Highlight
+            // Highlight Mobile Active Button (Rose Pink - Option 1)
             const activeMobBtn = document.getElementById(`nav-mob-${tabId}`);
             if(activeMobBtn) {
                 activeMobBtn.classList.remove('bg-slate-100', 'text-slate-600');
@@ -642,14 +608,20 @@
 
             ['Retail', 'Wholesale', 'Credit'].forEach(t => {
                 const btn = document.getElementById(`btn-type-${t}`);
-                if(t === type) btn.className = "flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all";
-                else btn.className = "flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all";
+                if(btn) {
+                    if(t === type) {
+                        btn.classList.add('bg-rose-400', 'text-white', 'shadow-md');
+                        btn.classList.remove('bg-white', 'text-slate-500', 'hover:bg-slate-50', 'shadow-sm');
+                    } else {
+                        btn.classList.remove('bg-rose-400', 'text-white', 'shadow-md');
+                        btn.classList.add('bg-white', 'text-slate-500', 'hover:bg-slate-50', 'shadow-sm');
+                    }
+                }
             });
 
             if (type === 'Credit') {
                 document.getElementById('payment-method-box').classList.add('hidden');
                 document.getElementById('credit-period-box').classList.remove('hidden');
-                // Remove required from payment to not block validation
                 document.getElementById('payment-method').required = false;
             } else {
                 document.getElementById('payment-method-box').classList.remove('hidden');
@@ -678,7 +650,6 @@
             btn.disabled = !(hasItems && hasName && hasPayment);
         }
 
-        // --- NEW: INVENTORY LOGIC ---
         window.updateInventoryUI = function() {
             const tbody = document.getElementById('inventory-body');
             if (!tbody) return;
@@ -720,7 +691,7 @@
             }
             tbody.innerHTML = html;
             
-            // Update Badges
+            // Update Badges correctly without removing SVG icon
             const navBadge = document.getElementById('nav-stock-alert');
             const mobBadge = document.getElementById('mobile-stock-alert');
             if (lowStockCount > 0) {
@@ -731,7 +702,6 @@
                 if(mobBadge) mobBadge.classList.add('hidden');
             }
             
-            // Re-render size dropdown if open so stock levels show immediately
             if(document.getElementById('item-product').value) updateSizeDropdown();
         };
 
@@ -752,11 +722,9 @@
             }
         }
 
-        // POS Dropdown now includes live stock
         function updateSizeDropdown() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
-            // Keep the current selection if we are just re-rendering due to inventory update
             const currentVal = sizeSelect.value; 
             
             sizeSelect.innerHTML = '<option value="" disabled selected>Select Size</option>';
@@ -771,11 +739,10 @@
                     const option = document.createElement('option');
                     option.value = index; 
                     option.text = `${item.size} (Stock: ${stockLevel})`;
-                    option.dataset.realsize = item.size; // Save the real text to read later
+                    option.dataset.realsize = item.size;
                     sizeSelect.appendChild(option);
                 });
                 
-                // Restore selection if valid
                 if (currentVal !== "") {
                     sizeSelect.value = currentVal;
                     updatePrice();
@@ -793,7 +760,6 @@
             const prodSelect = document.getElementById('item-product');
             const sizeSel = document.getElementById('item-size');
             const prod = prodSelect.value;
-            // Read from the dataset so we don't save "(Stock: 10)" to the cart!
             const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
@@ -814,7 +780,8 @@
                 }
                 
                 renderCart();
-                showToast(`Added ${qty}x ${prod} (${sizeText}) to cart`, 'success');
+                showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
+                // Removed resetting of inputs per user request!
             }
         }
 
@@ -871,9 +838,16 @@
             
             if(badge) badge.innerText = totalItems;
             if(mTotal) mTotal.innerText = formatMMK(grandTotal) + " MMK";
+            
+            // Clean handling of mobile floating cart box to prevent dead invisible spots
             if(floatCart) {
-                if (totalItems > 0) floatCart.classList.remove('hidden'); 
-                else floatCart.classList.add('hidden');
+                if (totalItems > 0) {
+                    floatCart.classList.remove('hidden'); 
+                    floatCart.classList.add('flex');
+                } else {
+                    floatCart.classList.add('hidden');
+                    floatCart.classList.remove('flex');
+                }
             }
 
             validateCheckout();
@@ -963,13 +937,11 @@
             const now = new Date();
             const localTime = new Date(now.getTime() + (390 * 60000));
             
-            // Format single-line date
             const dd = String(localTime.getUTCDate()).padStart(2, '0');
             const mm = String(localTime.getUTCMonth() + 1).padStart(2, '0');
             const yy = String(localTime.getUTCFullYear()).slice(-2);
             const timeStr = localTime.toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric"});
             const shortDate = `${dd}/${mm}/${yy} ${timeStr}`;
-
             const dateStr = localTime.toISOString().split('T')[0]; 
             
             let dueDateStr = "";
@@ -992,7 +964,7 @@
                 totals: totals
             };
 
-            // Populate Voucher Section 1: Sale Info
+            // Section 1: Sale Info
             document.getElementById('print-date').innerText = shortDate;
             document.getElementById('print-id').innerText = saleRecord.id;
             document.getElementById('print-type').innerText = saleRecord.saleType;
@@ -1006,16 +978,14 @@
                 dueDateRow.classList.add('hidden');
             }
             
-            // Populate Voucher Section 2: Customer & Notes
+            // Section 2: Customer & Notes
             document.getElementById('print-customer-name').innerText = customerName;
-            
             if(customerPhone) {
                 document.getElementById('print-phone-row').classList.remove('hidden');
                 document.getElementById('print-phone').innerText = customerPhone;
             } else {
                 document.getElementById('print-phone-row').classList.add('hidden');
             }
-
             if(notes) {
                 document.getElementById('print-notes-container').classList.remove('hidden');
                 document.getElementById('print-notes').innerText = notes;
@@ -1023,7 +993,7 @@
                 document.getElementById('print-notes-container').classList.add('hidden');
             }
 
-            // Populate Voucher Section 3: Items
+            // Section 3: Items Table
             document.getElementById('print-items').innerHTML = currentCart.map(item => `
                 <tr style="border-bottom: 1px solid #eee;">
                     <td style="padding: 2px 2px 2px 0;">
@@ -1045,8 +1015,6 @@
             applyFilters();
             
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
-            
-            // Pass cart items to firebase function for inventory deduction
             if (window.pushToFirebase) window.pushToFirebase(saleRecord, currentCart); 
 
             triggerPrint('print-area');
@@ -1109,10 +1077,8 @@
             const endVal = document.getElementById('filter-end').value;
             if(!startVal || !endVal || !window.allFirebaseSales) return;
             
-            // Allow checking today without UTC timezone shifting issues
             const startStr = startVal + "T00:00:00";
             const endStr = endVal + "T23:59:59";
-
             const searchInput = document.getElementById('search-history');
             const searchTxt = searchInput ? searchInput.value.toLowerCase() : "";
 
@@ -1181,15 +1147,10 @@
                 console.warn("Offline persistence issue:", err.code);
             });
 
-            // NEW: Unified Batch Save (Sales + Inventory Auto-Deduct)
             window.pushToFirebase = async function(saleRecord, cartItems) {
                 try { 
                     const batch = writeBatch(db);
-                    
-                    // 1. Save the Voucher
                     batch.set(doc(db, 'sales', saleRecord.id), saleRecord);
-                    
-                    // 2. Deduct the Inventory
                     if (cartItems && cartItems.length > 0) {
                         cartItems.forEach(item => {
                             const invRef = doc(db, 'inventory', `${item.category}_${item.size}`);
@@ -1200,12 +1161,10 @@
                             }, { merge: true });
                         });
                     }
-                    
                     await batch.commit();
                 } catch(e) { console.error("Cloud Save Error:", e); }
             };
 
-            // NEW: Manual Stock In/Out Function
             window.updateStock = async function(isAdding) {
                 const prod = document.getElementById('inv-product').value;
                 const size = document.getElementById('inv-size').value;
@@ -1216,7 +1175,6 @@
                     try {
                         const adjustQty = isAdding ? qty : -qty;
                         const invRef = doc(db, 'inventory', `${prod}_${size}`);
-                        
                         await setDoc(invRef, {
                             product: prod,
                             size: size,
@@ -1224,7 +1182,7 @@
                         }, { merge: true });
                         
                         showToast(isAdding ? 'Stock Added Successfully!' : 'Stock Removed Successfully!');
-                        qtyInput.value = 1; // reset input
+                        qtyInput.value = 1; 
                     } catch(e) {
                         showToast('Error updating stock', 'error');
                         console.error(e);
@@ -1235,7 +1193,6 @@
             };
 
             signInAnonymously(auth).then(() => {
-                // Listen to Sales
                 onSnapshot(collection(db, 'sales'), (snapshot) => {
                     const loadedSales = [];
                     snapshot.forEach(d => loadedSales.push(d.data()));
@@ -1247,17 +1204,13 @@
                     if(syncStatus) syncStatus.innerHTML = '<span class="relative flex h-2 w-2 mr-2"><span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span> Live Synced (Offline Ready)';
                 });
 
-                // NEW: Listen to Live Inventory
                 onSnapshot(collection(db, 'inventory'), (snapshot) => {
-                    window.localInventory = {}; // Reset
-                    snapshot.forEach(d => {
-                        window.localInventory[d.id] = d.data().stock;
-                    });
+                    window.localInventory = {}; 
+                    snapshot.forEach(d => { window.localInventory[d.id] = d.data().stock; });
                     if(window.updateInventoryUI) window.updateInventoryUI();
                 });
             });
             
-            // Failsafe push for very fast sales
             window.pushToFirebaseUnauth = window.pushToFirebase;
 
         } catch (e) { console.error("Firebase init error:", e); }

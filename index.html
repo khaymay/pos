@@ -33,39 +33,28 @@
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Bulletproof Print Styles - Forces Safari to ignore the main app and only render the receipt */
+        /* Aggressive iOS Print Fix - Completely hides the app UI during print to prevent freezing */
         @media print {
-            html, body {
-                height: auto !important;
-                min-height: auto !important;
-                overflow: visible !important;
+            body * { display: none !important; }
+            body, html {
+                margin: 0 !important; padding: 0 !important;
+                background-color: white !important; width: 100% !important;
+            }
+            .print-template.active-print, .print-template.active-print * {
                 display: block !important;
-                background-color: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            /* Hide absolutely everything at the root body level */
-            body > * { 
-                display: none !important; 
-                opacity: 0 !important;
-                visibility: hidden !important;
-            }
-            /* Except the specific element we want to print */
-            body > .print-template.active-print { 
-                display: block !important; 
-                opacity: 1 !important;
                 visibility: visible !important;
-                position: static !important; 
-                width: 100% !important; 
-                max-width: 80mm !important; /* Standard thermal size */
-                margin: 0 auto !important; 
-                padding: 10px !important; 
-                background: white !important; 
-                color: black !important; 
-                font-family: 'Quicksand', 'Padauk', sans-serif !important; 
             }
-            .print-template.active-print * { visibility: visible !important; }
+            .print-template.active-print {
+                position: absolute !important; left: 0 !important; top: 0 !important;
+                width: 100% !important; max-width: 80mm !important;
+                margin: 0 auto !important; padding: 5px !important;
+                font-family: 'Quicksand', 'Padauk', sans-serif !important; color: black !important;
+            }
             .print-template .print-logo { filter: none !important; }
+            .print-flex-row, .print-flex-row * { display: flex !important; justify-content: space-between !important; }
+            table { display: table !important; }
+            tr { display: table-row !important; }
+            td, th { display: table-cell !important; }
             @page { margin: 0; }
         }
     </style>
@@ -86,6 +75,12 @@
             <button onclick="switchTab('sales-tab')" id="nav-sales-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg> Sales Tracking
             </button>
+            <button onclick="switchTab('inventory-tab')" id="nav-inventory-tab" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
+                <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg> Inventory
+                </div>
+                <span id="nav-stock-alert" class="hidden bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">!</span>
+            </button>
         </nav>
     </aside>
 
@@ -100,6 +95,10 @@
             <div class="flex gap-2">
                 <button onclick="switchTab('pos-tab')" class="p-2 rounded-lg bg-rose-50 text-rose-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
                 <button onclick="switchTab('sales-tab')" class="p-2 rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
+                <button onclick="switchTab('inventory-tab')" class="relative p-2 rounded-lg bg-slate-100 text-slate-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                    <span id="mobile-stock-alert" class="hidden absolute -top-1 -right-1 bg-orange-500 w-3 h-3 rounded-full border-2 border-white"></span>
+                </button>
             </div>
         </header>
 
@@ -127,7 +126,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-slate-600 mb-1">Size</label>
+                                <label class="block text-sm font-semibold text-slate-600 mb-1">Size (Live Stock)</label>
                                 <select id="item-size" onchange="updatePrice()" required disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 bg-slate-50 disabled:cursor-not-allowed">
                                     <option value="" disabled selected>Select Size</option>
                                 </select>
@@ -136,10 +135,11 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Base Price (MMK)</label>
-                                <input type="number" id="item-price" required min="0" placeholder="0" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none cursor-not-allowed font-bold">
+                                <input type="number" id="item-price" required min="0" placeholder="0" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none cursor-not-allowed font-bold text-slate-600">
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Quantity</label>
+                                <!-- Changed to number input, strictly min 1, max 50 -->
                                 <input type="number" id="item-qty" required min="1" max="50" value="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
                             </div>
                         </div>
@@ -155,18 +155,18 @@
                     <button onclick="toggleMobileCart()" class="p-1 hover:bg-slate-700 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
 
-                <!-- Scrollable unified area for Order Details and Cart (Option A) -->
-                <div class="flex-1 overflow-y-auto flex flex-col">
+                <!-- Unified Scrollable Area for Cart and Order Details -->
+                <div class="flex-1 overflow-y-auto flex flex-col pb-4">
                     <div class="p-4 border-b border-slate-100 bg-slate-50 shrink-0">
                         <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Order Details</h3>
                         <div class="space-y-3">
-                            <input type="text" id="cust-name" placeholder="Customer Name (Required)" oninput="validateCheckout()" class="w-full px-3 py-2 rounded-lg border border-rose-200 bg-rose-50 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 placeholder-rose-400">
+                            <input type="text" id="cust-name" placeholder="Customer Name (Required)" required oninput="validateCheckout()" class="w-full px-3 py-2 rounded-lg border border-rose-200 bg-rose-50 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 placeholder-rose-400">
                             <input type="text" id="cust-phone" placeholder="Phone Number (Optional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
                             
                             <div id="payment-container" class="grid grid-cols-1 gap-2 pt-1">
                                 <div id="payment-method-box">
                                     <label class="block text-xs font-semibold text-rose-500 mb-1">Payment Method (Required)</label>
-                                    <select id="payment-method" onchange="validateCheckout()" class="w-full px-3 py-2 rounded-lg border border-rose-200 bg-rose-50 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 text-rose-700 font-medium">
+                                    <select id="payment-method" required onchange="validateCheckout()" class="w-full px-3 py-2 rounded-lg border border-rose-200 bg-rose-50 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 text-rose-700 font-medium">
                                         <option value="" disabled selected>Choose Payment Method</option>
                                         <option value="Cash">Cash</option>
                                         <option value="Cash on Delivery">Cash on Delivery</option>
@@ -216,7 +216,6 @@
                             <span id="summary-total" class="text-2xl font-bold text-rose-600">0 MMK</span>
                         </div>
                     </div>
-                    <!-- Disabled by default via CSS/JS logic until fields are filled -->
                     <button onclick="processCheckout()" id="checkout-btn" disabled class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg rounded-xl shadow-lg disabled:opacity-50 disabled:bg-slate-400 disabled:cursor-not-allowed flex justify-center items-center gap-2 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Print
                     </button>
@@ -238,6 +237,7 @@
 
         <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
+            <!-- (Content remains exactly the same) -->
             <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block">
                 <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
                 <div class="flex gap-3">
@@ -304,101 +304,169 @@
                 </div>
             </div>
         </section>
+
+        <!-- Inventory Tab (NEW) -->
+        <section id="inventory-tab" class="hidden flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Stock In Form -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:col-span-1">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                        Adjust Stock
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Product</label>
+                            <select id="inv-product" onchange="updateInvSizeDropdown()" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                                <option value="" disabled selected>Select Product</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Size</label>
+                            <select id="inv-size" disabled class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 disabled:cursor-not-allowed">
+                                <option value="" disabled selected>Select Size</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Quantity</label>
+                            <input type="number" id="inv-qty" min="1" value="1" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="window.updateStock(true)" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-bold shadow-sm transition-colors">+ Stock In</button>
+                            <button onclick="window.updateStock(false)" class="flex-1 bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 py-2 rounded-lg text-sm font-bold transition-colors">- Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Master Inventory Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:col-span-2 flex flex-col h-[500px] md:h-auto">
+                    <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+                        <h2 class="text-lg font-bold text-slate-800">Master Inventory</h2>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-orange-400"></div><span class="text-xs text-slate-500 font-medium mr-2">Low (< 5)</span>
+                            <div class="w-3 h-3 rounded-full bg-rose-500"></div><span class="text-xs text-slate-500 font-medium">Out (0)</span>
+                        </div>
+                    </div>
+                    <div class="overflow-y-auto flex-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-white shadow-[0_2px_5px_rgba(0,0,0,0.02)] z-10">
+                                <tr class="text-slate-400 text-xs uppercase border-b border-slate-100">
+                                    <th class="px-5 py-3 font-semibold">Product & Size</th>
+                                    <th class="px-5 py-3 font-semibold text-center">In Stock</th>
+                                    <th class="px-5 py-3 font-semibold text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-body" class="divide-y divide-slate-50">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
-</main>
+    </main>
 
-<!-- Print Template (Compact Version) -->
-<div id="print-area" class="hidden print-template">
-    <div class="text-center pb-2 mb-1">
-        <img src="logo.png" alt="Khay May" class="h-10 mx-auto mb-1 print-logo object-contain">
-        <h1 class="text-xl font-bold leading-tight">Khay May</h1>
-        <p class="text-[11px] leading-tight mt-1">Baby & Children Clothing</p>
-        <p class="text-[11px] font-semibold leading-tight my-0.5" style="font-family: 'Padauk', sans-serif;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
-        <p class="text-[11px] leading-tight">Ph: 09421649505 | Viber: 09668414343</p>
-    </div>
-
-    <!-- Section 1: Sale Info -->
-    <div class="border-t border-b border-dashed border-gray-400 py-1 mb-1 text-[11px]">
-        <div class="flex justify-between">
-            <span>Date: <span id="print-date"></span></span>
-            <span class="font-bold">ID: <span id="print-id"></span></span>
+    <!-- Print Template (Compact Version) -->
+    <div id="print-area" class="hidden print-template">
+        <div class="text-center pb-1 mb-1">
+            <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 2px;">
+            <h1 style="font-size: 16px; font-weight: bold; margin: 0; line-height: 1.1;">Khay May</h1>
+            <p style="font-size: 10px; margin: 1px 0; line-height: 1.1;">Baby & Children Clothing</p>
+            <p style="font-size: 10px; font-weight: bold; margin: 1px 0; font-family: 'Padauk', sans-serif; line-height: 1.1;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
+            <p style="font-size: 10px; margin: 0; line-height: 1.1;">Ph: 09421649505 | Viber: 09668414343</p>
         </div>
-        <div class="flex justify-between">
-            <span>Type: <span id="print-type" class="uppercase font-bold"></span></span>
-            <span>Pay: <span id="print-payment"></span></span>
+
+        <!-- Section 1: Sale Info (Combined to save space) -->
+        <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 2px 0; margin-bottom: 2px; font-size: 11px;">
+            <div class="print-flex-row">
+                <span>Date: <span id="print-date"></span></span>
+                <span style="font-weight: bold;">ID: <span id="print-id"></span></span>
+            </div>
+            <div class="print-flex-row mt-0.5">
+                <span>Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold;"></span></span>
+                <span>Pay: <span id="print-payment"></span></span>
+            </div>
+            <div class="print-flex-row mt-0.5 hidden" id="print-due-date-row" style="justify-content: flex-end !important;">
+                <span style="font-weight: bold;">Due: <span id="print-due-date"></span></span>
+            </div>
         </div>
-        <div class="text-right hidden" id="print-due-date-row">
-            <span class="font-bold">Due: <span id="print-due-date"></span></span>
+
+        <!-- Section 2: Customer & Notes (Combined) -->
+        <div style="border-bottom: 1px dashed #999; padding-bottom: 2px; margin-bottom: 2px; font-size: 11px;">
+            <div class="print-flex-row">
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;">Name: <span id="print-customer-name" style="font-weight: bold;"></span></span>
+                <span style="white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span>
+            </div>
+            <div class="hidden" id="print-notes-container" style="margin-top: 2px; line-height: 1.1;">
+                <span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span>
+            </div>
+        </div>
+
+        <!-- Section 3: Items Table -->
+        <table style="width: 100%; font-size: 11px; margin-bottom: 2px; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px dashed #999;">
+                    <th style="text-align: left; padding: 2px 0;">Item</th>
+                    <th style="text-align: center; padding: 2px 0;">Qty</th>
+                    <th style="text-align: right; padding: 2px 0;">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="print-items"></tbody>
+        </table>
+
+        <!-- Totals -->
+        <div style="border-top: 1px dashed #999; padding-top: 2px; font-size: 11px;">
+            <div class="print-flex-row"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
+            <div class="print-flex-row" style="color: #444;"><span>Discount:</span> <span id="print-discount"></span></div>
+            <div class="print-flex-row" style="font-weight: bold; font-size: 13px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 2px;">
+                <span>Total:</span> <span id="print-total"></span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 5px;">
+            <p style="font-size: 11px; font-weight: bold; margin: 0;">Thank You!</p>
         </div>
     </div>
 
-    <!-- Section 2: Customer & Notes -->
-    <div class="border-b border-dashed border-gray-400 pb-1 mb-1 text-[11px]">
-        <div class="flex justify-between">
-            <span class="truncate pr-2">Name: <span id="print-customer-name" class="font-bold"></span></span>
-            <span class="whitespace-nowrap hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span>
+    <!-- Print Summary Template -->
+    <div id="print-summary-area" class="hidden print-template">
+        <!-- Kept original summary design, just formatted for new engine -->
+        <div style="text-align: center; border-bottom: 1px dashed #999; padding-bottom: 5px; margin-bottom: 5px;">
+            <h1 style="font-size: 16px; font-weight: bold; margin: 0 0 2px 0;">Sales Summary</h1>
+            <p style="font-size: 11px; margin: 0;" id="print-summary-date-range"></p>
         </div>
-        <div class="hidden mt-0.5" id="print-notes-container">
-            <span class="text-gray-600 font-bold">Notes:</span> <span id="print-notes" class="whitespace-pre-wrap leading-tight"></span>
+        <div style="font-size: 11px; margin-bottom: 5px;">
+            <div class="print-flex-row" style="margin-bottom: 2px;"><span>Vouchers:</span> <span id="print-summary-vouchers" style="font-weight: bold;"></span></div>
+            <div class="print-flex-row" style="margin-top: 3px; border-top: 1px solid #ccc; padding-top: 3px; font-size: 13px;">
+                <span>Revenue:</span> <span id="print-summary-revenue" style="font-weight: bold;"></span>
+            </div>
+        </div>
+        <h3 style="font-weight: bold; font-size: 11px; margin: 5px 0 2px 0;">By Payment Method</h3>
+        <table style="width: 100%; font-size: 11px; margin-bottom: 5px; border-collapse: collapse;">
+            <tbody id="print-summary-payments"></tbody>
+        </table>
+        <h3 style="font-weight: bold; font-size: 11px; margin: 5px 0 2px 0;">By Sale Type</h3>
+        <table style="width: 100%; font-size: 11px; margin-bottom: 5px; border-collapse: collapse;">
+            <tbody id="print-summary-types"></tbody>
+        </table>
+        <div style="text-align: center; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #999;">
+            <p style="font-size: 10px; color: #666; margin: 0;">Printed: <span id="print-summary-now"></span></p>
         </div>
     </div>
 
-    <!-- Section 3: Items Table -->
-    <table class="w-full text-[11px] mb-1">
-        <thead>
-            <tr class="border-b border-dashed border-gray-400"><th class="text-left py-0.5">Item</th><th class="text-center py-0.5">Qty</th><th class="text-right py-0.5">Amount</th></tr>
-        </thead>
-        <tbody id="print-items"></tbody>
-    </table>
-
-    <!-- Totals -->
-    <div class="border-t border-dashed border-gray-400 pt-1 text-[11px]">
-        <div class="flex justify-between"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
-        <div class="flex justify-between text-gray-600"><span>Discount:</span> <span id="print-discount"></span></div>
-        <div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-gray-300"><span>Total:</span> <span id="print-total"></span></div>
-    </div>
-    
-    <div class="text-center mt-2">
-        <p class="text-[11px] font-bold">Thank You!</p>
-    </div>
-</div>
-
-<!-- Print Summary Template (Compact Version) -->
-<div id="print-summary-area" class="hidden print-template">
-    <div class="text-center border-b border-dashed border-gray-400 pb-2 mb-2">
-        <h1 class="text-lg font-bold leading-tight mb-1">Sales Summary</h1>
-        <p class="text-[11px]" id="print-summary-date-range"></p>
-    </div>
-
-    <div class="mb-2 text-[11px] space-y-1">
-        <div class="flex justify-between"><span>Vouchers:</span> <span id="print-summary-vouchers" class="font-bold"></span></div>
-        <div class="flex justify-between text-sm mt-1 pt-1 border-t border-gray-300"><span>Revenue:</span> <span id="print-summary-revenue" class="font-bold"></span></div>
-    </div>
-
-    <h3 class="font-bold text-[11px] mb-1 mt-2">By Payment Method</h3>
-    <table class="w-full text-[11px] mb-2">
-        <tbody id="print-summary-payments" class="divide-y divide-dashed divide-gray-200"></tbody>
-    </table>
-
-    <h3 class="font-bold text-[11px] mb-1 mt-2">By Sale Type</h3>
-    <table class="w-full text-[11px] mb-2">
-        <tbody id="print-summary-types" class="divide-y divide-dashed divide-gray-200"></tbody>
-    </table>
-
-    <div class="text-center mt-2 pt-2 border-t border-dashed border-gray-400">
-        <p class="text-[10px] text-gray-500">Printed: <span id="print-summary-now"></span></p>
-    </div>
-</div>
-
-<!-- Scripts -->
-<script>
-    // State Variables
+    <!-- Scripts -->
+    <script>
+        // State Variables
         let currentCart = [];
         let sessionSales = []; 
         let webAppUrl = "";
         let currentSaleType = 'Retail';
         let isMobileCartOpen = false;
+        
+        // NEW: Inventory Global State
+        window.localInventory = {};
 
         // --- PRODUCT DATABASE ---
         const productData = {
@@ -445,14 +513,9 @@
         }
 
         function triggerPrint(areaId) {
-            // Unhide the specific template for printing
             document.querySelectorAll('.print-template').forEach(el => el.classList.remove('active-print'));
             document.getElementById(areaId).classList.add('active-print');
-
-            // Timeout allows the DOM to register the class change before Safari locks the thread for printing
-            setTimeout(() => {
-                window.print();
-            }, 200);
+            setTimeout(() => { window.print(); }, 100);
         }
 
         function showToast(message, type = 'success') {
@@ -468,10 +531,16 @@
         // --- CORE LOGIC ---
         window.onload = function() {
             const productSelect = document.getElementById('item-product');
+            const invProductSelect = document.getElementById('inv-product');
+            
             for (const product in productData) {
                 const option = document.createElement('option');
                 option.value = product; option.text = product;
                 productSelect.appendChild(option);
+                
+                const invOption = document.createElement('option');
+                invOption.value = product; invOption.text = product;
+                invProductSelect.appendChild(invOption);
             }
 
             const d = new Date();
@@ -487,21 +556,22 @@
             }
             setSaleType('Retail');
             renderCart();
+            window.updateInventoryUI();
         };
 
         function switchTab(tabId) {
-            document.getElementById('pos-tab').classList.add('hidden');
-            document.getElementById('sales-tab').classList.add('hidden');
-            document.getElementById(tabId).classList.remove('hidden');
+            ['pos-tab', 'sales-tab', 'inventory-tab'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${id}`);
+                if(navBtn) navBtn.classList.remove('bg-rose-50', 'text-rose-600');
+                if(navBtn) navBtn.classList.add('text-slate-500');
+            });
             
-            const posNav = document.getElementById('nav-pos-tab');
-            const salesNav = document.getElementById('nav-sales-tab');
-            if(tabId === 'pos-tab') {
-                posNav.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-semibold transition-colors";
-                salesNav.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 font-medium transition-colors";
-            } else {
-                salesNav.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-semibold transition-colors";
-                posNav.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 font-medium transition-colors";
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.remove('text-slate-500');
+                activeNav.classList.add('bg-rose-50', 'text-rose-600');
             }
         }
 
@@ -526,9 +596,12 @@
             if (type === 'Credit') {
                 document.getElementById('payment-method-box').classList.add('hidden');
                 document.getElementById('credit-period-box').classList.remove('hidden');
+                // Remove required from payment to not block validation
+                document.getElementById('payment-method').required = false;
             } else {
                 document.getElementById('payment-method-box').classList.remove('hidden');
                 document.getElementById('credit-period-box').classList.add('hidden');
+                document.getElementById('payment-method').required = true;
             }
             renderCart();
             validateCheckout();
@@ -543,7 +616,7 @@
             
             let hasPayment = false;
             if (currentSaleType === 'Credit') {
-                hasPayment = true; // Credit period has a valid 30-day default
+                hasPayment = true; 
             } else {
                 const pm = document.getElementById('payment-method').value;
                 hasPayment = pm !== '' && pm !== 'Choose Payment Method';
@@ -552,9 +625,87 @@
             btn.disabled = !(hasItems && hasName && hasPayment);
         }
 
+        // --- NEW: INVENTORY LOGIC ---
+        window.updateInventoryUI = function() {
+            const tbody = document.getElementById('inventory-body');
+            if (!tbody) return;
+            
+            let lowStockCount = 0;
+            let html = '';
+            
+            for (const product in productData) {
+                productData[product].forEach(item => {
+                    const key = `${product}_${item.size}`;
+                    const stock = window.localInventory[key] || 0;
+                    
+                    let statusHtml = '';
+                    let stockClass = 'text-slate-800';
+                    
+                    if (stock <= 0) {
+                        statusHtml = `<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-[10px] font-bold tracking-wide">OUT OF STOCK</span>`;
+                        stockClass = 'text-rose-600 font-bold';
+                        lowStockCount++;
+                    } else if (stock < 5) {
+                        statusHtml = `<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold tracking-wide">LOW STOCK</span>`;
+                        stockClass = 'text-orange-600 font-bold';
+                        lowStockCount++;
+                    } else {
+                        statusHtml = `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold tracking-wide">IN STOCK</span>`;
+                    }
+
+                    html += `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-5 py-3">
+                                <div class="font-bold text-slate-800 text-sm">${product}</div>
+                                <div class="text-xs text-slate-500">${item.size}</div>
+                            </td>
+                            <td class="px-5 py-3 text-center ${stockClass} text-sm">${stock}</td>
+                            <td class="px-5 py-3 text-right">${statusHtml}</td>
+                        </tr>
+                    `;
+                });
+            }
+            tbody.innerHTML = html;
+            
+            // Update Badges
+            const navBadge = document.getElementById('nav-stock-alert');
+            const mobBadge = document.getElementById('mobile-stock-alert');
+            if (lowStockCount > 0) {
+                if(navBadge) { navBadge.classList.remove('hidden'); navBadge.innerText = lowStockCount; }
+                if(mobBadge) mobBadge.classList.remove('hidden');
+            } else {
+                if(navBadge) navBadge.classList.add('hidden');
+                if(mobBadge) mobBadge.classList.add('hidden');
+            }
+            
+            // Re-render size dropdown if open so stock levels show immediately
+            if(document.getElementById('item-product').value) updateSizeDropdown();
+        };
+
+        function updateInvSizeDropdown() {
+            const productSelect = document.getElementById('inv-product');
+            const sizeSelect = document.getElementById('inv-size');
+            sizeSelect.innerHTML = '<option value="" disabled selected>Select Size</option>';
+            
+            if (productSelect.value) {
+                sizeSelect.disabled = false;
+                sizeSelect.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed');
+                sizeSelect.classList.add('bg-white');
+                productData[productSelect.value].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.size; option.text = item.size;
+                    sizeSelect.appendChild(option);
+                });
+            }
+        }
+
+        // POS Dropdown now includes live stock
         function updateSizeDropdown() {
             const productSelect = document.getElementById('item-product');
             const sizeSelect = document.getElementById('item-size');
+            // Keep the current selection if we are just re-rendering due to inventory update
+            const currentVal = sizeSelect.value; 
+            
             sizeSelect.innerHTML = '<option value="" disabled selected>Select Size</option>';
             document.getElementById('item-price').value = '';
             
@@ -563,10 +714,19 @@
                 sizeSelect.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed');
                 sizeSelect.classList.add('bg-white');
                 productData[productSelect.value].forEach((item, index) => {
+                    const stockLevel = window.localInventory[`${productSelect.value}_${item.size}`] || 0;
                     const option = document.createElement('option');
-                    option.value = index; option.text = item.size;
+                    option.value = index; 
+                    option.text = `${item.size} (Stock: ${stockLevel})`;
+                    option.dataset.realsize = item.size; // Save the real text to read later
                     sizeSelect.appendChild(option);
                 });
+                
+                // Restore selection if valid
+                if (currentVal !== "") {
+                    sizeSelect.value = currentVal;
+                    updatePrice();
+                }
             }
         }
 
@@ -580,7 +740,8 @@
             const prodSelect = document.getElementById('item-product');
             const sizeSel = document.getElementById('item-size');
             const prod = prodSelect.value;
-            const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].text : "";
+            // Read from the dataset so we don't save "(Stock: 10)" to the cart!
+            const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
 
@@ -599,10 +760,7 @@
                     });
                 }
                 
-                // Form fields intentionally NOT reset to allow quick entry of same product/size
                 renderCart();
-                
-                // Show a quick visual confirmation since the inputs didn't clear
                 showToast(`Added ${qty}x ${prod} (${sizeText}) to cart`, 'success');
             }
         }
@@ -751,6 +909,14 @@
 
             const now = new Date();
             const localTime = new Date(now.getTime() + (390 * 60000));
+            
+            // Format single-line date
+            const dd = String(localTime.getUTCDate()).padStart(2, '0');
+            const mm = String(localTime.getUTCMonth() + 1).padStart(2, '0');
+            const yy = String(localTime.getUTCFullYear()).slice(-2);
+            const timeStr = localTime.toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric"});
+            const shortDate = `${dd}/${mm}/${yy} ${timeStr}`;
+
             const dateStr = localTime.toISOString().split('T')[0]; 
             
             let dueDateStr = "";
@@ -761,25 +927,25 @@
             }
 
             const saleRecord = {
-            id: voucherId,
-            date: dateStr,
-            isoDate: now.toISOString(),
-            saleType: currentSaleType,
-            paymentMethod: paymentInfo,
-            customer: customerName,
-            phone: customerPhone || '-',
-            notes: notes,
-            items: currentCart.map(i => ({ category: i.category, size: i.size, qty: i.qty, price: i.effectivePrice, total: i.total })),
-            totals: totals
-        };
+                id: voucherId,
+                date: dateStr,
+                isoDate: now.toISOString(),
+                saleType: currentSaleType,
+                paymentMethod: paymentInfo,
+                customer: customerName,
+                phone: customerPhone || '-',
+                notes: notes,
+                items: currentCart.map(i => ({ category: i.category, size: i.size, qty: i.qty, price: i.effectivePrice, total: i.total })),
+                totals: totals
+            };
 
-        // Populate Voucher Section 1: Sale Info
-        document.getElementById('print-date').innerText = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        document.getElementById('print-id').innerText = saleRecord.id;
-        document.getElementById('print-type').innerText = saleRecord.saleType;
-        document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
-        
-        const dueDateRow = document.getElementById('print-due-date-row');
+            // Populate Voucher Section 1: Sale Info
+            document.getElementById('print-date').innerText = shortDate;
+            document.getElementById('print-id').innerText = saleRecord.id;
+            document.getElementById('print-type').innerText = saleRecord.saleType;
+            document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
+            
+            const dueDateRow = document.getElementById('print-due-date-row');
             if (saleRecord.saleType === 'Credit' && dueDateStr) {
                 dueDateRow.classList.remove('hidden');
                 document.getElementById('print-due-date').innerText = dueDateStr;
@@ -805,18 +971,18 @@
             }
 
             // Populate Voucher Section 3: Items
-        document.getElementById('print-items').innerHTML = currentCart.map(item => `
-            <tr class="border-b border-gray-100">
-                <td class="py-0.5 pr-1">
-                    ${item.category} (${item.size})
-                    ${item.discountRate > 0 ? `<br><span style="font-size: 9px; color: #666;">Unit: ${formatMMK(item.effectivePrice)}</span>` : ''}
-                </td>
-                <td class="text-center py-0.5 align-top">${item.qty}</td>
-                <td class="text-right py-0.5 align-top">${formatMMK(item.total)}</td>
-            </tr>
-        `).join('');
-        
-        document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
+            document.getElementById('print-items').innerHTML = currentCart.map(item => `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 2px 2px 2px 0;">
+                        ${item.category} (${item.size})
+                        ${item.discountRate > 0 ? `<br><span style="font-size: 8px; color: #666;">Unit: ${formatMMK(item.effectivePrice)}</span>` : ''}
+                    </td>
+                    <td style="text-align: center; padding: 2px 0; vertical-align: top;">${item.qty}</td>
+                    <td style="text-align: right; padding: 2px 0; vertical-align: top;">${formatMMK(item.total)}</td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
             document.getElementById('print-discount').innerText = formatMMK(totals.manualDiscount);
             document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
 
@@ -826,7 +992,9 @@
             applyFilters();
             
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
-            if (window.pushToFirebase) window.pushToFirebase(saleRecord); 
+            
+            // Pass cart items to firebase function for inventory deduction
+            if (window.pushToFirebase) window.pushToFirebase(saleRecord, currentCart); 
 
             triggerPrint('print-area');
 
@@ -835,7 +1003,7 @@
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
             document.getElementById('sale-notes').value = '';
-            document.getElementById('payment-method').value = ''; // Reset to blank
+            document.getElementById('payment-method').value = ''; 
             document.getElementById('summary-discount').value = '0';
             if(isMobileCartOpen) toggleMobileCart();
             renderCart();
@@ -871,37 +1039,33 @@
             document.getElementById('print-summary-revenue').innerText = formatMMK(totalRevenue) + " MMK";
 
             document.getElementById('print-summary-payments').innerHTML = Object.entries(payments)
-            .sort((a,b)=>b[1]-a[1])
-            .map(([k,v]) => `<tr><td class="py-0.5">${k}</td><td class="text-right py-0.5 font-bold">${formatMMK(v)}</td></tr>`).join('');
+                .sort((a,b)=>b[1]-a[1])
+                .map(([k,v]) => `<tr><td style="padding: 1px 0;">${k}</td><td style="text-align: right; padding: 1px 0; font-weight: bold;">${formatMMK(v)}</td></tr>`).join('');
             
-        document.getElementById('print-summary-types').innerHTML = Object.entries(types)
-            .sort((a,b)=>b[1]-a[1])
-            .map(([k,v]) => `<tr><td class="py-0.5">${k}</td><td class="text-right py-0.5 font-bold">${formatMMK(v)}</td></tr>`).join('');
+            document.getElementById('print-summary-types').innerHTML = Object.entries(types)
+                .sort((a,b)=>b[1]-a[1])
+                .map(([k,v]) => `<tr><td style="padding: 1px 0;">${k}</td><td style="text-align: right; padding: 1px 0; font-weight: bold;">${formatMMK(v)}</td></tr>`).join('');
 
-        document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-GB', {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-GB', {hour: '2-digit', minute:'2-digit'});
 
-        triggerPrint('print-summary-area');
-    }
+            triggerPrint('print-summary-area');
+        }
 
         function applyFilters() {
             const startVal = document.getElementById('filter-start').value;
             const endVal = document.getElementById('filter-end').value;
             if(!startVal || !endVal || !window.allFirebaseSales) return;
             
-            const startD = new Date(startVal);
-            const endD = new Date(endVal);
-            if (Math.ceil(Math.abs(endD - startD) / (1000 * 60 * 60 * 24)) > 7) {
-                showToast("Maximum viewable range is 7 days.", "error");
-                const fixedEnd = new Date(startD); fixedEnd.setDate(fixedEnd.getDate() + 6);
-                document.getElementById('filter-end').value = fixedEnd.toISOString().split('T')[0];
-                return applyFilters();
-            }
+            // Allow checking today without UTC timezone shifting issues
+            const startStr = startVal + "T00:00:00";
+            const endStr = endVal + "T23:59:59";
 
             const searchInput = document.getElementById('search-history');
             const searchTxt = searchInput ? searchInput.value.toLowerCase() : "";
 
             sessionSales = window.allFirebaseSales.filter(s => { 
-                const inDate = (s.date >= startVal && s.date <= endVal); 
+                const sDate = s.isoDate || s.date;
+                const inDate = (sDate >= startStr && sDate <= endStr); 
                 if (!inDate) return false;
                 if (!searchTxt) return true;
                 
@@ -943,7 +1107,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC_y2VR9T9-PGQ5Y-mKnKJSdslJm3ISQWc",
@@ -964,12 +1128,61 @@
                 console.warn("Offline persistence issue:", err.code);
             });
 
-            window.pushToFirebase = async function(saleRecord) {
-                try { await setDoc(doc(db, 'sales', saleRecord.id), saleRecord); } 
-                catch(e) { console.error("Cloud Save Error (will retry when online):", e); }
+            // NEW: Unified Batch Save (Sales + Inventory Auto-Deduct)
+            window.pushToFirebase = async function(saleRecord, cartItems) {
+                try { 
+                    const batch = writeBatch(db);
+                    
+                    // 1. Save the Voucher
+                    batch.set(doc(db, 'sales', saleRecord.id), saleRecord);
+                    
+                    // 2. Deduct the Inventory
+                    if (cartItems && cartItems.length > 0) {
+                        cartItems.forEach(item => {
+                            const invRef = doc(db, 'inventory', `${item.category}_${item.size}`);
+                            batch.set(invRef, {
+                                product: item.category,
+                                size: item.size,
+                                stock: increment(-item.qty)
+                            }, { merge: true });
+                        });
+                    }
+                    
+                    await batch.commit();
+                } catch(e) { console.error("Cloud Save Error:", e); }
+            };
+
+            // NEW: Manual Stock In/Out Function
+            window.updateStock = async function(isAdding) {
+                const prod = document.getElementById('inv-product').value;
+                const size = document.getElementById('inv-size').value;
+                const qtyInput = document.getElementById('inv-qty');
+                const qty = parseInt(qtyInput.value);
+
+                if(prod && size && qty > 0) {
+                    try {
+                        const adjustQty = isAdding ? qty : -qty;
+                        const invRef = doc(db, 'inventory', `${prod}_${size}`);
+                        
+                        await setDoc(invRef, {
+                            product: prod,
+                            size: size,
+                            stock: increment(adjustQty)
+                        }, { merge: true });
+                        
+                        showToast(isAdding ? 'Stock Added Successfully!' : 'Stock Removed Successfully!');
+                        qtyInput.value = 1; // reset input
+                    } catch(e) {
+                        showToast('Error updating stock', 'error');
+                        console.error(e);
+                    }
+                } else {
+                    showToast('Please select product, size, and valid quantity.', 'error');
+                }
             };
 
             signInAnonymously(auth).then(() => {
+                // Listen to Sales
                 onSnapshot(collection(db, 'sales'), (snapshot) => {
                     const loadedSales = [];
                     snapshot.forEach(d => loadedSales.push(d.data()));
@@ -980,7 +1193,20 @@
                     const syncStatus = document.getElementById('sync-status');
                     if(syncStatus) syncStatus.innerHTML = '<span class="relative flex h-2 w-2 mr-2"><span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span> Live Synced (Offline Ready)';
                 });
+
+                // NEW: Listen to Live Inventory
+                onSnapshot(collection(db, 'inventory'), (snapshot) => {
+                    window.localInventory = {}; // Reset
+                    snapshot.forEach(d => {
+                        window.localInventory[d.id] = d.data().stock;
+                    });
+                    if(window.updateInventoryUI) window.updateInventoryUI();
+                });
             });
+            
+            // Failsafe push for very fast sales
+            window.pushToFirebaseUnauth = window.pushToFirebase;
+
         } catch (e) { console.error("Firebase init error:", e); }
     </script>
 </body>

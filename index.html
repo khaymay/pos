@@ -334,48 +334,48 @@
         </div>
 
         <div class="mb-4 text-sm space-y-2">
-            <div class="flex justify-between font-bold"><span>Total Vouchers:</span> <span id="print-summary-vouchers"></span></div>
-            <div class="flex justify-between font-bold text-rose-600"><span>Total Revenue:</span> <span id="print-summary-revenue"></span></div>
-        </div>
-
-        <h3 class="font-bold text-sm border-b border-gray-200 pb-1 mb-2">Payment Breakdown</h3>
-        <table class="w-full text-sm mb-4">
-            <tbody id="print-summary-payments"></tbody>
-        </table>
-
-        <h3 class="font-bold text-sm border-b border-gray-200 pb-1 mb-2">Sale Types</h3>
-        <table class="w-full text-sm mb-4">
-            <tbody id="print-summary-types"></tbody>
-        </table>
-
-        <div class="text-center mt-6">
-            <p class="text-xs text-gray-500">Generated on: <span id="print-summary-now"></span></p>
-            <p class="text-sm font-bold mt-2">End of Report</p>
-        </div>
-    </div>
-
-    <!-- Core POS Logic Script -->
+    <!-- Scripts -->
     <script>
+        // State Variables
         let currentCart = [];
         let sessionSales = []; 
         let webAppUrl = "";
-        let currentSaleType = "Retail";
-        let isMobileCartOpen = false;
+        
+        // --- UTILITY FUNCTIONS ---
+        function formatMMK(num) {
+            return Number(num).toLocaleString('en-US');
+        }
 
-        const productData = {
-            "Footie Pants": [{ size: "0-3 m", price: 15000 }, { size: "3-6 m", price: 15000 }, { size: "6-9 m", price: 15000 }, { size: "9-12 m", price: 15000 }, { size: "12-18 m", price: 15000 }, { size: "18-24 m", price: 15000 }],
-            "Wrap-Up Romper": [{ size: "S", price: 9900 }, { size: "M", price: 9900 }, { size: "L", price: 9900 }],
-            "Cozy Baby Set - လက်တို": [{ size: "XS", price: 13500 }, { size: "S", price: 13500 }, { size: "M", price: 13500 }, { size: "L", price: 13500 }, { size: "XL", price: 13500 }],
-            "Cozy Baby Set - လက်ရှည်": [{ size: "XS", price: 14500 }, { size: "S", price: 14500 }, { size: "M", price: 14500 }, { size: "L", price: 14500 }, { size: "XL", price: 14500 }],
-            "Girl's Stocking": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 16500 }, { size: "XL", price: 18000 }, { size: "XXL", price: 18000 }],
-            "Legging": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 16500 }, { size: "XL", price: 18000 }, { size: "XXL", price: 18000 }],
-            "Spant Set - လက်တို": [{ size: "S", price: 10500 }, { size: "M", price: 10500 }, { size: "L", price: 10500 }, { size: "XL", price: 10500 }],
-            "Spant Set - လက်ရှည်": [{ size: "S", price: 11500 }, { size: "M", price: 11500 }, { size: "L", price: 11500 }, { size: "XL", price: 11500 }],
-            "Flower Dress": [{ size: "S", price: 14500 }, { size: "M", price: 14500 }, { size: "L", price: 14500 }],
-            "Sleeper": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 18500 }, { size: "XL", price: 18500 }]
-        };
+        function triggerPrint(areaId) {
+            // iOS Safari Safari optimization to prevent 60-second print freeze.
+            // Physically hide the complex DOM app before triggering print to skip heavy layout math.
+            const mainEl = document.querySelector('main');
+            const asideEl = document.querySelector('aside');
+            const bodyEl = document.body;
+            
+            // Save original states
+            const originalBodyClass = bodyEl.className;
+            
+            // Strip heavy flex/overflow classes and hide the app interface
+            bodyEl.className = 'bg-white text-slate-800 block';
+            mainEl.style.display = 'none';
+            if (asideEl) asideEl.style.display = 'none';
+            
+            // Set the correct receipt to be printed
+            document.querySelectorAll('.print-template').forEach(el => el.classList.remove('active-print'));
+            document.getElementById(areaId).classList.add('active-print');
 
-        function formatMMK(num) { return Number(num).toLocaleString('en-US'); }
+            // Wait 150ms for Safari's memory to clear the app out, then instantly trigger print
+            setTimeout(() => {
+                window.print();
+                
+                // Restore the app interface immediately after the user closes the print dialog
+                mainEl.style.display = '';
+                if (asideEl) asideEl.style.display = '';
+                bodyEl.className = originalBodyClass;
+                document.getElementById(areaId).classList.remove('active-print');
+            }, 150);
+        }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -717,9 +717,6 @@
                 document.getElementById('print-notes').innerText = notes;
             } else document.getElementById('print-notes-container').classList.add('hidden');
 
-            document.getElementById('print-summary-area').classList.remove('active-print');
-            document.getElementById('print-area').classList.add('active-print');
-
             // Optimistically update local UI immediately
             if(!window.allFirebaseSales) window.allFirebaseSales = [];
             window.allFirebaseSales.unshift(saleRecord);
@@ -727,9 +724,10 @@
             
             // Push to APIs
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
-            if (window.pushToFirebase) window.pushToFirebase(saleRecord); // Guaranteed to fire if Firebase is active
+            if (window.pushToFirebase) window.pushToFirebase(saleRecord); 
 
-            window.print();
+            // Trigger the Lightning-Fast iOS Print
+            triggerPrint('print-area');
 
             // Clear Cart
             currentCart = [];
@@ -780,10 +778,8 @@
 
             document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-US');
 
-            document.getElementById('print-area').classList.remove('active-print');
-            document.getElementById('print-summary-area').classList.add('active-print');
-
-            window.print();
+            // Trigger the Lightning-Fast iOS Print
+            triggerPrint('print-summary-area');
         }
 
         function applyFilters() {

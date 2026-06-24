@@ -628,10 +628,12 @@
                 document.getElementById('payment-method-box').classList.add('hidden');
                 document.getElementById('credit-period-box').classList.remove('hidden');
                 document.getElementById('payment-method').required = false;
+                document.getElementById('credit-period').required = true;
             } else {
                 document.getElementById('payment-method-box').classList.remove('hidden');
                 document.getElementById('credit-period-box').classList.add('hidden');
                 document.getElementById('payment-method').required = true;
+                document.getElementById('credit-period').required = false;
             }
             renderCart();
             validateCheckout();
@@ -646,7 +648,8 @@
             
             let hasPayment = false;
             if (currentSaleType === 'Credit') {
-                hasPayment = true; 
+                const cp = document.getElementById('credit-period').value;
+                hasPayment = cp !== '' && cp !== 'Choose Credit Term'; 
             } else {
                 const pm = document.getElementById('payment-method').value;
                 hasPayment = pm !== '' && pm !== 'Choose Payment Method';

@@ -140,7 +140,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Quantity</label>
-                                <input type="number" id="item-qty" required min="1" value="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                                <input type="number" id="item-qty" required min="1" max="50" value="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
                             </div>
                         </div>
                         <button type="submit" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition-colors shadow-sm">Add to Cart</button>
@@ -584,7 +584,7 @@
             const price = parseFloat(document.getElementById('item-price').value);
             const qty = parseInt(document.getElementById('item-qty').value);
 
-            if (prod && sizeText && !isNaN(price) && price >= 0 && qty > 0) {
+            if (prod && sizeText && !isNaN(price) && price >= 0 && qty > 0 && qty <= 50) {
                 const existingItem = currentCart.find(i => i.category === prod && i.size === sizeText);
                 
                 if (existingItem) {
@@ -599,10 +599,11 @@
                     });
                 }
                 
-                prodSelect.value = ''; 
-                updateSizeDropdown();
-                document.getElementById('item-qty').value = '1';
+                // Form fields intentionally NOT reset to allow quick entry of same product/size
                 renderCart();
+                
+                // Show a quick visual confirmation since the inputs didn't clear
+                showToast(`Added ${qty}x ${prod} (${sizeText}) to cart`, 'success');
             }
         }
 

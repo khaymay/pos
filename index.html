@@ -1117,70 +1117,13 @@
             const historyBody = document.getElementById('history-body');
             if(historyBody) historyBody.parentElement.scrollTop = 0;
         }
-        
-        function renderHistoryPage() {
-            const tbody = document.getElementById('history-body');
-            const emptyMsg = document.getElementById('empty-history-msg');
-            const pagination = document.getElementById('history-pagination');
-            if(!tbody) return;
-            
-            tbody.innerHTML = "";
-            if (sessionSales.length === 0) {
-                emptyMsg.classList.remove('hidden');
-                pagination.classList.add('hidden');
-                pagination.classList.remove('flex');
-            } else {
-                emptyMsg.classList.add('hidden');
-                pagination.classList.remove('hidden');
-                pagination.classList.add('flex');
-                
-                const totalPages = Math.ceil(sessionSales.length / HISTORY_ITEMS_PER_PAGE);
-                if (currentHistoryPage < 1) currentHistoryPage = 1;
-                if (currentHistoryPage > totalPages) currentHistoryPage = totalPages;
-                
-                document.getElementById('current-page-label').innerText = currentHistoryPage;
-                document.getElementById('total-page-label').innerText = totalPages;
-                
-                document.getElementById('btn-prev-page').disabled = (currentHistoryPage === 1);
-                document.getElementById('btn-next-page').disabled = (currentHistoryPage === totalPages);
-                
-                const startIndex = (currentHistoryPage - 1) * HISTORY_ITEMS_PER_PAGE;
-                const pageItems = sessionSales.slice(startIndex, startIndex + HISTORY_ITEMS_PER_PAGE);
-                
-                pageItems.forEach(sale => {
-                    const methodStr = sale.saleType === 'Credit' ? (sale.paymentMethod||'-') : (sale.paymentMethod||'Cash');
-                    const dateObj = new Date(sale.isoDate || sale.date);
-                    const dateStr = dateObj.toLocaleDateString('en-US', {month:'short',day:'numeric'});
-                    const timeStr = dateObj.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                    
-                    let typeColor = 'bg-rose-50 text-rose-600';
-                    if(sale.saleType === 'Credit') typeColor = 'bg-amber-100 text-amber-700';
-                    if(sale.saleType === 'Wholesale') typeColor = 'bg-blue-100 text-blue-700';
-                    
-                    const itemsHtml = (sale.items||[]).map(i => `<li class="truncate">• ${i.category} (${i.size}) x <span class="font-bold">${i.qty}</span></li>`).join('');
 
-                    tbody.innerHTML += `
-                        <div class="flex flex-col md:grid md:grid-cols-5 gap-3 md:gap-4 p-4 hover:bg-slate-50 text-slate-600 transition-colors">
-                            <div class="flex justify-between md:flex-col md:justify-start">
-                                <span class="font-bold text-slate-800">${dateStr} <span class="text-xs font-normal text-slate-500 ml-1">${timeStr}</span></span>
-                                <span class="mt-0 md:mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full w-fit ${typeColor}">${sale.saleType||'Retail'}</span>
-                            </div>
-                            <div class="font-mono text-sm text-slate-500 flex items-center">
-                                <span class="md:hidden font-bold text-slate-700 mr-2 text-xs uppercase">ID:</span>${sale.id}
-                            </div>
-                            <div class="text-sm flex flex-col justify-center">
-                                <span class="font-bold text-slate-800">${sale.customer || 'Guest'}</span>
-                                <span class="text-xs text-slate-500">${methodStr}</span>
-                            </div>
-                            <div class="text-xs text-slate-600 bg-slate-100 md:bg-transparent p-3 md:p-0 rounded-lg">
-                                <ul class="space-y-1 font-medium md:min-w-[150px]">${itemsHtml}</ul>
-                            </div>
-                            <div class="md:text-right flex justify-between md:block items-end mt-2 md:mt-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
-                                <span class="md:hidden font-bold text-slate-400 text-xs uppercase">Total</span>
-                                <span class="font-bold text-slate-800 text-lg md:text-base">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span>
-                            </div>
-                        </div>`;
-                });
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            if(modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
             }
         }
         
@@ -1188,6 +1131,7 @@
             window.webAppUrl = document.getElementById('sheet-url').value.trim();
             localStorage.setItem('khaymay_sheet_url', window.webAppUrl);
             showToast('Google Sheets Linked!');
+            toggleSettingsModal(); // Hide modal after saving
         }
     </script>
     

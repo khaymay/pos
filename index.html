@@ -69,15 +69,48 @@
             <p class="text-xs text-slate-400 font-medium mt-1">POS System</p>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2">
-            <button onclick="switchTab('pos-tab')" id="nav-pos-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-semibold transition-colors">
+            <button onclick="switchTab('pos-tab')" id="nav-desk-pos-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-400 text-white font-bold shadow-md transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Sales Terminal
             </button>
-            <button onclick="switchTab('sales-tab')" id="nav-sales-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
+            <button onclick="switchTab('sales-tab')" id="nav-desk-sales-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg> Sales Tracking
             </button>
-            <button onclick="switchTab('inventory-tab')" id="nav-inventory-tab" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
+            <button onclick="switchTab('inventory-tab')" id="nav-desk-inventory-tab" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
                 <div class="flex items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg> Inventory
+                </div>
+                <span id="nav-stock-alert" class="hidden bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">!</span>
+            </button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-slate-50 relative z-10">
+        
+        <!-- Mobile Header -->
+        <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20 shrink-0">
+            <div class="flex items-center gap-2">
+                <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
+                <h1 class="text-xl font-bold text-rose-600">Khay May</h1>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="switchTab('pos-tab')" id="nav-mob-pos-tab" class="p-2 rounded-lg bg-rose-400 text-white shadow-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
+                <button onclick="switchTab('sales-tab')" id="nav-mob-sales-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
+                <button onclick="switchTab('inventory-tab')" id="nav-mob-inventory-tab" class="relative p-2 rounded-lg bg-slate-100 text-slate-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                    <span id="mobile-stock-alert" class="hidden absolute -top-1 -right-1 bg-orange-500 w-3 h-3 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- POS Terminal Tab -->
+        <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+            <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
+                
+                <!-- Sale Type Selector -->
+                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0">
+                    <button onclick="setSaleType('Retail')" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all">Retail</button>
+                    <button onclick="setSaleType('Wholesale')" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all">Wholesale</button>
+                    <button onclick="setSaleType('Credit')" id="btn-type-Credit" class="flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all">Credit Sales</button>
                 </div>
                 <span id="nav-stock-alert" class="hidden bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">!</span>
             </button>
@@ -562,16 +595,36 @@
         function switchTab(tabId) {
             ['pos-tab', 'sales-tab', 'inventory-tab'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
-                const navBtn = document.getElementById(`nav-${id}`);
-                if(navBtn) navBtn.classList.remove('bg-rose-50', 'text-rose-600');
-                if(navBtn) navBtn.classList.add('text-slate-500');
+                
+                // Desktop Nav Reset
+                const deskBtn = document.getElementById(`nav-desk-${id}`);
+                if(deskBtn) {
+                    deskBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
+                    deskBtn.classList.add('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700', 'font-medium');
+                }
+                
+                // Mobile Nav Reset
+                const mobBtn = document.getElementById(`nav-mob-${id}`);
+                if(mobBtn) {
+                    mobBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md');
+                    mobBtn.classList.add('bg-slate-100', 'text-slate-600');
+                }
             });
             
             document.getElementById(tabId).classList.remove('hidden');
-            const activeNav = document.getElementById(`nav-${tabId}`);
-            if(activeNav) {
-                activeNav.classList.remove('text-slate-500');
-                activeNav.classList.add('bg-rose-50', 'text-rose-600');
+            
+            // Desktop Nav Active Highlight
+            const activeDeskBtn = document.getElementById(`nav-desk-${tabId}`);
+            if(activeDeskBtn) {
+                activeDeskBtn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700', 'font-medium');
+                activeDeskBtn.classList.add('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
+            }
+            
+            // Mobile Nav Active Highlight
+            const activeMobBtn = document.getElementById(`nav-mob-${tabId}`);
+            if(activeMobBtn) {
+                activeMobBtn.classList.remove('bg-slate-100', 'text-slate-600');
+                activeMobBtn.classList.add('bg-rose-400', 'text-white', 'shadow-md');
             }
         }
 
@@ -589,8 +642,8 @@
 
             ['Retail', 'Wholesale', 'Credit'].forEach(t => {
                 const btn = document.getElementById(`btn-type-${t}`);
-                if(t === type) btn.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-rose-600 transition-all";
-                else btn.className = "flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all";
+                if(t === type) btn.className = "flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all";
+                else btn.className = "flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-white hover:shadow-sm transition-all";
             });
 
             if (type === 'Credit') {

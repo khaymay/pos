@@ -306,90 +306,94 @@
         </section>
         
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
-    </main>
+</main>
 
-    <!-- Print Template -->
-    <div id="print-area" class="hidden print-template">
-        <div class="text-center pb-4 mb-3">
-            <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
-            <h1 class="text-2xl font-bold mb-1">Khay May</h1>
-            <p class="text-xs mb-1">Baby & Children Clothing Brand</p>
-            <p class="text-xs mb-1">Product of Myanmar</p>
-            <p class="text-xs font-semibold mb-2" style="font-family: 'Padauk', sans-serif;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
-            <p class="text-xs mb-0">Phone: 09421649505 / 09421649506</p>
-            <p class="text-xs mb-0">Viber: 09668414343 / 09673314907</p>
+<!-- Print Template (Compact Version) -->
+<div id="print-area" class="hidden print-template">
+    <div class="text-center pb-2 mb-1">
+        <img src="logo.png" alt="Khay May" class="h-10 mx-auto mb-1 print-logo object-contain">
+        <h1 class="text-xl font-bold leading-tight">Khay May</h1>
+        <p class="text-[11px] leading-tight mt-1">Baby & Children Clothing</p>
+        <p class="text-[11px] font-semibold leading-tight my-0.5" style="font-family: 'Padauk', sans-serif;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
+        <p class="text-[11px] leading-tight">Ph: 09421649505 | Viber: 09668414343</p>
+    </div>
+
+    <!-- Section 1: Sale Info -->
+    <div class="border-t border-b border-dashed border-gray-400 py-1 mb-1 text-[11px]">
+        <div class="flex justify-between">
+            <span>Date: <span id="print-date"></span></span>
+            <span class="font-bold">ID: <span id="print-id"></span></span>
         </div>
-
-        <!-- Section 1: Sale Info -->
-        <div class="border-t-2 border-b-2 border-dashed border-gray-300 py-3 mb-3 text-sm space-y-1">
-            <div class="flex justify-between"><span>Date:</span> <span id="print-date"></span></div>
-            <div class="flex justify-between font-bold"><span>Voucher ID:</span> <span id="print-id"></span></div>
-            <div class="flex justify-between"><span>Sale Type:</span> <span id="print-type" class="uppercase font-bold"></span></div>
-            <div class="flex justify-between"><span>Payment Method:</span> <span id="print-payment"></span></div>
-            <div class="flex justify-between hidden" id="print-due-date-row"><span class="font-bold">Due Date:</span> <span id="print-due-date" class="font-bold"></span></div>
+        <div class="flex justify-between">
+            <span>Type: <span id="print-type" class="uppercase font-bold"></span></span>
+            <span>Pay: <span id="print-payment"></span></span>
         </div>
-
-        <!-- Section 2: Customer & Notes -->
-        <div class="border-b-2 border-dashed border-gray-300 pb-3 mb-3 text-sm space-y-1">
-            <div class="flex justify-between"><span>Name:</span> <span id="print-customer-name" class="font-bold"></span></div>
-            <div class="flex justify-between hidden" id="print-phone-row"><span>Phone:</span> <span id="print-phone"></span></div>
-            <div class="mt-2 pt-2 border-t border-gray-100 hidden" id="print-notes-container">
-                <span class="text-xs text-gray-500 font-bold">Notes:</span><br>
-                <span id="print-notes" class="whitespace-pre-wrap leading-tight block mt-1"></span>
-            </div>
-        </div>
-
-        <!-- Section 3: Items Table -->
-        <table class="w-full text-sm mb-4">
-            <thead>
-                <tr class="border-b-2 border-dashed border-gray-300"><th class="text-left py-2">Item</th><th class="text-center py-2">Qty</th><th class="text-right py-2">Amount</th></tr>
-            </thead>
-            <tbody id="print-items"></tbody>
-        </table>
-
-        <!-- Totals -->
-        <div class="border-t-2 border-dashed border-gray-300 pt-3 text-sm space-y-1">
-            <div class="flex justify-between"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
-            <div class="flex justify-between text-gray-600"><span>Manual Discount:</span> <span id="print-discount"></span></div>
-            <div class="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-gray-200"><span>Grand Total:</span> <span id="print-total"></span></div>
-        </div>
-        
-        <div class="text-center mt-6">
-            <p class="text-sm font-bold">Thank You!</p>
+        <div class="text-right hidden" id="print-due-date-row">
+            <span class="font-bold">Due: <span id="print-due-date"></span></span>
         </div>
     </div>
 
-    <!-- Print Summary Template -->
-    <div id="print-summary-area" class="hidden print-template">
-        <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
-            <img src="logo.png" alt="Khay May" class="h-16 mx-auto mb-2 print-logo object-contain">
-            <h1 class="text-xl font-bold mb-1">Sales Summary</h1>
-            <p class="text-xs mb-1" id="print-summary-date-range"></p>
+    <!-- Section 2: Customer & Notes -->
+    <div class="border-b border-dashed border-gray-400 pb-1 mb-1 text-[11px]">
+        <div class="flex justify-between">
+            <span class="truncate pr-2">Name: <span id="print-customer-name" class="font-bold"></span></span>
+            <span class="whitespace-nowrap hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span>
         </div>
-
-        <div class="mb-4 text-sm space-y-2">
-            <div class="flex justify-between"><span>Total Vouchers:</span> <span id="print-summary-vouchers" class="font-bold"></span></div>
-            <div class="flex justify-between text-lg mt-2 pt-2 border-t border-gray-200"><span>Total Revenue:</span> <span id="print-summary-revenue" class="font-bold text-rose-600"></span></div>
-        </div>
-
-        <h3 class="font-bold text-sm mb-2 mt-4">By Payment Method</h3>
-        <table class="w-full text-sm mb-4">
-            <tbody id="print-summary-payments" class="divide-y divide-dashed divide-gray-200"></tbody>
-        </table>
-
-        <h3 class="font-bold text-sm mb-2 mt-4">By Sale Type</h3>
-        <table class="w-full text-sm mb-4">
-            <tbody id="print-summary-types" class="divide-y divide-dashed divide-gray-200"></tbody>
-        </table>
-
-        <div class="text-center mt-6 pt-4 border-t-2 border-dashed border-gray-300">
-            <p class="text-xs text-gray-500">Printed on: <span id="print-summary-now"></span></p>
+        <div class="hidden mt-0.5" id="print-notes-container">
+            <span class="text-gray-600 font-bold">Notes:</span> <span id="print-notes" class="whitespace-pre-wrap leading-tight"></span>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        // State Variables
+    <!-- Section 3: Items Table -->
+    <table class="w-full text-[11px] mb-1">
+        <thead>
+            <tr class="border-b border-dashed border-gray-400"><th class="text-left py-0.5">Item</th><th class="text-center py-0.5">Qty</th><th class="text-right py-0.5">Amount</th></tr>
+        </thead>
+        <tbody id="print-items"></tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="border-t border-dashed border-gray-400 pt-1 text-[11px]">
+        <div class="flex justify-between"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
+        <div class="flex justify-between text-gray-600"><span>Discount:</span> <span id="print-discount"></span></div>
+        <div class="flex justify-between font-bold text-sm mt-1 pt-1 border-t border-gray-300"><span>Total:</span> <span id="print-total"></span></div>
+    </div>
+    
+    <div class="text-center mt-2">
+        <p class="text-[11px] font-bold">Thank You!</p>
+    </div>
+</div>
+
+<!-- Print Summary Template (Compact Version) -->
+<div id="print-summary-area" class="hidden print-template">
+    <div class="text-center border-b border-dashed border-gray-400 pb-2 mb-2">
+        <h1 class="text-lg font-bold leading-tight mb-1">Sales Summary</h1>
+        <p class="text-[11px]" id="print-summary-date-range"></p>
+    </div>
+
+    <div class="mb-2 text-[11px] space-y-1">
+        <div class="flex justify-between"><span>Vouchers:</span> <span id="print-summary-vouchers" class="font-bold"></span></div>
+        <div class="flex justify-between text-sm mt-1 pt-1 border-t border-gray-300"><span>Revenue:</span> <span id="print-summary-revenue" class="font-bold"></span></div>
+    </div>
+
+    <h3 class="font-bold text-[11px] mb-1 mt-2">By Payment Method</h3>
+    <table class="w-full text-[11px] mb-2">
+        <tbody id="print-summary-payments" class="divide-y divide-dashed divide-gray-200"></tbody>
+    </table>
+
+    <h3 class="font-bold text-[11px] mb-1 mt-2">By Sale Type</h3>
+    <table class="w-full text-[11px] mb-2">
+        <tbody id="print-summary-types" class="divide-y divide-dashed divide-gray-200"></tbody>
+    </table>
+
+    <div class="text-center mt-2 pt-2 border-t border-dashed border-gray-400">
+        <p class="text-[10px] text-gray-500">Printed: <span id="print-summary-now"></span></p>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    // State Variables
         let currentCart = [];
         let sessionSales = []; 
         let webAppUrl = "";
@@ -756,25 +760,25 @@
             }
 
             const saleRecord = {
-                id: voucherId,
-                date: dateStr,
-                isoDate: now.toISOString(),
-                saleType: currentSaleType,
-                paymentMethod: paymentInfo,
-                customer: customerName, // Name is now mandatory
-                phone: customerPhone || '-',
-                notes: notes,
-                items: currentCart.map(i => ({ category: i.category, size: i.size, qty: i.qty, price: i.effectivePrice, total: i.total })),
-                totals: totals
-            };
+            id: voucherId,
+            date: dateStr,
+            isoDate: now.toISOString(),
+            saleType: currentSaleType,
+            paymentMethod: paymentInfo,
+            customer: customerName,
+            phone: customerPhone || '-',
+            notes: notes,
+            items: currentCart.map(i => ({ category: i.category, size: i.size, qty: i.qty, price: i.effectivePrice, total: i.total })),
+            totals: totals
+        };
 
-            // Populate Voucher Section 1: Sale Info
-            document.getElementById('print-date').innerText = new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) + ' ' + now.toLocaleTimeString();
-            document.getElementById('print-id').innerText = saleRecord.id;
-            document.getElementById('print-type').innerText = saleRecord.saleType;
-            document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
-            
-            const dueDateRow = document.getElementById('print-due-date-row');
+        // Populate Voucher Section 1: Sale Info
+        document.getElementById('print-date').innerText = now.toLocaleDateString('en-GB') + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById('print-id').innerText = saleRecord.id;
+        document.getElementById('print-type').innerText = saleRecord.saleType;
+        document.getElementById('print-payment').innerText = saleRecord.paymentMethod;
+        
+        const dueDateRow = document.getElementById('print-due-date-row');
             if (saleRecord.saleType === 'Credit' && dueDateStr) {
                 dueDateRow.classList.remove('hidden');
                 document.getElementById('print-due-date').innerText = dueDateStr;
@@ -800,18 +804,18 @@
             }
 
             // Populate Voucher Section 3: Items
-            document.getElementById('print-items').innerHTML = currentCart.map(item => `
-                <tr class="border-b border-gray-100">
-                    <td class="py-1 pr-2">
-                        ${item.category} (${item.size})
-                        ${item.discountRate > 0 ? `<br><span style="font-size: 10px; color: #666;">Unit: ${formatMMK(item.effectivePrice)} (-${Math.round(item.discountRate*100)}%)</span>` : ''}
-                    </td>
-                    <td class="text-center py-1 align-top">${item.qty}</td>
-                    <td class="text-right py-1 align-top">${formatMMK(item.total)}</td>
-                </tr>
-            `).join('');
-            
-            document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
+        document.getElementById('print-items').innerHTML = currentCart.map(item => `
+            <tr class="border-b border-gray-100">
+                <td class="py-0.5 pr-1">
+                    ${item.category} (${item.size})
+                    ${item.discountRate > 0 ? `<br><span style="font-size: 9px; color: #666;">Unit: ${formatMMK(item.effectivePrice)}</span>` : ''}
+                </td>
+                <td class="text-center py-0.5 align-top">${item.qty}</td>
+                <td class="text-right py-0.5 align-top">${formatMMK(item.total)}</td>
+            </tr>
+        `).join('');
+        
+        document.getElementById('print-subtotal').innerText = formatMMK(totals.subtotal);
             document.getElementById('print-discount').innerText = formatMMK(totals.manualDiscount);
             document.getElementById('print-total').innerText = formatMMK(totals.grandTotal) + " MMK";
 
@@ -866,17 +870,17 @@
             document.getElementById('print-summary-revenue').innerText = formatMMK(totalRevenue) + " MMK";
 
             document.getElementById('print-summary-payments').innerHTML = Object.entries(payments)
-                .sort((a,b)=>b[1]-a[1])
-                .map(([k,v]) => `<tr><td class="py-1">${k}</td><td class="text-right py-1 font-bold">${formatMMK(v)}</td></tr>`).join('');
-                
-            document.getElementById('print-summary-types').innerHTML = Object.entries(types)
-                .sort((a,b)=>b[1]-a[1])
-                .map(([k,v]) => `<tr><td class="py-1">${k}</td><td class="text-right py-1 font-bold">${formatMMK(v)}</td></tr>`).join('');
+            .sort((a,b)=>b[1]-a[1])
+            .map(([k,v]) => `<tr><td class="py-0.5">${k}</td><td class="text-right py-0.5 font-bold">${formatMMK(v)}</td></tr>`).join('');
+            
+        document.getElementById('print-summary-types').innerHTML = Object.entries(types)
+            .sort((a,b)=>b[1]-a[1])
+            .map(([k,v]) => `<tr><td class="py-0.5">${k}</td><td class="text-right py-0.5 font-bold">${formatMMK(v)}</td></tr>`).join('');
 
-            document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-US');
+        document.getElementById('print-summary-now').innerText = new Date().toLocaleString('en-GB', {hour: '2-digit', minute:'2-digit'});
 
-            triggerPrint('print-summary-area');
-        }
+        triggerPrint('print-summary-area');
+    }
 
         function applyFilters() {
             const startVal = document.getElementById('filter-start').value;

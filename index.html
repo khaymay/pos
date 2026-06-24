@@ -22,10 +22,7 @@
 
         /* AGGRESSIVE iOS PRINT OPTIMIZATION & COMPACT LAYOUT */
         @media print {
-            /* 1. Nuke the entire app layout from the renderer to prevent iOS freezing */
             #app-container, #toast-container { display: none !important; }
-            
-            /* 2. Show only the print area */
             body, html { background: white !important; padding: 0 !important; margin: 0 !important; width: 100% !important; height: auto !important; }
             #print-area { 
                 display: block !important; 
@@ -36,12 +33,10 @@
                 visibility: visible !important; 
                 font-family: monospace; 
                 color: black;
-                font-size: 11px; /* Paper saving font size */
+                font-size: 11px; 
                 line-height: 1.3;
             }
             #print-area * { visibility: visible !important; }
-            
-            /* Remove margins/padding from page to save paper */
             @page { margin: 0; }
         }
     </style>
@@ -58,7 +53,6 @@
                 <p class="text-xs font-medium text-slate-400 mt-1 uppercase tracking-wider">POS System</p>
             </div>
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                <!-- Option 1 Visual Highlight Classes are toggled via JS -->
                 <button id="nav-pos" onclick="switchTab('pos')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all duration-200 bg-rose-400 text-white shadow-md">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     Sales Terminal
@@ -100,12 +94,15 @@
                     </div>
                     <nav class="flex-1 px-3 py-4 space-y-1">
                         <button id="mob-nav-pos" onclick="switchTab('pos'); toggleMobileMenu()" class="mob-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-rose-400 text-white">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             Sales Terminal
                         </button>
                         <button id="mob-nav-history" onclick="switchTab('sales'); toggleMobileMenu()" class="mob-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-white text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             Sales History
                         </button>
                         <button id="mob-nav-inventory" onclick="switchTab('inventory'); toggleMobileMenu()" class="mob-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-white text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                             Inventory
                         </button>
                     </nav>
@@ -244,7 +241,7 @@
                     </div>
                 </div>
 
-                <!-- Mobile Cart Toggle FAB (Only visible when drawer is closed) -->
+                <!-- Mobile Cart Toggle FAB -->
                 <div id="mobile-cart-fab" class="lg:hidden fixed bottom-6 inset-x-4 z-30" onclick="toggleMobileCart()">
                     <div class="bg-slate-800 text-white rounded-2xl p-4 flex justify-between items-center shadow-2xl">
                         <div class="flex items-center gap-3">
@@ -299,10 +296,10 @@
                     </div>
                 </div>
 
-                <!-- History List (Cards on Mobile, Table on Desktop) -->
+                <!-- History Table (Scrollable on Mobile) -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden w-full">
-                    <div class="hidden md:block w-full overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                    <div class="w-full overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-wider">
                                     <th class="p-4 font-semibold border-b border-slate-100 w-32">Voucher Info</th>
@@ -317,23 +314,13 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="mobile-history-cards" class="md:hidden p-3 space-y-3 bg-slate-50">
-                        <!-- Mobile Cards injected here -->
-                    </div>
-                    
-                    <!-- Pagination Controls -->
-                    <div class="p-4 border-t border-slate-100 flex justify-between items-center bg-white">
-                        <button id="history-prev-btn" onclick="changeHistoryPage(-1)" class="px-3 py-1.5 text-sm bg-slate-100 text-slate-600 rounded-lg font-medium disabled:opacity-50">Previous</button>
-                        <span id="history-page-info" class="text-xs font-bold text-slate-400">Page 1</span>
-                        <button id="history-next-btn" onclick="changeHistoryPage(1)" class="px-3 py-1.5 text-sm bg-slate-100 text-slate-600 rounded-lg font-medium disabled:opacity-50">Next</button>
-                    </div>
                 </div>
             </section>
 
             <section id="inventory-tab" class="hidden flex-1 flex-col lg:flex-row overflow-hidden relative">
-                <!-- Left: Floating Update Panel -->
+                <!-- Left: Static Update Panel -->
                 <div class="w-full lg:w-80 bg-slate-50 border-b lg:border-b-0 lg:border-r border-slate-100 p-4 lg:p-6 overflow-y-auto">
-                    <div class="sticky top-0 lg:top-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                         <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                             <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                             Adjust Stock
@@ -383,7 +370,7 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Compact Thermal Receipt Area (Hidden from screen, shown on print) -->
+    <!-- Compact Thermal Receipt Area -->
     <div id="print-area" class="hidden">
         <div style="text-align: center; margin-bottom: 5px;">
             <img src="logo.png" style="width: 45px; height: auto; margin: 0 auto 3px;" alt="Logo">
@@ -493,13 +480,11 @@
             }
         };
 
-        // Initialize Inventory State (Memory)
+        // Initialize Inventory State
         let inventoryDB = {};
         for (const p in products) {
             inventoryDB[p] = {};
-            products[p].sizes.forEach(s => {
-                inventoryDB[p][s] = 0; // Default starting stock is 0
-            });
+            products[p].sizes.forEach(s => { inventoryDB[p][s] = 0; });
         }
 
         // App State
@@ -507,7 +492,6 @@
         let currentCart = [];
         let isMobileCartOpen = false;
         let sessionSales = []; 
-        let currentHistoryPage = 1;
         let currentInvAction = 'add';
 
         // Helper: Format Money
@@ -515,32 +499,32 @@
             return Number(num).toLocaleString('en-US');
         }
 
-        // 2. Navigation & UI Core
+        // Navigation Core
         function switchTab(tabId) {
-            // Hide all tabs
             document.getElementById('pos-tab').classList.add('hidden');
             document.getElementById('sales-tab').classList.add('hidden');
             document.getElementById('inventory-tab').classList.add('hidden');
             
-            // Remove active classes (Option 1: rose-400 / white text)
-            document.querySelectorAll('.nav-btn').forEach(btn => {
+            document.querySelectorAll('.nav-btn, .mob-nav-btn').forEach(btn => {
                 btn.classList.remove('bg-rose-400', 'text-white', 'shadow-md');
                 btn.classList.add('bg-white', 'text-slate-500');
-            });
-            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
-                btn.classList.remove('bg-rose-400', 'text-white');
-                btn.classList.add('bg-white', 'text-slate-600');
+                if(btn.classList.contains('mob-nav-btn')) btn.classList.add('text-slate-600');
             });
 
-            // Show selected tab & set active classes
             document.getElementById(tabId + '-tab').classList.remove('hidden');
-            document.getElementById('nav-' + tabId).classList.add('bg-rose-400', 'text-white', 'shadow-md');
-            document.getElementById('nav-' + tabId).classList.remove('bg-white', 'text-slate-500');
             
-            document.getElementById('mob-nav-' + tabId).classList.add('bg-rose-400', 'text-white');
-            document.getElementById('mob-nav-' + tabId).classList.remove('bg-white', 'text-slate-600');
+            const deskBtn = document.getElementById('nav-' + tabId);
+            if(deskBtn) {
+                deskBtn.classList.add('bg-rose-400', 'text-white', 'shadow-md');
+                deskBtn.classList.remove('bg-white', 'text-slate-500');
+            }
+            
+            const mobBtn = document.getElementById('mob-nav-' + tabId);
+            if(mobBtn) {
+                mobBtn.classList.add('bg-rose-400', 'text-white');
+                mobBtn.classList.remove('bg-white', 'text-slate-600');
+            }
 
-            // Update Mobile Header Title
             const titleMap = { 'pos': 'Sales Terminal', 'sales': 'Sales History', 'inventory': 'Inventory' };
             document.getElementById('mobile-header-title').innerText = titleMap[tabId];
             
@@ -549,8 +533,10 @@
 
             if(tabId === 'inventory') updateInventoryUI();
             if(tabId === 'sales') {
-                document.getElementById('filter-start').valueAsDate = new Date();
-                document.getElementById('filter-end').valueAsDate = new Date();
+                const tzOffset = (new Date()).getTimezoneOffset() * 60000; 
+                const localISOTime = (new Date(Date.now() - tzOffset)).toISOString().slice(0, 10);
+                document.getElementById('filter-start').value = localISOTime;
+                document.getElementById('filter-end').value = localISOTime;
                 applyFilters();
             }
         }
@@ -567,20 +553,16 @@
             }
         }
 
-        // Show Toast Notification
         function showToast(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = 'bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold flex items-center gap-2 toast-animate pointer-events-auto';
             toast.innerHTML = `<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> ${message}`;
             container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 2000);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
         }
 
-        // 3. POS Logic
+        // POS Logic
         function initPOS() {
             const catSelect = document.getElementById('product-category');
             const invCatSelect = document.getElementById('inv-product');
@@ -588,12 +570,11 @@
                 catSelect.add(new Option(p, p));
                 invCatSelect.add(new Option(p, p));
             }
-            
-            // Default dates
-            document.getElementById('filter-start').valueAsDate = new Date();
-            document.getElementById('filter-end').valueAsDate = new Date();
+            const tzOffset = (new Date()).getTimezoneOffset() * 60000; 
+            const localISOTime = (new Date(Date.now() - tzOffset)).toISOString().slice(0, 10);
+            document.getElementById('filter-start').value = localISOTime;
+            document.getElementById('filter-end').value = localISOTime;
 
-            // Load saved Sheet URL
             const savedUrl = localStorage.getItem('khaymay_sheet_url');
             if (savedUrl) {
                 document.getElementById('sheet-url').value = savedUrl;
@@ -603,7 +584,6 @@
 
         function setSaleType(type) {
             currentSaleType = type;
-            // Handle Visual Highlight (Option 1) for Sale Type
             ['Retail', 'Wholesale', 'Credit'].forEach(t => {
                 const btn = document.getElementById(`btn-type-${t}`);
                 if(btn) {
@@ -617,19 +597,13 @@
                 }
             });
 
-            // Update Validation logic
             if (type === 'Credit') {
                 document.getElementById('payment-method-box').classList.add('hidden');
                 document.getElementById('credit-period-box').classList.remove('hidden');
-                document.getElementById('payment-method').required = false;
-                document.getElementById('credit-period').required = true;
             } else {
                 document.getElementById('payment-method-box').classList.remove('hidden');
                 document.getElementById('credit-period-box').classList.add('hidden');
-                document.getElementById('payment-method').required = true;
-                document.getElementById('credit-period').required = false;
             }
-            
             updatePrice();
             validateCheckout();
         }
@@ -661,35 +635,23 @@
             const cat = document.getElementById('product-category').value;
             const size = document.getElementById('product-size').value;
             const price = parseInt(document.getElementById('base-price').value) || 0;
-            const qtyInput = document.getElementById('quantity');
-            const qty = parseInt(qtyInput.value) || 1;
+            const qty = parseInt(document.getElementById('quantity').value) || 1;
 
             if (!cat || !size || price <= 0 || qty <= 0) {
-                alert("Please select a product, size, and ensure quantity is at least 1.");
+                alert("Please select a product, size, and valid quantity.");
                 return;
             }
 
-            // Check if already in cart to group them
             const existingItem = currentCart.find(i => i.name === cat && i.size === size && i.price === price);
             if (existingItem) {
                 existingItem.qty += qty;
                 existingItem.total = existingItem.qty * existingItem.price;
             } else {
-                currentCart.push({
-                    name: cat,
-                    size: size,
-                    price: price,
-                    qty: qty,
-                    total: price * qty
-                });
+                currentCart.push({ name: cat, size: size, price: price, qty: qty, total: price * qty });
             }
 
             renderCart();
             showToast(`${qty}x ${cat} added!`);
-            
-            // WE DO NOT RESET category, size, or qty per user request.
-            // Just update validation to allow instant checking out.
-            validateCheckout();
         }
 
         function renderCart() {
@@ -726,7 +688,6 @@
             document.getElementById('summary-subtotal').innerText = formatMMK(subtotal) + " MMK";
             document.getElementById('summary-total').innerText = formatMMK(grandTotal) + " MMK";
             
-            // Mobile Fab Updates
             document.getElementById('fab-badge').innerText = currentCart.length;
             document.getElementById('mobile-cart-badge').innerText = currentCart.length;
             document.getElementById('fab-total').innerText = formatMMK(grandTotal);
@@ -785,11 +746,7 @@
 
         function generateId() {
             const d = new Date();
-            const dateStr = [
-                d.getDate().toString().padStart(2, '0'),
-                (d.getMonth() + 1).toString().padStart(2, '0'),
-                d.getFullYear().toString().substring(2)
-            ].join('');
+            const dateStr = [ d.getDate().toString().padStart(2, '0'), (d.getMonth() + 1).toString().padStart(2, '0'), d.getFullYear().toString().substring(2) ].join('');
             const r = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
             return `KM-${dateStr}-${r}`;
         }
@@ -797,11 +754,8 @@
         function checkout() {
             if (currentCart.length === 0) return;
             
-            // Build Record
             const id = generateId();
             const now = new Date();
-            
-            // Format time compactly for the receipt
             const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             const shortDate = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear().toString().substring(2)} ${timeStr}`;
 
@@ -817,34 +771,24 @@
             }
 
             const saleRecord = {
-                id: id,
-                date: shortDate,
-                isoDate: now.toISOString(),
-                saleType: currentSaleType,
-                customer: document.getElementById('cust-name').value || "Guest",
-                phone: document.getElementById('cust-phone').value || "",
-                paymentMethod: paymentMethod,
-                notes: document.getElementById('sale-notes').value || "",
-                items: [...currentCart],
-                totals: { subtotal, manualDiscount: discount, grandTotal }
+                id: id, date: shortDate, isoDate: now.toISOString(), saleType: currentSaleType,
+                customer: document.getElementById('cust-name').value || "Guest", phone: document.getElementById('cust-phone').value || "",
+                paymentMethod: paymentMethod, notes: document.getElementById('sale-notes').value || "",
+                items: [...currentCart], totals: { subtotal, manualDiscount: discount, grandTotal }
             };
 
-            // 1. Auto-Deduct from Inventory
             currentCart.forEach(item => {
                 if(inventoryDB[item.name] && inventoryDB[item.name][item.size] !== undefined) {
                     inventoryDB[item.name][item.size] -= item.qty;
                 }
             });
-            // Re-render size dropdown to show new live stock
             if(document.getElementById('product-category').value !== '') updateSizes();
             updateInventoryUI();
 
-            // 2. Populate Print Template (Compact Version)
             document.getElementById('print-date').innerText = saleRecord.date;
             document.getElementById('print-id').innerText = id;
             document.getElementById('print-type').innerText = saleRecord.saleType;
             document.getElementById('print-method').innerText = saleRecord.paymentMethod;
-            
             document.getElementById('print-name').innerText = saleRecord.customer;
             document.getElementById('print-phone').innerText = saleRecord.phone;
             
@@ -870,25 +814,20 @@
             document.getElementById('print-discount').innerText = formatMMK(saleRecord.totals.manualDiscount);
             document.getElementById('print-grandtotal').innerText = formatMMK(saleRecord.totals.grandTotal);
 
-            // 3. Push Data & Print
             if(!window.allFirebaseSales) window.allFirebaseSales = [];
             window.allFirebaseSales.unshift(saleRecord);
-            applyFilters(); // updates history view
+            applyFilters();
             
             if (window.webAppUrl) fetch(window.webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saleRecord) }).catch(e=>console.log(e));
             
             window.print();
 
-            // 4. Reset Cart Data (Keep Product/Size per request)
             currentCart = [];
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
             document.getElementById('sale-notes').value = '';
-            
-            // Reset Payment/Credit to default disabled options
             document.getElementById('payment-method').value = ''; 
             document.getElementById('credit-period').value = ''; 
-            
             document.getElementById('summary-discount').value = '0';
             if(isMobileCartOpen) toggleMobileCart();
             renderCart();
@@ -904,6 +843,16 @@
             }
         }
 
+        // JS Date Parsing Logic
+        function safeParseDate(dateStr) {
+            if (!dateStr) return 0;
+            const parts = dateStr.split(/[\/\-\s:]/);
+            if (parts.length >= 3 && parts[2].length === 2) {
+                return new Date(2000 + parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])).getTime();
+            }
+            return new Date(dateStr).getTime();
+        }
+
         function applyFilters() {
             const startVal = document.getElementById('filter-start').value;
             const endVal = document.getElementById('filter-end').value;
@@ -915,122 +864,64 @@
             const searchTxt = searchInput ? searchInput.value.toLowerCase() : "";
 
             sessionSales = window.allFirebaseSales.filter(s => { 
-                // Safely parse iOS dates and ISO dates
-                let sTime = 0;
-                if (s.isoDate) {
-                    sTime = new Date(s.isoDate).getTime();
-                } else if (s.date) {
-                    const parts = s.date.split(/[\/\-\s:]/); 
-                    if (parts.length >= 3) {
-                        sTime = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T12:00:00`).getTime();
-                    } else {
-                        sTime = new Date(s.date).getTime();
-                    }
-                }
-                if (isNaN(sTime) || sTime === 0) return true; // fallback
-
-                const inDate = (sTime >= startObj && sTime <= endObj); 
-                if (!inDate) return false;
+                let sTime = s.isoDate ? new Date(s.isoDate).getTime() : safeParseDate(s.date);
+                if (isNaN(sTime) || sTime === 0) return true;
+                if (sTime < startObj || sTime > endObj) return false;
                 if (!searchTxt) return true;
-                
-                const searchStr = `${s.id} ${s.customer} ${s.phone}`.toLowerCase();
-                return searchStr.includes(searchTxt);
+                return `${s.id} ${s.customer} ${s.phone}`.toLowerCase().includes(searchTxt);
             });
             
             sessionSales.sort((a, b) => {
-                let aTime = a.isoDate ? new Date(a.isoDate).getTime() : 0;
-                let bTime = b.isoDate ? new Date(b.isoDate).getTime() : 0;
-                return bTime - aTime; // Newest first
+                let aTime = a.isoDate ? new Date(a.isoDate).getTime() : safeParseDate(a.date);
+                let bTime = b.isoDate ? new Date(b.isoDate).getTime() : safeParseDate(b.date);
+                return bTime - aTime;
             });
 
             document.getElementById('stat-total-vouchers').innerText = sessionSales.length;
             document.getElementById('stat-total-revenue').innerText = formatMMK(sessionSales.reduce((sum, s) => sum + (s.totals ? s.totals.grandTotal : 0), 0)) + " MMK";
             
-            currentHistoryPage = 1;
-            renderHistoryPage();
+            renderHistory();
         }
 
-        function changeHistoryPage(delta) {
-            currentHistoryPage += delta;
-            renderHistoryPage();
-        }
-
-        function renderHistoryPage() {
+        function renderHistory() {
             const tbody = document.getElementById('history-tbody');
-            const mobileContainer = document.getElementById('mobile-history-cards');
-            if(!tbody || !mobileContainer) return;
-            
+            if(!tbody) return;
             tbody.innerHTML = '';
-            mobileContainer.innerHTML = '';
             
-            const startIdx = (currentHistoryPage - 1) * 10;
-            const endIdx = startIdx + 10;
-            const pageData = sessionSales.slice(startIdx, endIdx);
-            
-            if(pageData.length === 0) {
-                const emptyMsg = `<div class="p-6 text-center text-slate-500 text-sm bg-white rounded-xl border border-slate-100">No sales found for this period.</div>`;
-                tbody.innerHTML = `<tr><td colspan="5">${emptyMsg}</td></tr>`;
-                mobileContainer.innerHTML = emptyMsg;
+            if(sessionSales.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 text-sm">No sales found for this period.</td></tr>`;
             } else {
-                pageData.forEach(sale => {
+                sessionSales.forEach(sale => {
                     const total = sale.totals ? sale.totals.grandTotal : 0;
                     const itemsStr = (sale.items || []).map(i => `${i.qty}x ${i.name}`).join(', ');
                     
-                    // Desktop Row
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="p-4 align-top border-b border-slate-100">
-                                <div class="font-bold text-slate-800 text-sm">${sale.id || '-'}</div>
-                                <div class="text-xs text-slate-500 mt-0.5">${sale.date}</div>
+                                <div class="font-bold text-slate-800 text-sm whitespace-nowrap">${sale.id || '-'}</div>
+                                <div class="text-xs text-slate-500 mt-0.5 whitespace-nowrap">${sale.date}</div>
                             </td>
                             <td class="p-4 align-top border-b border-slate-100">
-                                <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-bold uppercase">${sale.saleType || 'Retail'}</span>
+                                <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-md text-xs font-bold uppercase whitespace-nowrap">${sale.saleType || 'Retail'}</span>
                             </td>
                             <td class="p-4 align-top border-b border-slate-100">
-                                <div class="font-semibold text-sm text-slate-800">${sale.customer || 'Guest'}</div>
-                                <div class="text-xs text-slate-500 mt-0.5">${sale.phone || '-'}</div>
+                                <div class="font-semibold text-sm text-slate-800 whitespace-nowrap">${sale.customer || 'Guest'}</div>
+                                <div class="text-xs text-slate-500 mt-0.5 whitespace-nowrap">${sale.phone || '-'}</div>
                             </td>
                             <td class="p-4 text-sm text-slate-600 align-top border-b border-slate-100">
-                                <div class="line-clamp-2 text-xs">${itemsStr}</div>
+                                <div class="line-clamp-2 text-xs min-w-[200px]">${itemsStr}</div>
                             </td>
                             <td class="p-4 font-bold text-rose-600 text-right align-top border-b border-slate-100">
-                                <div class="text-base">${formatMMK(total)}</div>
-                                <div class="text-[10px] text-slate-400 mt-0.5 uppercase">${sale.paymentMethod || 'Cash'}</div>
+                                <div class="text-base whitespace-nowrap">${formatMMK(total)}</div>
+                                <div class="text-[10px] text-slate-400 mt-0.5 uppercase whitespace-nowrap">${sale.paymentMethod || 'Cash'}</div>
                             </td>
                         </tr>
                     `;
-
-                    // Mobile Card
-                    mobileContainer.innerHTML += `
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col gap-3">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <div class="font-bold text-slate-800 text-sm">${sale.id || '-'}</div>
-                                    <div class="text-[10px] text-slate-400 mt-0.5">${sale.date}</div>
-                                </div>
-                                <div class="text-right">
-                                    <span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-bold uppercase mb-1">${sale.saleType || 'Retail'}</span>
-                                    <div class="text-[10px] text-slate-400 uppercase">${sale.paymentMethod || 'Cash'}</div>
-                                </div>
-                            </div>
-                            <div class="bg-slate-50 p-2 rounded border border-slate-100">
-                                <div class="font-semibold text-sm text-slate-800">${sale.customer || 'Guest'} ${sale.phone ? `<span class="text-xs text-slate-500 font-normal">(${sale.phone})</span>` : ''}</div>
-                                <div class="text-xs text-slate-600 mt-1">${itemsStr}</div>
-                            </div>
-                            <div class="text-right font-black text-rose-600 text-lg border-t border-slate-50 pt-2">
-                                ${formatMMK(total)} MMK
-                            </div>
-                        </div>
-                    `;
                 });
             }
-            
-            const totalPages = Math.ceil(sessionSales.length / 10) || 1;
-            document.getElementById('history-page-info').innerText = `Page ${currentHistoryPage} of ${totalPages}`;
-            document.getElementById('history-prev-btn').disabled = currentHistoryPage <= 1;
-            document.getElementById('history-next-btn').disabled = currentHistoryPage >= totalPages;
         }
 
+        // Inventory Logic
         function updateInvSizes() {
             const cat = document.getElementById('inv-product').value;
             const sizeSelect = document.getElementById('inv-size');
@@ -1058,25 +949,16 @@
             const size = document.getElementById('inv-size').value;
             const qty = parseInt(document.getElementById('inv-qty').value) || 0;
 
-            if(!prod || !size || qty <= 0) {
-                alert("Please select product, size, and valid quantity.");
-                return;
-            }
+            if(!prod || !size || qty <= 0) { alert("Please select product, size, and valid quantity."); return; }
 
-            if (currentInvAction === 'add') {
-                inventoryDB[prod][size] += qty;
-            } else {
-                inventoryDB[prod][size] -= qty;
-            }
+            if (currentInvAction === 'add') inventoryDB[prod][size] += qty;
+            else inventoryDB[prod][size] -= qty;
 
             showToast(`Inventory updated: ${prod} (${size})`);
             document.getElementById('inv-qty').value = 1;
             updateInventoryUI();
             
-            // Also update POS dropdowns if currently selected
-            if(document.getElementById('product-category').value === prod) {
-                updateSizes();
-            }
+            if(document.getElementById('product-category').value === prod) updateSizes();
         }
 
         function updateInventoryUI() {
@@ -1091,10 +973,9 @@
                 products[prod].sizes.forEach(size => {
                     const stock = inventoryDB[prod][size];
                     totalStockForProduct += stock;
-                    
-                    let badgeColor = "bg-emerald-100 text-emerald-700"; // Good stock
-                    if (stock <= 0) badgeColor = "bg-red-100 text-red-700"; // Empty
-                    else if (stock < 5) badgeColor = "bg-orange-100 text-orange-700"; // Low
+                    let badgeColor = "bg-emerald-100 text-emerald-700";
+                    if (stock <= 0) badgeColor = "bg-red-100 text-red-700";
+                    else if (stock < 5) badgeColor = "bg-orange-100 text-orange-700";
 
                     rows += `
                         <div class="flex justify-between items-center py-2 border-b border-slate-50 last:border-0">
@@ -1110,15 +991,12 @@
                             <h3 class="font-bold text-slate-800">${prod}</h3>
                             <span class="text-xs font-semibold text-slate-400">Total: ${totalStockForProduct}</span>
                         </div>
-                        <div class="bg-white rounded-lg p-3 border border-slate-100 flex-1">
-                            ${rows}
-                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-slate-100 flex-1">${rows}</div>
                     </div>
                 `;
             }
         }
 
-        // Boot App
         window.onload = initPOS;
     </script>
 </body>

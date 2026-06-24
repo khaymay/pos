@@ -32,23 +32,12 @@
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Aggressive iOS Print Fix - Hides everything except the active receipt template */
+        /* Aggressive iOS Print Fix */
         @media print {
             body * { display: none !important; }
-            body, html {
-                margin: 0 !important; padding: 0 !important;
-                background-color: white !important; width: 100% !important;
-            }
-            .print-template.active-print, .print-template.active-print * {
-                display: block !important;
-                visibility: visible !important;
-            }
-            .print-template.active-print {
-                position: absolute !important; left: 0 !important; top: 0 !important;
-                width: 100% !important; max-width: 80mm !important;
-                margin: 0 auto !important; padding: 5px !important;
-                font-family: 'Quicksand', 'Padauk', sans-serif !important; color: black !important;
-            }
+            body, html { margin: 0 !important; padding: 0 !important; background-color: white !important; width: 100% !important; }
+            .print-template.active-print, .print-template.active-print * { display: block !important; visibility: visible !important; }
+            .print-template.active-print { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; max-width: 80mm !important; margin: 0 auto !important; padding: 5px !important; font-family: 'Quicksand', 'Padauk', sans-serif !important; color: black !important; }
             .print-template .print-logo { filter: none !important; }
             .print-flex-row, .print-flex-row * { display: flex !important; justify-content: space-between !important; }
             table { display: table !important; }
@@ -60,7 +49,6 @@
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
 
-    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden md:flex flex-col z-20">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -101,7 +89,6 @@
             </div>
         </header>
 
-        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 md:pb-6">
                 
@@ -176,8 +163,9 @@
                                     </select>
                                 </div>
                                 <div id="credit-period-box" class="hidden">
-                                    <label class="block text-xs font-semibold text-rose-500 mb-1">Credit Period</label>
+                                    <label class="block text-xs font-semibold text-rose-500 mb-1">Credit Period (Required)</label>
                                     <select id="credit-period" onchange="validateCheckout()" class="w-full px-3 py-2 rounded-lg border border-rose-200 text-sm focus:outline-none bg-rose-50 text-rose-700 font-medium">
+                                        <option value="" disabled selected>Choose Credit Term</option>
                                         <option value="30">30 Days</option>
                                         <option value="45">45 Days</option>
                                         <option value="60">60 Days</option>
@@ -232,20 +220,17 @@
             </div>
         </section>
 
-        <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
-            <div class="mb-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden md:block shrink-0">
-                <h2 class="text-lg font-bold text-slate-800 mb-2">Google Sheets Integration</h2>
-                <div class="flex gap-3">
-                    <input type="url" id="sheet-url" placeholder="Paste your Google Apps Script Web App URL here..." class="flex-1 px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                    <button onclick="saveSettings()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 text-sm rounded-xl font-bold transition-colors">Save Connection</button>
-                </div>
-            </div>
-
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-6">
                 <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Shared Sales History</h2>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h2 class="text-2xl font-bold text-slate-800">Shared Sales History</h2>
+                            <!-- Gear Icon for Google Sheets Settings -->
+                            <button onclick="toggleSettingsModal()" class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer" title="Google Sheets Settings">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </button>
+                        </div>
                         <div class="flex flex-wrap items-center gap-3 mt-2">
                             <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200">
                                 <input type="date" id="filter-start" onchange="applyFilters()" class="bg-transparent font-medium text-slate-700 outline-none">
@@ -259,7 +244,7 @@
                         </div>
                         <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
                             <span class="relative flex h-2 w-2 mr-2"><span class="absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
-                            Cloud Sync Offline (Setup Required)
+                            Cloud Sync Offline
                         </div>
                     </div>
                     <div class="flex gap-4 flex-wrap">
@@ -294,17 +279,9 @@
                         <p>No sales found in this date range.</p>
                     </div>
                 </div>
-                
-                <!-- Pagination Controls -->
-                <div id="history-pagination" class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center shrink-0 hidden">
-                    <button onclick="changeHistoryPage(-1)" id="btn-prev-page" class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Previous</button>
-                    <span class="text-sm font-medium text-slate-500">Page <span id="current-page-label">1</span> of <span id="total-page-label">1</span></span>
-                    <button onclick="changeHistoryPage(1)" id="btn-next-page" class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Next</button>
-                </div>
             </div>
         </section>
 
-        <!-- Inventory Tab -->
         <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 md:pb-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 flex-1 items-start">
                 <!-- Stock In Form -->
@@ -338,7 +315,7 @@
                 </div>
 
                 <!-- Master Inventory Table -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:col-span-2 flex flex-col h-[500px] md:h-full">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:col-span-2 flex flex-col">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
                         <h2 class="text-lg font-bold text-slate-800">Master Inventory</h2>
                         <div class="flex items-center gap-2">
@@ -346,7 +323,7 @@
                             <div class="w-3 h-3 rounded-full bg-rose-500"></div><span class="text-xs text-slate-500 font-medium">Out (0)</span>
                         </div>
                     </div>
-                    <div class="overflow-y-auto flex-1">
+                    <div class="flex-1">
                         <table class="w-full text-left border-collapse">
                             <thead class="sticky top-0 bg-white shadow-[0_2px_5px_rgba(0,0,0,0.02)] z-10">
                                 <tr class="text-slate-400 text-xs uppercase border-b border-slate-100">
@@ -365,6 +342,22 @@
         </section>
         
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
+
+        <!-- Settings Modal (Google Sheets Integration) -->
+        <div id="settings-modal" class="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-800">Google Sheets Connection</h3>
+                    <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <p class="text-sm text-slate-500 mb-4">Paste your Google Apps Script Web App URL below to instantly sync your sales to your private Google Sheet.</p>
+                <input type="url" id="sheet-url" placeholder="https://script.google.com/macros/s/..." class="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500 outline-none mb-4">
+                <button onclick="saveSettings()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition-colors">Save Connection</button>
+            </div>
+        </div>
+
     </main>
 
     <!-- Print Template (Compact Version) -->
@@ -450,7 +443,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
         // State Variables
         let currentCart = [];
@@ -458,8 +450,6 @@
         let webAppUrl = "";
         let currentSaleType = 'Retail';
         let isMobileCartOpen = false;
-        let currentHistoryPage = 1;
-        const HISTORY_ITEMS_PER_PAGE = 10;
         window.localInventory = {};
 
         // Product Database
@@ -520,6 +510,22 @@
             container.appendChild(toast);
             setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
+        
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            if(modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+        
+        function saveSettings() {
+            window.webAppUrl = document.getElementById('sheet-url').value.trim();
+            localStorage.setItem('khaymay_sheet_url', window.webAppUrl);
+            showToast('Google Sheets Linked!');
+            toggleSettingsModal();
+        }
 
         window.onload = function() {
             const productSelect = document.getElementById('item-product');
@@ -546,7 +552,7 @@
                 window.webAppUrl = localStorage.getItem('khaymay_sheet_url');
                 document.getElementById('sheet-url').value = window.webAppUrl;
             }
-            switchTab('pos-tab'); // Ensures perfect initial state
+            switchTab('pos-tab'); 
             setSaleType('Retail');
             renderCart();
             window.updateInventoryUI();
@@ -558,18 +564,17 @@
                 const el = document.getElementById(id);
                 if(el) {
                     el.classList.add('hidden');
-                    // Remove flex display if it's there, to ensure hidden works perfectly
                     el.classList.remove('flex'); 
                 }
                 
-                // Reset Desktop Nav Colors (Soft Gray)
+                // Reset Desktop Nav Colors
                 const deskBtn = document.getElementById(`nav-desk-${id}`);
                 if(deskBtn) {
                     deskBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
                     deskBtn.classList.add('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700');
                 }
                 
-                // Reset Mobile Nav Colors (Soft Gray)
+                // Reset Mobile Nav Colors
                 const mobBtn = document.getElementById(`nav-mob-${id}`);
                 if(mobBtn) {
                     mobBtn.classList.remove('bg-rose-400', 'text-white', 'shadow-md');
@@ -581,17 +586,17 @@
             const activeEl = document.getElementById(tabId);
             if(activeEl) {
                 activeEl.classList.remove('hidden');
-                activeEl.classList.add('flex'); // Safely restore layout
+                activeEl.classList.add('flex');
             }
             
-            // Highlight Desktop Active Button (Rose Pink - Option 1)
+            // Highlight Desktop Active Button
             const activeDeskBtn = document.getElementById(`nav-desk-${tabId}`);
             if(activeDeskBtn) {
                 activeDeskBtn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-700');
                 activeDeskBtn.classList.add('bg-rose-400', 'text-white', 'shadow-md', 'font-bold');
             }
             
-            // Highlight Mobile Active Button (Rose Pink - Option 1)
+            // Highlight Mobile Active Button
             const activeMobBtn = document.getElementById(`nav-mob-${tabId}`);
             if(activeMobBtn) {
                 activeMobBtn.classList.remove('bg-slate-100', 'text-slate-600');
@@ -789,7 +794,6 @@
                 
                 renderCart();
                 showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
-                // Removed resetting of inputs per user request!
             }
         }
 
@@ -847,7 +851,6 @@
             if(badge) badge.innerText = totalItems;
             if(mTotal) mTotal.innerText = formatMMK(grandTotal) + " MMK";
             
-            // Clean handling of mobile floating cart box to prevent dead invisible spots
             if(floatCart) {
                 if (totalItems > 0) {
                     floatCart.classList.remove('hidden'); 
@@ -1106,32 +1109,60 @@
             document.getElementById('stat-total-vouchers').innerText = sessionSales.length;
             document.getElementById('stat-total-revenue').innerText = formatMMK(sessionSales.reduce((sum, s) => sum + (s.totals ? s.totals.grandTotal : 0), 0)) + " MMK";
             
-            currentHistoryPage = 1;
-            renderHistoryPage();
+            renderHistory();
         }
         
-        function changeHistoryPage(delta) {
-            currentHistoryPage += delta;
-            renderHistoryPage();
-            // Scroll to top of history section smoothly
-            const historyBody = document.getElementById('history-body');
-            if(historyBody) historyBody.parentElement.scrollTop = 0;
-        }
-
-        function toggleSettingsModal() {
-            const modal = document.getElementById('settings-modal');
-            if(modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
+        function renderHistory() {
+            const tbody = document.getElementById('history-body');
+            const emptyMsg = document.getElementById('empty-history-msg');
+            
+            if (!tbody) return;
+            
+            tbody.innerHTML = "";
+            
+            if (sessionSales.length === 0) {
+                if (emptyMsg) {
+                    emptyMsg.classList.remove('hidden');
+                    emptyMsg.classList.add('flex');
+                }
             } else {
-                modal.classList.add('hidden');
+                if (emptyMsg) {
+                    emptyMsg.classList.add('hidden');
+                    emptyMsg.classList.remove('flex');
+                }
+                
+                sessionSales.forEach(sale => {
+                    const methodStr = sale.saleType === 'Credit' ? (sale.paymentMethod||'-') : (sale.paymentMethod||'Cash');
+                    const dateObj = new Date(sale.isoDate || sale.date);
+                    const dateStr = dateObj.toLocaleDateString('en-US', {month:'short',day:'numeric'});
+                    const timeStr = dateObj.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+                    
+                    let typeColor = 'bg-rose-50 text-rose-600';
+                    if(sale.saleType === 'Credit') typeColor = 'bg-amber-100 text-amber-700';
+                    if(sale.saleType === 'Wholesale') typeColor = 'bg-blue-100 text-blue-700';
+                    
+                    const itemsHtml = (sale.items||[]).map(i => `<li class="truncate">• ${i.category} (${i.size}) x <span class="font-bold">${i.qty}</span></li>`).join('');
+
+                    tbody.innerHTML += `
+                        <div class="hidden md:grid grid-cols-5 gap-4 p-4 hover:bg-slate-50 text-slate-600 transition-colors">
+                            <div class="flex flex-col justify-center">
+                                <span class="font-bold text-slate-800">${dateStr} <span class="text-xs font-normal text-slate-500 ml-1">${timeStr}</span></span>
+                                <span class="mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full w-fit ${typeColor}">${sale.saleType||'Retail'}</span>
+                            </div>
+                            <div class="font-mono text-sm text-slate-500 flex items-center">${sale.id}</div>
+                            <div class="text-sm flex flex-col justify-center">
+                                <span class="font-bold text-slate-800">${sale.customer || 'Guest'}</span>
+                                <span class="text-xs text-slate-500">${methodStr}</span>
+                            </div>
+                            <div class="text-xs text-slate-600">
+                                <ul class="space-y-1 font-medium">${itemsHtml}</ul>
+                            </div>
+                            <div class="text-right flex flex-col justify-center">
+                                <span class="font-bold text-slate-800 text-base">${formatMMK(sale.totals ? sale.totals.grandTotal : 0)}</span>
+                            </div>
+                        </div>`;
+                });
             }
-        }
-        
-        function saveSettings() {
-            window.webAppUrl = document.getElementById('sheet-url').value.trim();
-            localStorage.setItem('khaymay_sheet_url', window.webAppUrl);
-            showToast('Google Sheets Linked!');
-            toggleSettingsModal(); // Hide modal after saving
         }
     </script>
     
@@ -1223,8 +1254,6 @@
                     if(window.updateInventoryUI) window.updateInventoryUI();
                 });
             });
-            
-            window.pushToFirebaseUnauth = window.pushToFirebase;
 
         } catch (e) { console.error("Firebase init error:", e); }
     </script>

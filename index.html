@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Khay May - Retail OS</title>
+    <title>Khay May - Point of Sale</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
@@ -32,6 +32,9 @@
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
+
+        /* Voucher Flex Row - Global so html2canvas sees it correctly */
+        .print-flex-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; gap: 8px; }
 
         /* Minimal Native Print CSS */
         @media print {
@@ -451,33 +454,33 @@
             
             <div class="p-6 overflow-y-auto bg-slate-100 flex justify-center items-start flex-1" id="voucher-scroll-area">
                 <!-- Inner standard 80mm printable wrapper -->
-                <div id="print-area" class="bg-white p-4 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif;">
-                    <div class="text-center pb-1 mb-1">
-                        <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 2px;">
-                        <h1 style="font-size: 16px; font-weight: bold; margin: 0; line-height: 1.1;">Khay May</h1>
-                        <p style="font-size: 10px; margin: 1px 0; line-height: 1.1;">Baby & Children Clothing</p>
-                        <p style="font-size: 10px; font-weight: bold; margin: 1px 0; font-family: 'Padauk', sans-serif; line-height: 1.1;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
-                        <p style="font-size: 10px; margin: 0; line-height: 1.1;">Ph: 09421649505 | Viber: 09668414343</p>
+                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif;">
+                    <div class="text-center pb-2 mb-2">
+                        <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 4px;">
+                        <h1 style="font-size: 18px; font-weight: bold; margin: 0; line-height: 1.2;">Khay May</h1>
+                        <p style="font-size: 11px; margin: 2px 0; line-height: 1.2;">Baby & Children Clothing</p>
+                        <p style="font-size: 11px; font-weight: bold; margin: 2px 0; font-family: 'Padauk', sans-serif; line-height: 1.2;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
+                        <p style="font-size: 11px; margin: 0; line-height: 1.2;">Ph: 09421649505 | Viber: 09668414343</p>
                     </div>
-                    <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 2px 0; margin-bottom: 2px; font-size: 11px;">
-                        <div class="print-flex-row"><span>Date: <span id="print-date"></span></span><span style="font-weight: bold;">ID: <span id="print-id"></span></span></div>
-                        <div class="print-flex-row mt-0.5"><span>Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold;"></span></span><span>Pay: <span id="print-payment"></span></span></div>
-                        <div class="print-flex-row mt-0.5 hidden" id="print-due-date-row" style="justify-content: flex-end !important;"><span style="font-weight: bold;">Due: <span id="print-due-date"></span></span></div>
+                    <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 6px 0; margin-bottom: 4px; font-size: 12px; line-height: 1.4;">
+                        <div class="print-flex-row"><span style="color: #444;">Date: <span id="print-date" style="color: #000;"></span></span><span style="font-weight: bold;">ID: <span id="print-id"></span></span></div>
+                        <div class="print-flex-row mt-1"><span style="color: #444;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></span><span style="color: #444;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></span></div>
+                        <div class="print-flex-row mt-1 hidden" id="print-due-date-row" style="justify-content: flex-end;"><span style="color: #444;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></span></div>
                     </div>
-                    <div style="border-bottom: 1px dashed #999; padding-bottom: 2px; margin-bottom: 2px; font-size: 11px;">
-                        <div class="print-flex-row"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;">Name: <span id="print-customer-name" style="font-weight: bold;"></span></span><span style="white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span></div>
-                        <div class="hidden" id="print-notes-container" style="margin-top: 2px; line-height: 1.1;"><span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span></div>
+                    <div style="border-bottom: 1px dashed #999; padding-bottom: 6px; margin-bottom: 4px; font-size: 12px; line-height: 1.4;">
+                        <div class="print-flex-row"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></span><span style="white-space: nowrap; color: #444;" class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span></div>
+                        <div class="hidden mt-1" id="print-notes-container"><span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span></div>
                     </div>
-                    <table style="width: 100%; font-size: 11px; margin-bottom: 2px; border-collapse: collapse;">
-                        <thead><tr style="border-bottom: 1px dashed #999;"><th style="text-align: left; padding: 2px 0;">Item</th><th style="text-align: center; padding: 2px 0;">Qty</th><th style="text-align: right; padding: 2px 0;">Amount</th></tr></thead>
+                    <table style="width: 100%; font-size: 12px; margin-bottom: 6px; border-collapse: collapse; line-height: 1.4;">
+                        <thead><tr style="border-bottom: 1px dashed #999;"><th style="text-align: left; padding: 4px 0;">Item</th><th style="text-align: center; padding: 4px 0;">Qty</th><th style="text-align: right; padding: 4px 0;">Amount</th></tr></thead>
                         <tbody id="print-items"></tbody>
                     </table>
-                    <div style="border-top: 1px dashed #999; padding-top: 2px; font-size: 11px;">
-                        <div class="print-flex-row"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
-                        <div class="print-flex-row" style="color: #444;"><span>Discount:</span> <span id="print-discount"></span></div>
-                        <div class="print-flex-row" style="font-weight: bold; font-size: 13px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 2px;"><span>Total:</span> <span id="print-total"></span></div>
+                    <div style="border-top: 1px dashed #999; padding-top: 6px; font-size: 12px; line-height: 1.4; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <div style="display: flex; justify-content: flex-end; width: 100%;"><span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span></div>
+                        <div style="display: flex; justify-content: flex-end; width: 100%;"><span style="width: 70px; text-align: left; color: #444;">Discount:</span> <span id="print-discount" style="width: 80px; text-align: right; font-weight: bold;"></span></div>
+                        <div style="display: flex; justify-content: flex-end; width: 100%; font-size: 14px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 6px;"><span style="width: 70px; text-align: left; font-weight: bold;">Total:</span> <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span></div>
                     </div>
-                    <div style="text-align: center; margin-top: 5px;"><p style="font-size: 11px; font-weight: bold; margin: 0;">Thank You!</p></div>
+                    <div style="text-align: center; margin-top: 12px;"><p style="font-size: 12px; font-weight: bold; margin: 0;">Thank You!</p></div>
                 </div>
             </div>
             
@@ -948,7 +951,7 @@
                 area.style.backgroundColor = 'white';
                 
                 html2canvas(area, {
-                    scale: 2, // High resolution
+                    scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, // dynamic high resolution
                     useCORS: true,
                     backgroundColor: '#ffffff'
                 }).then(canvas => {

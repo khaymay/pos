@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Khay May - Point of Sale</title>
+    <title>Khay May - Retail OS</title>
     
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
@@ -13,10 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
-    <!-- ========================================== -->
-    <!-- MODULE 1: SCOPED CSS STYLES                -->
-    <!-- ========================================== -->
     <style>
         :root { --brand-color: #e11d48; }
         body { font-family: 'Quicksand', 'Padauk', sans-serif; background-color: #f8fafc; }
@@ -37,19 +35,17 @@
 
         /* Minimal Native Print CSS */
         @media print {
-            aside, main, #toast-container, #settings-modal { display: none !important; }
-            .print-template.active-print {
-                display: block !important;
-                width: 100%;
-            }
+            body > *:not(#voucher-modal) { display: none !important; }
+            #voucher-modal { display: block !important; position: absolute; left: 0; top: 0; width: 100%; height: auto; background: none; z-index: auto; }
+            #voucher-modal > div { box-shadow: none; border: none; max-width: none; background: transparent; }
+            #voucher-modal .bg-slate-800, #voucher-modal .border-t { display: none !important; }
+            #voucher-scroll-area { overflow: visible !important; background: transparent !important; padding: 0 !important; display: block !important; }
+            #print-area { width: 100% !important; max-width: 80mm; box-shadow: none !important; margin: 0 auto; padding: 0 !important; }
+            .print-template.active-print { display: block !important; width: 100%; }
         }
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
-
-    <!-- ========================================== -->
-    <!-- MODULE 2: CLEAN HTML STRUCTURE             -->
-    <!-- ========================================== -->
 
     <!-- Sidebar Navigation (Desktop) -->
     <aside class="w-64 bg-white shadow-xl hidden lg:flex flex-col z-20">
@@ -132,7 +128,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-slate-600 mb-1">Quantity</label>
-                                <input type="number" inputmode="numeric" pattern="[0-9]*" id="item-qty" required min="1" max="50" value="1" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                                <input type="number" inputmode="numeric" pattern="[0-9]*" id="item-qty" placeholder="1" required min="1" max="50" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
                             </div>
                         </div>
                         <button type="submit" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition-colors shadow-sm">Add to Cart</button>
@@ -201,7 +197,7 @@
                         </div>
                         <div class="flex justify-between items-center text-slate-500 pt-1">
                             <span>Manual Discount</span>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" id="summary-discount" value="0" min="0" class="w-24 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" id="summary-discount" placeholder="0" min="0" class="w-24 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
                         </div>
                         <div class="pt-2 border-t border-slate-200 flex justify-between items-end mt-2">
                             <span class="text-base font-bold text-slate-800">Grand Total</span>
@@ -209,7 +205,7 @@
                         </div>
                     </div>
                     <button data-action="process-checkout" id="checkout-btn" disabled class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg rounded-xl shadow-lg disabled:opacity-50 disabled:bg-slate-400 disabled:cursor-not-allowed flex justify-center items-center gap-2 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Print
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Check Out
                     </button>
                 </div>
             </div>
@@ -232,7 +228,6 @@
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-6">
                 <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
                     <div>
-                        <!-- Settings Gear integrated cleanly here -->
                         <h2 class="text-2xl font-bold text-slate-800 mb-2 flex items-center gap-2">
                             Shared Sales History
                             <button data-action="toggle-settings" class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors" title="Settings"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></button>
@@ -267,12 +262,13 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex-1 flex flex-col">
-                <div class="hidden md:grid grid-cols-5 gap-4 p-4 bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200 shrink-0">
+                <div class="hidden md:grid grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-4 p-4 bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200 shrink-0">
                     <div>Date / Type</div>
                     <div>Voucher ID</div>
                     <div>Customer & Method</div>
                     <div>Items</div>
                     <div class="text-right">Totals</div>
+                    <div class="text-center w-8">View</div>
                 </div>
                 <div class="overflow-y-auto flex-1">
                     <div id="history-body" class="divide-y divide-slate-100"></div>
@@ -307,7 +303,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Quantity</label>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" id="inv-qty" min="1" value="1" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" id="inv-qty" min="1" placeholder="1" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
                         <div class="flex gap-2 pt-2">
                             <button type="button" data-action="update-stock" data-add="true" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-bold shadow-sm transition-colors">+ Stock In</button>
@@ -442,34 +438,61 @@
         </div>
     </div>
 
-    <!-- Print Templates -->
-    <div id="print-area" class="hidden print-template">
-        <div class="text-center pb-1 mb-1">
-            <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 2px;">
-            <h1 style="font-size: 16px; font-weight: bold; margin: 0; line-height: 1.1;">Khay May</h1>
-            <p style="font-size: 10px; margin: 1px 0; line-height: 1.1;">Baby & Children Clothing</p>
-            <p style="font-size: 10px; font-weight: bold; margin: 1px 0; font-family: 'Padauk', sans-serif; line-height: 1.1;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
-            <p style="font-size: 10px; margin: 0; line-height: 1.1;">Ph: 09421649505 | Viber: 09668414343</p>
+    <!-- Voucher Preview & Action Modal -->
+    <div id="voucher-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col max-w-[360px] w-full max-h-[90vh]">
+            <div class="bg-slate-800 p-4 flex justify-between items-center text-white shrink-0">
+                <h3 class="font-bold flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Voucher Preview
+                </h3>
+                <button data-action="close-voucher" class="p-1 hover:bg-slate-700 rounded-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto bg-slate-100 flex justify-center items-start flex-1" id="voucher-scroll-area">
+                <!-- Inner standard 80mm printable wrapper -->
+                <div id="print-area" class="bg-white p-4 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif;">
+                    <div class="text-center pb-1 mb-1">
+                        <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 2px;">
+                        <h1 style="font-size: 16px; font-weight: bold; margin: 0; line-height: 1.1;">Khay May</h1>
+                        <p style="font-size: 10px; margin: 1px 0; line-height: 1.1;">Baby & Children Clothing</p>
+                        <p style="font-size: 10px; font-weight: bold; margin: 1px 0; font-family: 'Padauk', sans-serif; line-height: 1.1;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
+                        <p style="font-size: 10px; margin: 0; line-height: 1.1;">Ph: 09421649505 | Viber: 09668414343</p>
+                    </div>
+                    <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 2px 0; margin-bottom: 2px; font-size: 11px;">
+                        <div class="print-flex-row"><span>Date: <span id="print-date"></span></span><span style="font-weight: bold;">ID: <span id="print-id"></span></span></div>
+                        <div class="print-flex-row mt-0.5"><span>Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold;"></span></span><span>Pay: <span id="print-payment"></span></span></div>
+                        <div class="print-flex-row mt-0.5 hidden" id="print-due-date-row" style="justify-content: flex-end !important;"><span style="font-weight: bold;">Due: <span id="print-due-date"></span></span></div>
+                    </div>
+                    <div style="border-bottom: 1px dashed #999; padding-bottom: 2px; margin-bottom: 2px; font-size: 11px;">
+                        <div class="print-flex-row"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;">Name: <span id="print-customer-name" style="font-weight: bold;"></span></span><span style="white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span></div>
+                        <div class="hidden" id="print-notes-container" style="margin-top: 2px; line-height: 1.1;"><span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span></div>
+                    </div>
+                    <table style="width: 100%; font-size: 11px; margin-bottom: 2px; border-collapse: collapse;">
+                        <thead><tr style="border-bottom: 1px dashed #999;"><th style="text-align: left; padding: 2px 0;">Item</th><th style="text-align: center; padding: 2px 0;">Qty</th><th style="text-align: right; padding: 2px 0;">Amount</th></tr></thead>
+                        <tbody id="print-items"></tbody>
+                    </table>
+                    <div style="border-top: 1px dashed #999; padding-top: 2px; font-size: 11px;">
+                        <div class="print-flex-row"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
+                        <div class="print-flex-row" style="color: #444;"><span>Discount:</span> <span id="print-discount"></span></div>
+                        <div class="print-flex-row" style="font-weight: bold; font-size: 13px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 2px;"><span>Total:</span> <span id="print-total"></span></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 5px;"><p style="font-size: 11px; font-weight: bold; margin: 0;">Thank You!</p></div>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-white border-t border-slate-100 flex gap-3 shrink-0">
+                <button data-action="download-voucher" class="flex-1 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold transition-colors text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v-8m0 8l-3-3m3 3l3-3"></path></svg> Image
+                </button>
+                <button data-action="print-voucher" class="flex-1 flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl font-bold shadow-md transition-colors text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Print
+                </button>
+                <button data-action="close-voucher" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-bold transition-colors text-sm">
+                    Finish
+                </button>
+            </div>
         </div>
-        <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 2px 0; margin-bottom: 2px; font-size: 11px;">
-            <div class="print-flex-row"><span>Date: <span id="print-date"></span></span><span style="font-weight: bold;">ID: <span id="print-id"></span></span></div>
-            <div class="print-flex-row mt-0.5"><span>Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold;"></span></span><span>Pay: <span id="print-payment"></span></span></div>
-            <div class="print-flex-row mt-0.5 hidden" id="print-due-date-row" style="justify-content: flex-end !important;"><span style="font-weight: bold;">Due: <span id="print-due-date"></span></span></div>
-        </div>
-        <div style="border-bottom: 1px dashed #999; padding-bottom: 2px; margin-bottom: 2px; font-size: 11px;">
-            <div class="print-flex-row"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;">Name: <span id="print-customer-name" style="font-weight: bold;"></span></span><span style="white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone"></span></span></div>
-            <div class="hidden" id="print-notes-container" style="margin-top: 2px; line-height: 1.1;"><span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span></div>
-        </div>
-        <table style="width: 100%; font-size: 11px; margin-bottom: 2px; border-collapse: collapse;">
-            <thead><tr style="border-bottom: 1px dashed #999;"><th style="text-align: left; padding: 2px 0;">Item</th><th style="text-align: center; padding: 2px 0;">Qty</th><th style="text-align: right; padding: 2px 0;">Amount</th></tr></thead>
-            <tbody id="print-items"></tbody>
-        </table>
-        <div style="border-top: 1px dashed #999; padding-top: 2px; font-size: 11px;">
-            <div class="print-flex-row"><span>Subtotal:</span> <span id="print-subtotal"></span></div>
-            <div class="print-flex-row" style="color: #444;"><span>Discount:</span> <span id="print-discount"></span></div>
-            <div class="print-flex-row" style="font-weight: bold; font-size: 13px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 2px;"><span>Total:</span> <span id="print-total"></span></div>
-        </div>
-        <div style="text-align: center; margin-top: 5px;"><p style="font-size: 11px; font-weight: bold; margin: 0;">Thank You!</p></div>
     </div>
 
     <div id="print-summary-area" class="hidden print-template">
@@ -513,6 +536,7 @@
             isMobileCartOpen: false,
             localInventory: {},
             currentPettyCash: 0,
+            currentVoucherId: null,
             db: null
         };
 
@@ -660,12 +684,17 @@
                         const tStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
                         let color = s.saleType === 'Credit' ? 'bg-amber-100 text-amber-700' : (s.saleType === 'Wholesale' ? 'bg-blue-100 text-blue-700' : 'bg-rose-50 text-rose-600');
                         return `
-                        <div class="flex flex-col md:grid md:grid-cols-5 gap-3 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50">
+                        <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-3 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center">
                             <div><span class="font-bold text-slate-800">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
-                            <div class="font-mono text-sm text-slate-500 flex items-center">${s.id}</div>
+                            <div class="font-mono text-sm text-slate-500">${s.id}</div>
                             <div class="text-sm"><span class="font-bold text-slate-800">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
                             <div class="text-xs text-slate-600"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
                             <div class="md:text-right font-bold text-slate-800">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
+                            <div class="md:text-center mt-2 md:mt-0 flex justify-end md:block">
+                                <button data-action="view-voucher" data-id="${s.id}" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="View Voucher">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </button>
+                            </div>
                         </div>`;
                     }).join('');
                 }
@@ -690,7 +719,8 @@
                 if (low > 0) { if (nB) { nB.classList.remove('hidden'); nB.innerText = low; } if (mB) mB.classList.remove('hidden'); }
                 else { if (nB) nB.classList.add('hidden'); if (mB) mB.classList.add('hidden'); }
                 
-                if (document.getElementById('item-product').value) PosLogic.updateSizeDropdown();
+                // Only run update size dropdown if it matches the current active tab logic to prevent visual resets
+                // PosLogic.updateSizeDropdown();
             },
 
             updatePettyCashUI() {
@@ -767,6 +797,7 @@
                 
                 sizeSel.innerHTML = '<option value="" disabled selected>Select Size</option>'; 
                 document.getElementById('item-price').value = '';
+                document.getElementById('item-qty').value = ''; // Blank out quantity when product changes
                 
                 if (prod) {
                     sizeSel.disabled = false; 
@@ -778,7 +809,11 @@
                         opt.dataset.realsize = i.size; 
                         sizeSel.appendChild(opt); 
                     });
-                    if (curr !== "") { sizeSel.value = curr; PosLogic.updatePrice(); }
+                    if (curr !== "") { 
+                        // Try to keep previous size if it exists in new product
+                        sizeSel.value = curr; 
+                        PosLogic.updatePrice(); 
+                    }
                 }
             },
 
@@ -794,7 +829,8 @@
                 const prod = prodSel.value; 
                 const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
                 const price = parseFloat(document.getElementById('item-price').value); 
-                const qty = parseInt(document.getElementById('item-qty').value);
+                // Default to 1 if input is empty
+                const qty = parseInt(document.getElementById('item-qty').value) || 1;
                 
                 if (prod && sizeText && price >= 0 && qty > 0) {
                     const exist = State.currentCart.find(i => i.category === prod && i.size === sizeText);
@@ -803,6 +839,7 @@
                     
                     UI.renderCart(); 
                     Utils.showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
+                    // We purposefully DO NOT reset the product dropdown here to allow rapid adding of same product
                 }
             },
 
@@ -833,6 +870,7 @@
                     subtotal += i.total;
                 });
 
+                // Default to 0 if input is empty
                 const manual = parseFloat(document.getElementById('summary-discount').value) || 0;
                 const grand = Math.max(0, subtotal - manual);
                 
@@ -861,11 +899,81 @@
                 
                 btn.disabled = !(hasItems && hasName && hasPayment);
             },
+            
+            populateVoucherHTML(saleRec) {
+                document.getElementById('print-date').innerText = new Date(saleRec.isoDate).toLocaleString('en-US',{hour12:false,hour:"numeric",minute:"numeric", year:"2-digit", month:"2-digit", day:"2-digit"});
+                document.getElementById('print-id').innerText = saleRec.id; 
+                document.getElementById('print-type').innerText = saleRec.saleType; 
+                document.getElementById('print-payment').innerText = saleRec.paymentMethod;
+                
+                const dueRow = document.getElementById('print-due-date-row');
+                if(saleRec.saleType === 'Credit') { 
+                    dueRow.classList.remove('hidden'); 
+                    const days = parseInt(saleRec.paymentMethod) || 0;
+                    if(days) {
+                        const due = new Date(new Date(saleRec.isoDate).getTime() + (days*86400000));
+                        document.getElementById('print-due-date').innerText = due.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); 
+                    } else document.getElementById('print-due-date').innerText = "-";
+                } else dueRow.classList.add('hidden');
+                
+                document.getElementById('print-customer-name').innerText = saleRec.customer;
+                if(saleRec.phone) { document.getElementById('print-phone-row').classList.remove('hidden'); document.getElementById('print-phone').innerText = saleRec.phone; } else document.getElementById('print-phone-row').classList.add('hidden');
+                if(saleRec.notes) { document.getElementById('print-notes-container').classList.remove('hidden'); document.getElementById('print-notes').innerText = saleRec.notes; } else document.getElementById('print-notes-container').classList.add('hidden');
+                
+                document.getElementById('print-items').innerHTML = saleRec.items.map(i=>`<tr><td style="padding: 2px 0;">${i.category} (${i.size})</td><td style="text-align: center; padding: 2px 0;">${i.qty}</td><td style="text-align: right; padding: 2px 0;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
+                document.getElementById('print-subtotal').innerText = Utils.formatMMK(saleRec.totals.subtotal); 
+                document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); 
+                document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";
+            },
+            
+            viewVoucher(id) {
+                const sale = State.allFirebaseSales.find(s => s.id === id);
+                if(sale) {
+                    State.currentVoucherId = id;
+                    PosLogic.populateVoucherHTML(sale);
+                    document.getElementById('voucher-modal').classList.remove('hidden');
+                }
+            },
+            
+            closeVoucher() {
+                document.getElementById('voucher-modal').classList.add('hidden');
+                State.currentVoucherId = null;
+            },
+            
+            downloadVoucherImage() {
+                const area = document.getElementById('print-area');
+                if(!area) return;
+                
+                // Add temporary styling to ensure the canvas captures a clean white background
+                area.style.backgroundColor = 'white';
+                
+                html2canvas(area, {
+                    scale: 2, // High resolution
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Voucher-${State.currentVoucherId || 'Export'}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    Utils.showToast("Voucher Image Saved!");
+                }).catch(err => {
+                    console.error(err);
+                    Utils.showToast("Error saving image", "error");
+                });
+            },
 
             async processCheckout() {
                 const totals = PosLogic.calculateTotals();
-                const now = new Date(); const localTime = new Date(now.getTime() + (390 * 60000));
-                const id = `KM-${String(localTime.getUTCDate()).padStart(2,'0')}${String(localTime.getUTCMonth()+1).padStart(2,'0')}${String(localTime.getUTCFullYear()).slice(-2)}-${String((State.allFirebaseSales||[]).length+1).padStart(3,'0')}`;
+                const now = new Date(); const localTime = new Date(now.getTime() + (390 * 60000)); // +06:30 for Myanmar
+                
+                // Sequential ID Generation MMYY-xxxx
+                const mm = String(localTime.getUTCMonth() + 1).padStart(2, '0');
+                const yy = String(localTime.getUTCFullYear()).slice(-2);
+                const prefix = `${mm}${yy}-`;
+                const currentMonthSalesCount = (State.allFirebaseSales || []).filter(s => s.id && s.id.startsWith(prefix)).length;
+                const sequence = String(currentMonthSalesCount + 1).padStart(4, '0');
+                const id = `${prefix}${sequence}`;
                 
                 const cName = document.getElementById('cust-name').value.trim(); 
                 const cPhone = document.getElementById('cust-phone').value.trim();
@@ -878,33 +986,23 @@
                     notes: notes, items: State.currentCart.map(i=>({category:i.category, size:i.size, qty:i.qty, price:i.effectivePrice, total:i.total})), totals: totals 
                 };
 
-                // Print Preparation
-                document.getElementById('print-date').innerText = `${String(localTime.getUTCDate()).padStart(2,'0')}/${String(localTime.getUTCMonth()+1).padStart(2,'0')}/${String(localTime.getUTCFullYear()).slice(-2)} ${localTime.toLocaleTimeString('en-US',{hour12:false,hour:"numeric",minute:"numeric"})}`;
-                document.getElementById('print-id').innerText = id; document.getElementById('print-type').innerText = State.currentSaleType; document.getElementById('print-payment').innerText = pay;
-                const dueRow = document.getElementById('print-due-date-row');
+                // Populate Modal UI
+                PosLogic.populateVoucherHTML(saleRec);
+                State.currentVoucherId = id;
                 
-                if(State.currentSaleType === 'Credit' && pay) { 
-                    dueRow.classList.remove('hidden'); 
-                    document.getElementById('print-due-date').innerText = new Date(now.getTime() + (parseInt(pay)*86400000)).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); 
-                } else dueRow.classList.add('hidden');
-                
-                document.getElementById('print-customer-name').innerText = cName;
-                if(cPhone) { document.getElementById('print-phone-row').classList.remove('hidden'); document.getElementById('print-phone').innerText = cPhone; } else document.getElementById('print-phone-row').classList.add('hidden');
-                if(notes) { document.getElementById('print-notes-container').classList.remove('hidden'); document.getElementById('print-notes').innerText = notes; } else document.getElementById('print-notes-container').classList.add('hidden');
-                document.getElementById('print-items').innerHTML = State.currentCart.map(i=>`<tr><td style="padding: 2px 0;">${i.category} (${i.size})</td><td style="text-align: center; padding: 2px 0;">${i.qty}</td><td style="text-align: right; padding: 2px 0;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
-                document.getElementById('print-subtotal').innerText = Utils.formatMMK(totals.subtotal); document.getElementById('print-discount').innerText = Utils.formatMMK(totals.manualDiscount); document.getElementById('print-total').innerText = Utils.formatMMK(totals.grandTotal) + " MMK";
-                
+                // Save logic
                 Backend.pushSale(saleRec, State.currentCart);
                 if (State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(saleRec) }).catch(e=>{});
                 
-                Utils.triggerPrint('print-area');
+                // Reveal Modal instead of direct print
+                document.getElementById('voucher-modal').classList.remove('hidden');
                 
                 // Reset Cart state
                 State.currentCart = []; 
-                document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '0';
+                document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
                 if(State.isMobileCartOpen) UI.toggleMobileCart(); 
                 UI.renderCart(); 
-                Utils.showToast('Sale Completed!');
+                Utils.showToast('Sale Saved Successfully!');
             },
 
             applyFilters() {
@@ -952,12 +1050,18 @@
             async updateStock(isAdd) {
                 const p = document.getElementById('inv-product').value; 
                 const s = document.getElementById('inv-size').value; 
-                const q = parseInt(document.getElementById('inv-qty').value);
+                const q = parseInt(document.getElementById('inv-qty').value) || 1;
                 if (p && s && q > 0) {
                     try { 
                         await setDoc(doc(State.db, 'inventory', `${p}_${s}`), { product: p, size: s, stock: increment(isAdd ? q : -q) }, { merge: true }); 
+                        
+                        // Push log to Master Sheet
+                        const now = new Date(); const localTime = new Date(now.getTime() + (390 * 60000));
+                        const rec = { type: "Inventory", product: p, size: s, change: isAdd ? q : -q, action: isAdd ? "Stock In" : "Remove", date: localTime.toISOString() };
+                        if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
+                        
                         Utils.showToast(isAdd ? 'Added!' : 'Removed!'); 
-                        document.getElementById('inv-qty').value = 1; 
+                        document.getElementById('inv-qty').value = ''; 
                     } catch(e) { console.error(e); }
                 }
             }
@@ -1087,7 +1191,6 @@
                             const d = []; snap.forEach(doc => d.push(doc.data())); 
                             clearTimeout(expTimeout);
                             expTimeout = setTimeout(() => {
-                                // Removed .slice(0,50) to allow viewing full month data
                                 State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate));
                                 UI.renderExpenses();
                             }, 300);
@@ -1116,6 +1219,12 @@
                 if (action === 'update-stock') InventoryLogic.updateStock(btn.dataset.add === 'true');
                 if (action === 'process-topup') ExpenseLogic.processTopUp();
                 if (action === 'save-settings') AppSettings.save();
+                
+                // Voucher Modal Actions
+                if (action === 'view-voucher') PosLogic.viewVoucher(btn.dataset.id);
+                if (action === 'close-voucher') PosLogic.closeVoucher();
+                if (action === 'print-voucher') window.print();
+                if (action === 'download-voucher') PosLogic.downloadVoucherImage();
             });
 
             // Specific Change & Input events

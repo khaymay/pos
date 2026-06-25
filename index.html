@@ -453,34 +453,79 @@
             </div>
             
             <div class="p-6 overflow-y-auto bg-slate-100 flex justify-center items-start flex-1" id="voucher-scroll-area">
-                <!-- Inner standard 80mm printable wrapper -->
-                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif;">
-                    <div class="text-center pb-2 mb-2">
+                <!-- Inner standard 80mm printable wrapper - Overlaps Fixed -->
+                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
+                    <div class="text-center mb-3">
                         <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 4px;">
                         <h1 style="font-size: 18px; font-weight: bold; margin: 0; line-height: 1.2;">Khay May</h1>
                         <p style="font-size: 11px; margin: 2px 0; line-height: 1.2;">Baby & Children Clothing</p>
                         <p style="font-size: 11px; font-weight: bold; margin: 2px 0; font-family: 'Padauk', sans-serif; line-height: 1.2;">ဈေးချိုပြီးနေ့တိုင်းဝတ်လိုကောင်းတာ Khay May ပါ။</p>
                         <p style="font-size: 11px; margin: 0; line-height: 1.2;">Ph: 09421649505 | Viber: 09668414343</p>
                     </div>
-                    <div style="border-top: 1px dashed #999; border-bottom: 1px dashed #999; padding: 6px 0; margin-bottom: 4px; font-size: 12px; line-height: 1.4;">
-                        <div class="print-flex-row"><span style="color: #444;">Date: <span id="print-date" style="color: #000;"></span></span><span style="font-weight: bold;">ID: <span id="print-id"></span></span></div>
-                        <div class="print-flex-row mt-1"><span style="color: #444;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></span><span style="color: #444;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></span></div>
-                        <div class="print-flex-row mt-1 hidden" id="print-due-date-row" style="justify-content: flex-end;"><span style="color: #444;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></span></div>
+
+                    <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
+
+                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
+                        <span style="color: #444;">Date: <span id="print-date" style="color: #000;"></span></span>
+                        <span style="font-weight: bold;">ID: <span id="print-id"></span></span>
                     </div>
-                    <div style="border-bottom: 1px dashed #999; padding-bottom: 6px; margin-bottom: 4px; font-size: 12px; line-height: 1.4;">
-                        <div class="print-flex-row"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></span><span style="white-space: nowrap; color: #444;" class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span></div>
-                        <div class="hidden mt-1" id="print-notes-container"><span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap;"></span></div>
+                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
+                        <span style="color: #444;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></span>
+                        <span style="color: #444;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></span>
                     </div>
-                    <table style="width: 100%; font-size: 12px; margin-bottom: 6px; border-collapse: collapse; line-height: 1.4;">
-                        <thead><tr style="border-bottom: 1px dashed #999;"><th style="text-align: left; padding: 4px 0;">Item</th><th style="text-align: center; padding: 4px 0;">Qty</th><th style="text-align: right; padding: 4px 0;">Amount</th></tr></thead>
+                    <div class="print-flex-row hidden" id="print-due-date-row" style="font-size: 12px; margin-bottom: 4px; justify-content: flex-end;">
+                        <span style="color: #444;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></span>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
+
+                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
+                        <span style="color: #444; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></span>
+                        <span style="color: #444; white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span>
+                    </div>
+                    <div class="hidden" id="print-notes-container" style="font-size: 12px; margin-top: 4px;">
+                        <span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap; display: inline-block; vertical-align: top; max-width: 80%;"></span>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
+
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; padding-bottom: 4px;">Item</th>
+                                <th style="text-align: center; padding-bottom: 4px; width: 40px;">Qty</th>
+                                <th style="text-align: right; padding-bottom: 4px; width: 70px;">Amount</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    
+                    <hr style="border: none; border-top: 1px dashed #999; margin: 4px 0;">
+                    
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
                         <tbody id="print-items"></tbody>
                     </table>
-                    <div style="border-top: 1px dashed #999; padding-top: 6px; font-size: 12px; line-height: 1.4; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-                        <div style="display: flex; justify-content: flex-end; width: 100%;"><span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span></div>
-                        <div style="display: flex; justify-content: flex-end; width: 100%;"><span style="width: 70px; text-align: left; color: #444;">Discount:</span> <span id="print-discount" style="width: 80px; text-align: right; font-weight: bold;"></span></div>
-                        <div style="display: flex; justify-content: flex-end; width: 100%; font-size: 14px; margin-top: 2px; border-top: 1px solid #ccc; padding-top: 6px;"><span style="width: 70px; text-align: left; font-weight: bold;">Total:</span> <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span></div>
+
+                    <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
+
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; margin-bottom: 4px;">
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> 
+                            <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <span style="width: 70px; text-align: left; color: #444;">Discount:</span> 
+                            <span id="print-discount" style="width: 80px; text-align: right; font-weight: bold;"></span>
+                        </div>
+                        <hr style="border: none; border-top: 1px solid #ccc; width: 100%; margin: 2px 0;">
+                        <div style="display: flex; justify-content: flex-end; width: 100%; font-size: 14px; margin-top: 2px;">
+                            <span style="width: 70px; text-align: left; font-weight: bold;">Total:</span> 
+                            <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span>
+                        </div>
                     </div>
-                    <div style="text-align: center; margin-top: 12px;"><p style="font-size: 12px; font-weight: bold; margin: 0;">Thank You!</p></div>
+
+                    <div style="text-align: center; margin-top: 16px;">
+                        <p style="font-size: 12px; font-weight: bold; margin: 0;">Thank You!</p>
+                    </div>
                 </div>
             </div>
             
@@ -722,8 +767,6 @@
                 if (low > 0) { if (nB) { nB.classList.remove('hidden'); nB.innerText = low; } if (mB) mB.classList.remove('hidden'); }
                 else { if (nB) nB.classList.add('hidden'); if (mB) mB.classList.add('hidden'); }
                 
-                // Only run update size dropdown if it matches the current active tab logic to prevent visual resets
-                // PosLogic.updateSizeDropdown();
             },
 
             updatePettyCashUI() {
@@ -813,7 +856,6 @@
                         sizeSel.appendChild(opt); 
                     });
                     if (curr !== "") { 
-                        // Try to keep previous size if it exists in new product
                         sizeSel.value = curr; 
                         PosLogic.updatePrice(); 
                     }
@@ -842,7 +884,6 @@
                     
                     UI.renderCart(); 
                     Utils.showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
-                    // We purposefully DO NOT reset the product dropdown here to allow rapid adding of same product
                 }
             },
 
@@ -923,7 +964,7 @@
                 if(saleRec.phone) { document.getElementById('print-phone-row').classList.remove('hidden'); document.getElementById('print-phone').innerText = saleRec.phone; } else document.getElementById('print-phone-row').classList.add('hidden');
                 if(saleRec.notes) { document.getElementById('print-notes-container').classList.remove('hidden'); document.getElementById('print-notes').innerText = saleRec.notes; } else document.getElementById('print-notes-container').classList.add('hidden');
                 
-                document.getElementById('print-items').innerHTML = saleRec.items.map(i=>`<tr><td style="padding: 2px 0;">${i.category} (${i.size})</td><td style="text-align: center; padding: 2px 0;">${i.qty}</td><td style="text-align: right; padding: 2px 0;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
+                document.getElementById('print-items').innerHTML = saleRec.items.map(i=>`<tr><td style="padding: 4px 0; vertical-align: top; padding-right: 4px;">${i.category} (${i.size})</td><td style="text-align: center; padding: 4px 0; vertical-align: top; white-space: nowrap;">${i.qty}</td><td style="text-align: right; padding: 4px 0; vertical-align: top; white-space: nowrap;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
                 document.getElementById('print-subtotal').innerText = Utils.formatMMK(saleRec.totals.subtotal); 
                 document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); 
                 document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";

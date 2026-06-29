@@ -298,9 +298,11 @@
             <!-- DAILY SUMMARY VIEW -->
             <div id="sales-summary-view" class="sales-view flex-1 flex flex-col hidden min-h-0 space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 shrink-0 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <label class="text-sm font-bold text-slate-600">Select Date:</label>
-                        <input type="date" id="summary-date" class="px-3 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-rose-500 outline-none bg-slate-50 font-medium">
+                    <h2 class="text-lg font-bold text-slate-800 hidden md:block">Summary Dashboard</h2>
+                    <div class="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 w-full md:w-auto justify-between">
+                        <button data-action="prev-date" data-target="summary-date" class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                        <input type="date" id="summary-date" class="px-2 py-1 bg-transparent text-sm focus:outline-none font-bold text-slate-700 text-center">
+                        <button data-action="next-date" data-target="summary-date" id="summary-date-next" class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
                     </div>
                 </div>
                 
@@ -343,8 +345,8 @@
             </div>
 
             <!-- ADJUST & LOG VIEW -->
-            <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start min-h-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 lg:col-span-1 shrink-0">
+            <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 xl:grid-cols-3 gap-6 items-start min-h-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 xl:col-span-1 shrink-0">
                     <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                         Adjust Stock
@@ -377,15 +379,27 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden lg:col-span-2 flex flex-col h-full max-h-[700px]">
-                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden xl:col-span-2 flex flex-col h-full max-h-[700px]">
+                    <div class="p-4 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 shrink-0 gap-3">
                         <h3 class="font-bold text-slate-800">Daily Log</h3>
-                        <input type="date" id="inv-log-date" class="px-2 py-1.5 rounded border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                            <select id="inv-log-product" class="px-2 py-1.5 rounded border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium bg-white max-w-[140px]">
+                                <option value="All">All Products</option>
+                            </select>
+                            <select id="inv-log-size" class="px-2 py-1.5 rounded border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium bg-white max-w-[100px]">
+                                <option value="All">All Sizes</option>
+                            </select>
+                            <div class="flex items-center gap-1 bg-white border border-slate-200 rounded p-0.5 ml-auto md:ml-0">
+                                <button data-action="prev-date" data-target="inv-log-date" class="p-1 rounded hover:bg-slate-100 text-slate-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                                <input type="date" id="inv-log-date" class="px-1 py-1 text-sm focus:outline-none font-medium border-none bg-transparent w-[110px] text-center">
+                                <button data-action="next-date" data-target="inv-log-date" id="inv-log-date-next" class="p-1 rounded hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                            </div>
+                        </div>
                     </div>
                     <div class="overflow-y-auto flex-1 relative">
                         <div id="inv-log-body" class="p-2"></div>
                         <div id="empty-inv-log-msg" class="absolute inset-0 p-8 flex flex-col items-center justify-center text-slate-400 bg-white">
-                            <p>No inventory changes logged on this day.</p>
+                            <p>No inventory changes logged matching criteria.</p>
                         </div>
                     </div>
                 </div>
@@ -404,7 +418,8 @@
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-white shadow-[0_2px_5px_rgba(0,0,0,0.02)] sticky top-0 z-10">
                             <tr class="text-slate-400 text-xs uppercase border-b border-slate-100">
-                                <th class="px-5 py-3 font-semibold">Product & Size</th>
+                                <th class="px-5 py-3 font-semibold">Product</th>
+                                <th class="px-5 py-3 font-semibold">Size</th>
                                 <th class="px-5 py-3 font-semibold text-center">In Stock</th>
                                 <th class="px-5 py-3 font-semibold text-right">Status</th>
                             </tr>
@@ -728,6 +743,15 @@
             toggleSettings() {
                 document.getElementById('settings-modal').classList.toggle('hidden');
             },
+            
+            changeDateBy(targetId, delta) {
+                const input = document.getElementById(targetId);
+                if(!input || !input.value) return;
+                const d = new Date(input.value);
+                d.setUTCDate(d.getUTCDate() + delta);
+                input.value = d.toISOString().split('T')[0];
+                input.dispatchEvent(new Event('change'));
+            },
 
             setSaleType(type) {
                 State.currentSaleType = type;
@@ -847,6 +871,9 @@
 
             renderSalesSummary() {
                 const dateStr = document.getElementById('summary-date').value;
+                const localDateStr = new Date(Date.now() + (390 * 60000)).toISOString().split('T')[0];
+                const nextBtn = document.getElementById('summary-date-next');
+                if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
                 
                 let retailRev = 0, wholesaleRev = 0, creditRev = 0;
                 let retailItems = {}, wholesaleItems = {}, creditItems = {};
@@ -897,7 +924,7 @@
                         else if (stk < 5) { stat = '<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold">LOW STOCK</span>'; cls = 'text-orange-600 font-bold'; low++; }
                         else { stat = '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">IN STOCK</span>'; }
                         
-                        html += `<tr><td class="px-5 py-3"><div class="font-bold text-slate-800 text-sm">${p}</div><div class="text-xs text-indigo-500 font-semibold">${i.size} <span class="text-slate-400 font-normal mx-1">|</span> ${Utils.formatMMK(i.price)} MMK</div></td><td class="px-5 py-3 text-center ${cls} text-sm">${stk}</td><td class="px-5 py-3 text-right">${stat}</td></tr>`;
+                        html += `<tr><td class="px-5 py-3"><div class="font-bold text-slate-800 text-sm">${p}</div></td><td class="px-5 py-3 text-sm font-medium text-slate-600">${i.size}</td><td class="px-5 py-3 text-center ${cls} text-sm">${stk}</td><td class="px-5 py-3 text-right">${stat}</td></tr>`;
                     });
                 }
                 tb.innerHTML = html;
@@ -910,7 +937,20 @@
 
             renderInventoryLogs() {
                 const dateStr = document.getElementById('inv-log-date').value;
-                const logs = (State.allFirebaseInventoryLogs || []).filter(l => l.date === dateStr);
+                const localDateStr = new Date(Date.now() + (390 * 60000)).toISOString().split('T')[0];
+                const nextBtn = document.getElementById('inv-log-date-next');
+                if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
+                
+                const pFilter = document.getElementById('inv-log-product').value;
+                const sFilter = document.getElementById('inv-log-size').value;
+
+                const logs = (State.allFirebaseInventoryLogs || []).filter(l => {
+                    if (l.date !== dateStr) return false;
+                    if (pFilter && pFilter !== 'All' && l.product !== pFilter) return false;
+                    if (sFilter && sFilter !== 'All' && l.size !== sFilter) return false;
+                    return true;
+                });
+                
                 const tb = document.getElementById('inv-log-body');
                 const empty = document.getElementById('empty-inv-log-msg');
                 
@@ -1238,6 +1278,15 @@
                     ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size))); 
                 }
             },
+            updateInvLogSizeDropdown() {
+                const p = document.getElementById('inv-log-product').value;
+                const sSel = document.getElementById('inv-log-size');
+                sSel.innerHTML = '<option value="All">All Sizes</option>';
+                if (p && p !== 'All' && ProductData[p]) {
+                    ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size)));
+                }
+                UI.renderInventoryLogs();
+            },
             async updateStock(isAdd) {
                 const p = document.getElementById('inv-product').value; 
                 const s = document.getElementById('inv-size').value; 
@@ -1434,6 +1483,10 @@
                 if (action === 'switch-sales-tab') UI.switchSubTab('sales', btn.dataset.tab);
                 if (action === 'switch-inv-tab') UI.switchSubTab('inv', btn.dataset.tab);
                 
+                // Date Navigators
+                if (action === 'prev-date') UI.changeDateBy(btn.dataset.target, -1);
+                if (action === 'next-date') UI.changeDateBy(btn.dataset.target, 1);
+                
                 if (action === 'toggle-cart') UI.toggleMobileCart();
                 if (action === 'toggle-settings') UI.toggleSettings();
                 if (action === 'set-sale-type') UI.setSaleType(btn.dataset.type);
@@ -1474,6 +1527,12 @@
             
             const invLogDate = document.getElementById('inv-log-date');
             if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
+            
+            const invLogProduct = document.getElementById('inv-log-product');
+            if(invLogProduct) invLogProduct.addEventListener('change', InventoryLogic.updateInvLogSizeDropdown);
+            
+            const invLogSize = document.getElementById('inv-log-size');
+            if(invLogSize) invLogSize.addEventListener('change', UI.renderInventoryLogs);
 
             // Checkout validators
             document.querySelectorAll('.validator-inputs input, .validator-inputs select').forEach(el => {
@@ -1487,9 +1546,11 @@
             // Setup Initial Select Data
             const productSelect = document.getElementById('item-product');
             const invProductSelect = document.getElementById('inv-product');
+            const invLogProductSelect = document.getElementById('inv-log-product');
             for (const product in ProductData) {
                 productSelect.appendChild(new Option(product, product));
                 invProductSelect.appendChild(new Option(product, product));
+                if(invLogProductSelect) invLogProductSelect.appendChild(new Option(product, product));
             }
             
             // Setup Date Defaults

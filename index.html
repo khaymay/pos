@@ -559,27 +559,33 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
-                        <span style="color: #444;">Date: <span id="print-date" style="color: #000;"></span></span>
-                        <span style="font-weight: bold;">ID: <span id="print-id"></span></span>
-                    </div>
-                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
-                        <span style="color: #444;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></span>
-                        <span style="color: #444;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></span>
-                    </div>
-                    <div class="print-flex-row hidden" id="print-due-date-row" style="font-size: 12px; margin-bottom: 4px; justify-content: flex-end;">
-                        <span style="color: #444;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></span>
-                    </div>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="color: #444; padding-bottom: 4px; vertical-align: top;">Date: <span id="print-date" style="color: #000;"></span></td>
+                            <td style="text-align: right; padding-bottom: 4px; vertical-align: top;">ID: <span id="print-id" style="font-weight: bold; color: #000;"></span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #444; padding-bottom: 4px; vertical-align: top;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></td>
+                            <td style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></td>
+                        </tr>
+                        <tr class="hidden" id="print-due-date-row">
+                            <td colspan="2" style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></td>
+                        </tr>
+                    </table>
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <div class="print-flex-row" style="font-size: 12px; margin-bottom: 4px;">
-                        <span style="color: #444; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></span>
-                        <span style="color: #444; white-space: nowrap;" class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span>
-                    </div>
-                    <div class="hidden" id="print-notes-container" style="font-size: 12px; margin-top: 4px;">
-                        <span style="color: #444; font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap; display: inline-block; vertical-align: top; max-width: 80%;"></span>
-                    </div>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px;">
+                        <tr>
+                            <td style="color: #444; padding-bottom: 4px; vertical-align: top; max-width: 150px; word-wrap: break-word;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></td>
+                            <td style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;"><span class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span></td>
+                        </tr>
+                        <tr class="hidden" id="print-notes-container">
+                            <td colspan="2" style="color: #444; padding-top: 2px; vertical-align: top;">
+                                <span style="font-weight: bold;">Notes:</span> <span id="print-notes" style="white-space: pre-wrap; color: #000;"></span>
+                            </td>
+                        </tr>
+                    </table>
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
@@ -1129,7 +1135,10 @@
                 
                 const totItems = State.currentCart.reduce((s, i) => s + i.qty, 0);
                 const floatCart = document.getElementById('mobile-floating-cart');
-                if (floatCart) floatCart.className = totItems > 0 ? "lg:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer mb-safe" : "hidden";
+                if (floatCart) {
+                    if (totItems > 0) floatCart.classList.remove('hidden');
+                    else floatCart.classList.add('hidden');
+                }
                 
                 document.getElementById('mobile-cart-badge').innerText = totItems; 
                 document.getElementById('mobile-cart-total').innerText = Utils.formatMMK(grand) + " MMK";
@@ -1151,7 +1160,15 @@
             },
             
             populateVoucherHTML(saleRec) {
-                document.getElementById('print-date').innerText = new Date(saleRec.isoDate).toLocaleString('en-US',{hour12:false,hour:"numeric",minute:"numeric", year:"2-digit", month:"2-digit", day:"2-digit"});
+                // Manually handle timezone offset display to ensure correctness
+                const d = new Date(saleRec.isoDate);
+                const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+                const dd = String(d.getUTCDate()).padStart(2, '0');
+                const yy = String(d.getUTCFullYear()).slice(-2);
+                const hh = String(d.getUTCHours()).padStart(2, '0');
+                const min = String(d.getUTCMinutes()).padStart(2, '0');
+                
+                document.getElementById('print-date').innerText = `${mm}/${dd}/${yy}, ${hh}:${min}`;
                 document.getElementById('print-id').innerText = saleRec.id; 
                 document.getElementById('print-type').innerText = saleRec.saleType; 
                 document.getElementById('print-payment').innerText = saleRec.paymentMethod;
@@ -1221,8 +1238,15 @@
                 const mm = String(localTime.getUTCMonth() + 1).padStart(2, '0');
                 const yy = String(localTime.getUTCFullYear()).slice(-2);
                 const prefix = `${mm}${yy}-`;
-                const currentMonthSalesCount = (State.allFirebaseSales || []).filter(s => s.id && s.id.startsWith(prefix)).length;
-                const sequence = String(currentMonthSalesCount + 1).padStart(4, '0');
+                
+                // Robust Check: Find highest sequence number to prevent collisions if vouchers are deleted
+                const currentMonthSales = (State.allFirebaseSales || []).filter(s => s.id && s.id.startsWith(prefix));
+                const maxSequence = currentMonthSales.reduce((max, s) => {
+                    const seq = parseInt(s.id.split('-')[1]);
+                    return (!isNaN(seq) && seq > max) ? seq : max;
+                }, 0);
+                
+                const sequence = String(maxSequence + 1).padStart(4, '0');
                 const id = `${prefix}${sequence}`;
                 
                 const cName = document.getElementById('cust-name').value.trim(); 

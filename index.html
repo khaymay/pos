@@ -101,7 +101,6 @@
                     <button data-action="set-sale-type" data-type="Retail" id="btn-type-Retail" class="flex-1 py-2 px-1 rounded-lg bg-rose-400 shadow-md text-xs sm:text-sm font-bold text-white transition-all">Retail</button>
                     <button data-action="set-sale-type" data-type="Wholesale" id="btn-type-Wholesale" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Wholesale</button>
                     <button data-action="set-sale-type" data-type="Credit" id="btn-type-Credit" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Credit</button>
-                    <button data-action="set-sale-type" data-type="Partner" id="btn-type-Partner" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Partner</button>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4 shrink-0">
@@ -109,14 +108,6 @@
                         <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800">
                             <svg class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item
                         </h2>
-                        <!-- Partner Discount Input (Hidden by default) -->
-                        <div id="partner-discount-box" class="hidden flex items-center gap-2 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100">
-                            <span class="text-xs font-bold text-indigo-700">Flat Deal:</span>
-                            <div class="relative w-16">
-                                <input type="number" id="partner-discount-rate" value="0" min="0" max="100" class="w-full bg-white border border-indigo-200 rounded px-1.5 py-0.5 text-sm font-bold text-indigo-700 text-right focus:outline-none focus:border-indigo-400">
-                                <span class="absolute right-1 top-0.5 text-xs font-bold text-indigo-400">%</span>
-                            </div>
-                        </div>
                     </div>
                     
                     <form id="add-item-form" class="space-y-4">
@@ -188,6 +179,16 @@
                                     </select>
                                 </div>
                             </div>
+                            
+                            <!-- New Partner Deal Checkbox -->
+                            <div id="partner-discount-container" class="hidden mt-3 pt-3 border-t border-slate-200">
+                                <label class="flex items-center gap-2 cursor-pointer bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg border border-indigo-200 transition-colors">
+                                    <input type="checkbox" id="is-partner-deal" class="w-4 h-4 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500">
+                                    <span class="text-sm font-bold text-indigo-800">Partner Deal (Flat Discount)</span>
+                                </label>
+                                <p class="text-[10px] text-indigo-500 mt-1 ml-1 leading-tight">This will override quantity tiers. A manual discount amount/percentage becomes required below.</p>
+                            </div>
+
                             <div>
                                 <textarea id="sale-notes" rows="2" placeholder="Notes, Delivery info..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white resize-none"></textarea>
                             </div>
@@ -210,7 +211,7 @@
                         </div>
                         <div class="flex justify-between items-center text-slate-500 pt-1">
                             <span>Manual Discount</span>
-                            <input type="text" id="summary-discount" placeholder="e.g. 1500 or 10%" class="w-32 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500 text-xs font-medium">
+                            <input type="text" id="summary-discount" placeholder="e.g. 1500 or 10%" class="w-32 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500 text-xs font-medium transition-colors">
                         </div>
                         <div class="pt-2 border-t border-slate-200 flex justify-between items-end mt-2">
                             <span class="text-base font-bold text-slate-800">Grand Total</span>
@@ -258,7 +259,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-5 mb-5 shrink-0">
                     <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
                         <div class="space-y-3 w-full lg:w-auto">
-                            <!-- New Navigation Toggles -->
+                            <!-- Navigation Toggles -->
                             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                                 <div class="flex items-center bg-slate-100 p-1 rounded-lg self-stretch sm:self-auto">
                                     <button data-action="set-history-view" data-view="day" id="btn-hist-day" class="flex-1 sm:flex-none px-4 py-1.5 bg-white shadow-sm rounded-md font-bold text-slate-800 text-sm transition-all">Day</button>
@@ -315,8 +316,9 @@
                 <!-- Grand Total Dashboard -->
                 <div class="bg-indigo-600 rounded-2xl shadow-md p-6 text-white shrink-0 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="text-center md:text-left">
-                        <h3 class="text-indigo-200 font-bold uppercase tracking-wider text-xs mb-1">Total Daily Revenue</h3>
+                        <h3 class="text-indigo-200 font-bold uppercase tracking-wider text-xs mb-1">Total Revenue</h3>
                         <p id="summary-overall-rev" class="text-3xl md:text-4xl font-black">0 MMK</p>
+                        <p class="text-indigo-300 text-xs mt-1">(Reflects Day/Week/Month selection)</p>
                     </div>
                     <div class="w-full md:w-auto flex-1 bg-indigo-700/50 rounded-xl p-4 max-h-[160px] overflow-y-auto custom-scroll">
                         <h3 class="text-indigo-200 font-bold uppercase tracking-wider text-[10px] mb-2 border-b border-indigo-500/50 pb-1">Combined Items Sold (All Channels)</h3>
@@ -335,7 +337,7 @@
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
                         <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center shrink-0">
-                            <h3 class="font-bold text-blue-800 uppercase tracking-wide text-sm">Wholesale (Inc Partner)</h3>
+                            <h3 class="font-bold text-blue-800 uppercase tracking-wide text-sm">Wholesale</h3>
                             <span id="summary-wholesale-rev" class="font-black text-blue-600">0 MMK</span>
                         </div>
                         <div id="summary-wholesale-items" class="p-4 flex-1 overflow-y-auto space-y-2"></div>
@@ -644,7 +646,7 @@
                             <td style="text-align: right; padding-bottom: 4px; vertical-align: top;">ID: <span id="print-id" style="font-weight: bold; color: #000;"></span></td>
                         </tr>
                         <tr>
-                            <td style="color: #444; padding-bottom: 4px; vertical-align: top;">Type: <span id="print-type" style="text-transform: uppercase; font-weight: bold; color: #000;"></span></td>
+                            <td style="color: #444; padding-bottom: 4px; vertical-align: top;">Type: <span id="print-type" style="font-weight: bold; color: #000;"></span></td>
                             <td style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;">Pay: <span id="print-payment" style="color: #000; font-weight: 500;"></span></td>
                         </tr>
                         <tr class="hidden" id="print-due-date-row">
@@ -706,7 +708,6 @@
                     </div>
                 </div>
 
-                <!-- NEW: Void Button placed directly below the receipt preview -->
                 <button data-action="void-voucher" id="btn-void-voucher" class="mt-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Void / Cancel Voucher
                 </button>
@@ -732,7 +733,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // --- 1. DATA & STATE ---
         const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
@@ -790,10 +791,9 @@
                     setTimeout(() => toast.remove(), 300);
                 }, 3000);
             },
-            // STRICT timezone enforcer
             getYangonTime: () => {
                 const now = new Date();
-                const yangonOffset = 390 * 60000; // +06:30 in milliseconds
+                const yangonOffset = 390 * 60000;
                 return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + yangonOffset);
             },
             startOfDay: (d) => { const nd = new Date(d); nd.setHours(0,0,0,0); return nd; },
@@ -801,7 +801,7 @@
             getWeekRange: (d) => {
                 const date = new Date(d);
                 const day = date.getDay();
-                const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is sunday
+                const diff = date.getDate() - day + (day === 0 ? -6 : 1);
                 const start = new Date(date.setDate(diff));
                 start.setHours(0,0,0,0);
                 const end = new Date(start);
@@ -894,7 +894,7 @@
                 State.currentSaleType = type;
                 document.getElementById('checkout-sale-type-label').innerText = type;
                 
-                ['Retail', 'Wholesale', 'Credit', 'Partner'].forEach(t => {
+                ['Retail', 'Wholesale', 'Credit'].forEach(t => {
                     const btn = document.getElementById(`btn-type-${t}`);
                     if (btn) {
                         if (t === type) btn.className = 'flex-1 py-2 px-1 rounded-lg bg-rose-400 shadow-md text-xs sm:text-sm font-bold text-white transition-all';
@@ -902,24 +902,31 @@
                     }
                 });
 
+                const partnerContainer = document.getElementById('partner-discount-container');
+                const partnerCheckbox = document.getElementById('is-partner-deal');
+
                 if (type === 'Credit') {
                     document.getElementById('payment-method-box').classList.add('hidden');
                     document.getElementById('payment-method').required = false; document.getElementById('payment-method').value = '';
                     document.getElementById('credit-period-box').classList.remove('hidden');
                     document.getElementById('credit-period').required = true;
-                    document.getElementById('partner-discount-box').classList.add('hidden');
-                } else if (type === 'Partner') {
+                    if(partnerContainer) partnerContainer.classList.remove('hidden');
+                } else if (type === 'Wholesale') {
                     document.getElementById('payment-method-box').classList.remove('hidden');
                     document.getElementById('payment-method').required = true;
                     document.getElementById('credit-period-box').classList.add('hidden');
                     document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
-                    document.getElementById('partner-discount-box').classList.remove('hidden');
+                    if(partnerContainer) partnerContainer.classList.remove('hidden');
                 } else {
+                    // Retail
                     document.getElementById('payment-method-box').classList.remove('hidden');
                     document.getElementById('payment-method').required = true;
                     document.getElementById('credit-period-box').classList.add('hidden');
                     document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
-                    document.getElementById('partner-discount-box').classList.add('hidden');
+                    if(partnerContainer) {
+                        partnerContainer.classList.add('hidden');
+                        partnerCheckbox.checked = false;
+                    }
                 }
                 UI.renderCart();
                 PosLogic.validateCheckout();
@@ -979,7 +986,7 @@
                         const d = new Date(s.isoDate); 
                         const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric'}); 
                         const tStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                        let color = s.saleType === 'Credit' ? 'bg-amber-100 text-amber-700' : (s.saleType === 'Wholesale' || s.saleType === 'Partner' ? 'bg-blue-100 text-blue-700' : 'bg-rose-50 text-rose-600');
+                        let color = s.saleType.includes('Credit') ? 'bg-amber-100 text-amber-700' : (s.saleType.includes('Wholesale') || s.saleType.includes('Partner') ? 'bg-blue-100 text-blue-700' : 'bg-rose-50 text-rose-600');
                         
                         const isVoid = s.status === 'Voided';
                         const opacity = isVoid ? 'opacity-50 grayscale' : '';
@@ -1033,7 +1040,6 @@
                 const badge = document.getElementById('pending-badge');
                 tb.innerHTML = "";
                 
-                // Filter unpaid, non-voided sales
                 const pendingSales = (State.allFirebaseSales || []).filter(s => s.paymentStatus === 'Pending' && s.status !== 'Voided');
                 
                 if (pendingSales.length > 0) {
@@ -1060,7 +1066,7 @@
                         
                         let dueHtml = `<span class="text-xs text-slate-500">Awaiting COD</span>`;
                         
-                        if (s.saleType === 'Credit') {
+                        if (s.saleType.includes('Credit')) {
                             const days = parseInt(s.paymentMethod) || 0;
                             const dueDate = new Date(d.getTime() + (days * 86400000));
                             dueDate.setHours(0,0,0,0);
@@ -1101,17 +1107,12 @@
             },
 
             renderSalesSummary() {
-                const dateStr = document.getElementById('summary-date').value;
-                const localDateStr = Utils.getYangonTime().toISOString().split('T')[0];
-                const nextBtn = document.getElementById('summary-date-next');
-                if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
-                
                 let retailRev = 0, wholesaleRev = 0, creditRev = 0;
                 let retailItems = {}, wholesaleItems = {}, creditItems = {};
                 let overallItems = {};
 
-                (State.allFirebaseSales || []).forEach(s => {
-                    if (s.date !== dateStr || s.status === 'Voided') return;
+                (State.sessionSales || []).forEach(s => {
+                    if (s.status === 'Voided') return;
                     
                     const total = s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0;
                     const items = s.items || [];
@@ -1119,10 +1120,10 @@
                     if (s.saleType === 'Retail') {
                         retailRev += total;
                         items.forEach(i => retailItems[`${i.category} (${i.size})`] = (retailItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    } else if (s.saleType === 'Wholesale' || s.saleType === 'Partner') {
+                    } else if (s.saleType.includes('Wholesale') || s.saleType.includes('Partner')) {
                         wholesaleRev += total;
                         items.forEach(i => wholesaleItems[`${i.category} (${i.size})`] = (wholesaleItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    } else if (s.saleType === 'Credit') {
+                    } else if (s.saleType.includes('Credit')) {
                         creditRev += total;
                         items.forEach(i => creditItems[`${i.category} (${i.size})`] = (creditItems[`${i.category} (${i.size})`] || 0) + i.qty);
                     }
@@ -1197,7 +1198,6 @@
                 const pFilter = document.getElementById('inv-log-product').value;
                 const sFilter = document.getElementById('inv-log-size').value;
 
-                // Group logs by ID for the UI
                 const dailyLogs = (State.allFirebaseInventoryLogs || []).filter(l => l.date === dateStr);
                 
                 const tb = document.getElementById('inv-log-body');
@@ -1211,7 +1211,6 @@
                     if (logBox.type === "Consolidated_Inventory") {
                         changes = logBox.changes || [];
                     } else {
-                        // Legacy single log support
                         changes = [{ product: logBox.product, size: logBox.size, change: logBox.change, action: logBox.action }];
                     }
                     
@@ -1400,16 +1399,19 @@
                 const qtys = {}; 
                 State.currentCart.forEach(i => qtys[i.category] = (qtys[i.category] || 0) + i.qty);
                 
+                // Partner Deal Logic
+                const partnerCheckbox = document.getElementById('is-partner-deal');
+                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+
                 State.currentCart.forEach(i => {
                     let disc = 0; const tq = qtys[i.category];
                     
-                    if (State.currentSaleType === 'Partner') {
-                        const pRate = parseInt(document.getElementById('partner-discount-rate').value) || 0;
-                        disc = pRate / 100;
-                    } else if (State.currentSaleType === 'Wholesale') { 
-                        if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; 
-                    } else if (State.currentSaleType === 'Credit') { 
-                        if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; 
+                    if (!isPartner) {
+                        if (State.currentSaleType === 'Wholesale') { 
+                            if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; 
+                        } else if (State.currentSaleType === 'Credit') { 
+                            if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; 
+                        }
                     }
                     
                     i.discountRate = disc; 
@@ -1456,12 +1458,26 @@
                 
                 if (State.currentSaleType === 'Credit') hasPayment = document.getElementById('credit-period').value !== '';
                 else hasPayment = document.getElementById('payment-method').value !== '';
+
+                const partnerCheckbox = document.getElementById('is-partner-deal');
+                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+                const discInput = document.getElementById('summary-discount');
+                let isDiscValid = true;
+
+                if (isPartner) {
+                    discInput.classList.add('border-red-400', 'bg-red-50');
+                    const dVal = discInput.value.trim();
+                    if (!dVal || parseFloat(dVal) === 0 || isNaN(parseFloat(dVal))) {
+                        isDiscValid = false;
+                    }
+                } else {
+                    discInput.classList.remove('border-red-400', 'bg-red-50');
+                }
                 
-                btn.disabled = !(hasItems && hasName && hasPayment);
+                btn.disabled = !(hasItems && hasName && hasPayment && isDiscValid);
             },
             
             populateVoucherHTML(saleRec) {
-                // Formatting Yangon Time for Voucher
                 const d = new Date(saleRec.isoDate);
                 const mm = String(d.getMonth() + 1).padStart(2, '0');
                 const dd = String(d.getDate()).padStart(2, '0');
@@ -1477,7 +1493,7 @@
                 const dueRow = document.getElementById('print-due-date-row');
                 const settleRow = document.getElementById('print-settle-date-row');
                 
-                if (saleRec.saleType === 'Credit') { 
+                if (saleRec.saleType.includes('Credit')) { 
                     dueRow.classList.remove('hidden'); 
                     const days = parseInt(saleRec.paymentMethod) || 0;
                     if(days) {
@@ -1505,7 +1521,6 @@
                 document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); 
                 document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";
                 
-                // Handle Void visuals
                 const voidStamp = document.getElementById('print-void-stamp');
                 const voidBtn = document.getElementById('btn-void-voucher');
                 if (saleRec.status === 'Voided') {
@@ -1548,7 +1563,6 @@
                 const totals = PosLogic.calculateTotals();
                 const now = Utils.getYangonTime();
                 
-                // Sequential ID Generation MMYY-xxxx
                 const mm = String(now.getMonth() + 1).padStart(2, '0');
                 const yy = String(now.getFullYear()).slice(-2);
                 const prefix = `${mm}${yy}-`;
@@ -1569,17 +1583,19 @@
                 let pay = State.currentSaleType === 'Credit' ? document.getElementById('credit-period').value + ' Days' : document.getElementById('payment-method').value;
                 let payStatus = (State.currentSaleType === 'Credit' || pay === 'Cash on Delivery') ? 'Pending' : 'Paid';
                 
+                const partnerCheckbox = document.getElementById('is-partner-deal');
+                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+                const finalSaleType = isPartner ? `${State.currentSaleType} (Partner)` : State.currentSaleType;
+
                 const saleRec = { 
                     type: "Sale", id: id, date: now.toISOString().split('T')[0], isoDate: now.toISOString(), 
-                    saleType: State.currentSaleType, paymentMethod: pay, paymentStatus: payStatus, customer: cName, phone: cPhone, 
+                    saleType: finalSaleType, paymentMethod: pay, paymentStatus: payStatus, customer: cName, phone: cPhone, 
                     notes: notes, status: "Active", items: State.currentCart.map(i=>({category:i.category, size:i.size, qty:i.qty, price:i.effectivePrice, total:i.total})), totals: totals 
                 };
 
-                // Populate Modal UI
                 PosLogic.populateVoucherHTML(saleRec);
                 State.currentVoucherId = id;
                 
-                // Save logic STRICT CHAINING
                 const success = await Backend.pushSale(saleRec, State.currentCart);
                 
                 if (success) {
@@ -1587,9 +1603,9 @@
                     
                     document.getElementById('voucher-modal').classList.remove('hidden');
                     
-                    // Reset Cart state
                     State.currentCart = []; 
                     document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
+                    if(partnerCheckbox) partnerCheckbox.checked = false;
                     if(State.isMobileCartOpen) UI.toggleMobileCart(); 
                     UI.renderCart(); 
                     Utils.showToast('Sale Saved Successfully!');
@@ -1628,12 +1644,12 @@
                 
                 State.sessionSales = State.allFirebaseSales.filter(s => s.isoDate >= startIso && s.isoDate <= endIso);
                 
-                // Do not count voided vouchers in top totals
                 const validSales = State.sessionSales.filter(s => s.status !== 'Voided');
                 document.getElementById('stat-total-vouchers').innerText = validSales.length;
                 document.getElementById('stat-total-revenue').innerText = Utils.formatMMK(validSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
                 
                 UI.renderHistory();
+                UI.renderSalesSummary();
             }
         };
 
@@ -1779,7 +1795,6 @@
                     batch.set(doc(collection(State.db, 'expenses')), rec);
                     await batch.commit();
                     
-                    // Strict Chain
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
                     document.getElementById('topup-amount').value = '';
                     Utils.showToast(`Added ${Utils.formatMMK(amount)} to Petty Cash`);
@@ -1805,7 +1820,6 @@
                     batch.set(doc(collection(State.db, 'expenses')), rec);
                     await batch.commit();
                     
-                    // Strict Chain
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
                     
                     document.getElementById('exp-amount').value = ''; document.getElementById('exp-notes').value = '';
@@ -1894,10 +1908,8 @@
                 try {
                     const batch = writeBatch(State.db);
                     
-                    // Mark as voided
                     batch.set(doc(State.db, 'sales', id), { status: 'Voided' }, { merge: true });
                     
-                    // Revert Inventory
                     const changes = [];
                     sale.items.forEach(i => {
                         batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(i.qty) }, { merge: true });
@@ -1921,7 +1933,6 @@
             },
             
             init() {
-                // Use exact provided credentials
                 const p1 = "AIzaSyC_y2V"; const p2 = "R9T9-PGQ5Y-mKnK"; const p3 = "JSdslJm3ISQWc";
                 const config = {
                     apiKey: p1 + p2 + p3, authDomain: "khay-may-pos.firebaseapp.com", projectId: "khay-may-pos",
@@ -1935,14 +1946,13 @@
                     signInAnonymously(auth).then(() => {
                         let salesTimeout, invTimeout, expTimeout, logTimeout;
                         
-                        // Generous limit to protect quota while maintaining full recent history live sync
                         const salesQuery = query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000));
                         onSnapshot(salesQuery, (snap) => {
                             const d = []; snap.forEach(doc => d.push(doc.data())); 
                             clearTimeout(salesTimeout);
                             salesTimeout = setTimeout(() => {
-                                State.allFirebaseSales = d; // already ordered by desc
-                                PosLogic.applyFilters(); UI.renderSalesSummary(); UI.renderPendingPayments();
+                                State.allFirebaseSales = d; 
+                                PosLogic.applyFilters(); UI.renderPendingPayments();
                             }, 300);
                         });
                         
@@ -1980,7 +1990,7 @@
             }
         };
 
-        // --- 6. EVENT DELEGATION SETUP (No inline HTML events) ---
+        // --- 6. EVENT DELEGATION SETUP ---
         function attachEvents() {
             document.body.addEventListener('click', (e) => {
                 const btn = e.target.closest('[data-action]');
@@ -1991,11 +2001,8 @@
                 if (action === 'switch-sales-tab') UI.switchSubTab('sales', btn.dataset.tab);
                 if (action === 'switch-inv-tab') UI.switchSubTab('inv', btn.dataset.tab);
                 
-                // History Nav
                 if (action === 'set-history-view') UI.setHistoryView(btn.dataset.view);
                 if (action === 'nav-history') UI.navHistory(Number(btn.dataset.dir));
-                
-                // Date Navigators
                 if (action === 'prev-date') UI.changeDateBy(btn.dataset.target, -1);
                 if (action === 'next-date') UI.changeDateBy(btn.dataset.target, 1);
                 
@@ -2006,7 +2013,6 @@
                 if (action === 'remove-item') PosLogic.updateQuantity(Number(btn.dataset.id), -999);
                 if (action === 'process-checkout') PosLogic.processCheckout();
                 
-                // Inventory Adj
                 if (action === 'toggle-inv-sign') InventoryLogic.toggleSign();
                 if (action === 'add-to-adj-cart') InventoryLogic.addToAdjCart();
                 if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
@@ -2016,14 +2022,12 @@
                 if (action === 'save-settings') AppSettings.save();
                 if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
                 
-                // Voucher Modals & Void
                 if (action === 'view-voucher') PosLogic.viewVoucher(btn.dataset.id);
                 if (action === 'close-voucher') PosLogic.closeVoucher();
                 if (action === 'print-voucher') window.print();
                 if (action === 'download-voucher') PosLogic.downloadVoucherImage();
                 if (action === 'void-voucher') Backend.voidVoucher(State.currentVoucherId);
                 
-                // Settle Modals
                 if (action === 'open-settle') {
                     const id = btn.dataset.id;
                     document.getElementById('settle-voucher-id').innerText = id;
@@ -2047,20 +2051,18 @@
             document.getElementById('item-size').addEventListener('change', PosLogic.updatePrice);
             document.getElementById('add-item-form').addEventListener('submit', (e) => { e.preventDefault(); PosLogic.addItem(); });
             
-            document.getElementById('partner-discount-rate').addEventListener('input', UI.renderCart);
-            document.getElementById('summary-discount').addEventListener('input', UI.renderCart);
+            const partnerCheckbox = document.getElementById('is-partner-deal');
+            if (partnerCheckbox) partnerCheckbox.addEventListener('change', () => { UI.renderCart(); PosLogic.validateCheckout(); });
+            
+            document.getElementById('summary-discount').addEventListener('input', () => { UI.renderCart(); PosLogic.validateCheckout(); });
             document.getElementById('sales-search').addEventListener('input', UI.renderHistory);
             
             document.getElementById('inv-product').addEventListener('change', InventoryLogic.updateInvSizeDropdown);
             document.getElementById('expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.submitExpense(); });
             document.getElementById('exp-dept').addEventListener('change', ExpenseLogic.updateExpenseSubCat);
             
-            // Sub-tabs filters
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
-            
-            const summaryDate = document.getElementById('summary-date');
-            if(summaryDate) summaryDate.addEventListener('change', UI.renderSalesSummary);
             
             const invLogDate = document.getElementById('inv-log-date');
             if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
@@ -2071,8 +2073,8 @@
             const invLogSize = document.getElementById('inv-log-size');
             if(invLogSize) invLogSize.addEventListener('change', UI.renderInventoryLogs);
 
-            document.querySelectorAll('.validator-inputs input, .validator-inputs select').forEach(el => {
-                if (el.tagName === 'INPUT') el.addEventListener('input', PosLogic.validateCheckout);
+            document.querySelectorAll('.validator-inputs input, .validator-inputs select, .validator-inputs textarea').forEach(el => {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.addEventListener('input', PosLogic.validateCheckout);
                 else el.addEventListener('change', PosLogic.validateCheckout);
             });
         }
@@ -2090,7 +2092,6 @@
             
             const localDate = Utils.getYangonTime();
             const localDateStr = localDate.toISOString().split('T')[0];
-            document.getElementById('summary-date').value = localDateStr;
             document.getElementById('inv-log-date').value = localDateStr;
             
             const expFilter = document.getElementById('expense-month-filter');

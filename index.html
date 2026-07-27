@@ -19,7 +19,6 @@
         :root { --brand-color: #e11d48; }
         body { font-family: 'Quicksand', 'Padauk', sans-serif; background-color: #f8fafc; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -27,17 +26,14 @@
         
         .logo-tint { filter: invert(24%) sepia(90%) saturate(3015%) hue-rotate(334deg) brightness(92%) contrast(97%); }
         
-        /* Toast Animations */
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideIn 0.3s forwards; }
         .toast-exit { animation: slideOut 0.3s forwards; }
 
-        /* Global Layout Helpers */
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
         .pt-safe { padding-top: env(safe-area-inset-top); }
 
-        /* Minimal Native Print CSS */
         @media print {
             body > *:not(#voucher-modal) { display: none !important; }
             #voucher-modal { display: block !important; position: absolute; left: 0; top: 0; width: 100%; height: auto; background: none; z-index: auto; }
@@ -46,12 +42,13 @@
             #voucher-scroll-area { overflow: visible !important; background: transparent !important; padding: 0 !important; display: block !important; }
             #print-area { width: 100% !important; max-width: 80mm; box-shadow: none !important; margin: 0 auto; padding: 0 !important; }
             .print-template.active-print { display: block !important; width: 100%; }
+            #btn-void-voucher { display: none !important; }
         }
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
 
-    <!-- Sidebar Navigation (Desktop) -->
+    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden lg:flex flex-col z-20 shrink-0">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -60,19 +57,19 @@
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             <button data-action="switch-tab" data-target="pos-tab" id="nav-desk-pos-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-400 text-white font-bold shadow-md transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Sales Terminal
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Sales Terminal
             </button>
             <button data-action="switch-tab" data-target="sales-tab" id="nav-desk-sales-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg> Sales Tracking
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg> Sales Tracking
             </button>
             <button data-action="switch-tab" data-target="inventory-tab" id="nav-desk-inventory-tab" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
                 <div class="flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg> Inventory
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg> Inventory
                 </div>
                 <span id="nav-stock-alert" class="hidden bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">!</span>
             </button>
             <button data-action="switch-tab" data-target="expense-tab" id="nav-desk-expense-tab" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-700 font-medium transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Expenses
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Expenses
             </button>
         </nav>
     </aside>
@@ -86,29 +83,42 @@
                 <span class="font-bold text-rose-600 text-lg tracking-tight">Khay May</span>
             </div>
             <div class="flex gap-2">
-                <button data-action="switch-tab" data-target="pos-tab" id="nav-mob-pos-tab" class="p-2 rounded-lg bg-rose-400 text-white shadow-md transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
-                <button data-action="switch-tab" data-target="sales-tab" id="nav-mob-sales-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
+                <button data-action="switch-tab" data-target="pos-tab" id="nav-mob-pos-tab" class="p-2 rounded-lg bg-rose-400 text-white shadow-md transition-colors"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
+                <button data-action="switch-tab" data-target="sales-tab" id="nav-mob-sales-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
                 <button data-action="switch-tab" data-target="inventory-tab" id="nav-mob-inventory-tab" class="relative p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                     <span id="mobile-stock-alert" class="hidden absolute -top-1 -right-1 bg-orange-500 w-3 h-3 rounded-full border-2 border-white"></span>
                 </button>
-                <button data-action="switch-tab" data-target="expense-tab" id="nav-mob-expense-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
+                <button data-action="switch-tab" data-target="expense-tab" id="nav-mob-expense-tab" class="p-2 rounded-lg bg-slate-100 text-slate-600 transition-colors"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button>
             </div>
         </header>
 
+        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 lg:pb-6">
                 <!-- Sale Type Selector -->
-                <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0">
-                    <button data-action="set-sale-type" data-type="Retail" id="btn-type-Retail" class="flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all">Retail</button>
-                    <button data-action="set-sale-type" data-type="Wholesale" id="btn-type-Wholesale" class="flex-1 py-2 rounded-lg bg-white text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Wholesale</button>
-                    <button data-action="set-sale-type" data-type="Credit" id="btn-type-Credit" class="flex-1 py-2 rounded-lg bg-white text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Credit Sales</button>
+                <div class="bg-slate-200/70 p-1.5 rounded-xl flex flex-wrap gap-1 mb-5 shrink-0">
+                    <button data-action="set-sale-type" data-type="Retail" id="btn-type-Retail" class="flex-1 py-2 px-1 rounded-lg bg-rose-400 shadow-md text-xs sm:text-sm font-bold text-white transition-all">Retail</button>
+                    <button data-action="set-sale-type" data-type="Wholesale" id="btn-type-Wholesale" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Wholesale</button>
+                    <button data-action="set-sale-type" data-type="Credit" id="btn-type-Credit" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Credit</button>
+                    <button data-action="set-sale-type" data-type="Partner" id="btn-type-Partner" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Partner</button>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4 shrink-0">
-                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item to Cart
-                    </h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800">
+                            <svg class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item
+                        </h2>
+                        <!-- Partner Discount Input (Hidden by default) -->
+                        <div id="partner-discount-box" class="hidden flex items-center gap-2 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100">
+                            <span class="text-xs font-bold text-indigo-700">Flat Deal:</span>
+                            <div class="relative w-16">
+                                <input type="number" id="partner-discount-rate" value="0" min="0" max="100" class="w-full bg-white border border-indigo-200 rounded px-1.5 py-0.5 text-sm font-bold text-indigo-700 text-right focus:outline-none focus:border-indigo-400">
+                                <span class="absolute right-1 top-0.5 text-xs font-bold text-indigo-400">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <form id="add-item-form" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -179,14 +189,14 @@
                                 </div>
                             </div>
                             <div>
-                                <textarea id="sale-notes" rows="2" placeholder="Notes, Transaction IDs, Delivery info..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white resize-none"></textarea>
+                                <textarea id="sale-notes" rows="2" placeholder="Notes, Delivery info..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 bg-white resize-none"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="p-4 bg-white flex-1 min-h-[250px]" id="cart-container">
                         <div id="empty-cart-msg" class="h-full flex flex-col items-center justify-center text-slate-400 py-8">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            <svg class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                             <p class="font-medium text-sm">Cart is empty</p>
                         </div>
                         <div id="cart-items" class="space-y-3 hidden"></div>
@@ -200,7 +210,7 @@
                         </div>
                         <div class="flex justify-between items-center text-slate-500 pt-1">
                             <span>Manual Discount</span>
-                            <input type="text" id="summary-discount" placeholder="Amount or % (e.g. 1500 or 10%)" class="w-32 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500 text-xs font-bold">
+                            <input type="text" id="summary-discount" placeholder="e.g. 1500 or 10%" class="w-32 px-2 py-1 text-right rounded border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500 text-xs font-medium">
                         </div>
                         <div class="pt-2 border-t border-slate-200 flex justify-between items-end mt-2">
                             <span class="text-base font-bold text-slate-800">Grand Total</span>
@@ -208,7 +218,7 @@
                         </div>
                     </div>
                     <button data-action="process-checkout" id="checkout-btn" disabled class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg rounded-xl shadow-lg disabled:opacity-50 disabled:bg-slate-400 disabled:cursor-not-allowed flex justify-center items-center gap-2 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Check Out
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Check Out
                     </button>
                 </div>
             </div>
@@ -217,7 +227,7 @@
             <div id="mobile-floating-cart" data-action="toggle-cart" class="lg:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer hover:bg-slate-900 transition-colors hidden shrink-0 mb-safe">
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                         <span id="mobile-cart-badge" class="absolute -top-2 -right-2 bg-rose-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
                     </div>
                     <span class="font-semibold" id="mobile-cart-total">0 MMK</span>
@@ -226,6 +236,7 @@
             </div>
         </section>
 
+        <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="flex justify-between items-center mb-5 shrink-0">
                 <h2 class="text-2xl font-bold text-slate-800">Sales Tracking</h2>
@@ -234,40 +245,47 @@
                 </div>
             </div>
             
-            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[400px]">
-                <button data-action="switch-sales-tab" data-tab="list" id="btn-sales-list" class="sales-btn flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-slate-800 transition-all">Vouchers List</button>
-                <button data-action="switch-sales-tab" data-tab="summary" id="btn-sales-summary" class="sales-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Daily Summary</button>
+            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[450px]">
+                <button data-action="switch-sales-tab" data-tab="list" id="btn-sales-list" class="sales-btn flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-slate-800 transition-all">History</button>
+                <button data-action="switch-sales-tab" data-tab="summary" id="btn-sales-summary" class="sales-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Summary</button>
+                <button data-action="switch-sales-tab" data-tab="pending" id="btn-sales-pending" class="sales-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all flex items-center justify-center gap-1">
+                    Pending <span id="pending-badge" class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                </button>
             </div>
 
             <!-- VOUCHERS LIST VIEW -->
             <div id="sales-list-view" class="sales-view flex-1 flex flex-col min-h-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-6 shrink-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-5 mb-5 shrink-0">
                     <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
-                        <div>
-                            <div class="flex flex-wrap items-center gap-3">
-                                <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200">
-                                    <input type="date" id="filter-start" class="bg-transparent font-medium text-slate-700 outline-none">
-                                    <span class="text-slate-400">to</span>
-                                    <input type="date" id="filter-end" class="bg-transparent font-medium text-slate-700 outline-none">
+                        <div class="space-y-3 w-full lg:w-auto">
+                            <!-- New Navigation Toggles -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                <div class="flex items-center bg-slate-100 p-1 rounded-lg self-stretch sm:self-auto">
+                                    <button data-action="set-history-view" data-view="day" id="btn-hist-day" class="flex-1 sm:flex-none px-4 py-1.5 bg-white shadow-sm rounded-md font-bold text-slate-800 text-sm transition-all">Day</button>
+                                    <button data-action="set-history-view" data-view="week" id="btn-hist-week" class="flex-1 sm:flex-none px-4 py-1.5 text-slate-500 hover:text-slate-700 font-bold text-sm transition-all">Week</button>
+                                    <button data-action="set-history-view" data-view="month" id="btn-hist-month" class="flex-1 sm:flex-none px-4 py-1.5 text-slate-500 hover:text-slate-700 font-bold text-sm transition-all">Month</button>
                                 </div>
-                                <div class="flex items-center gap-2 text-sm bg-slate-50 p-2 rounded-lg border border-slate-200 w-full md:w-auto">
-                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    <input type="text" id="filter-search" placeholder="Search Name / Phone..." class="bg-transparent font-medium text-slate-700 outline-none w-full md:w-48">
+                                <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg p-1 w-full sm:w-auto justify-between">
+                                    <button data-action="nav-history" data-dir="-1" class="p-1.5 rounded hover:bg-slate-100 text-slate-600 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                                    <span id="hist-date-label" class="font-bold text-sm text-slate-700 min-w-[130px] text-center">...</span>
+                                    <button data-action="nav-history" data-dir="1" id="btn-hist-next" class="p-1.5 rounded hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
                                 </div>
                             </div>
-                            <div id="sync-status" class="text-xs text-slate-500 mt-2 flex items-center font-medium">
-                                <span class="relative flex h-2 w-2 mr-2"><span class="absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
-                                Cloud Sync Offline (Setup Required)
+                            
+                            <div class="relative w-full max-w-sm">
+                                <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <input type="text" id="sales-search" placeholder="Search Name or Phone..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
                             </div>
                         </div>
-                        <div class="flex gap-4 flex-wrap">
-                            <div class="bg-slate-50 p-3 rounded-xl min-w-[120px]">
+                        
+                        <div class="flex gap-4 flex-wrap w-full lg:w-auto">
+                            <div class="bg-slate-50 p-3 rounded-xl flex-1 lg:flex-none min-w-[110px]">
                                 <p class="text-xs font-bold text-slate-400 uppercase">Vouchers</p>
-                                <p class="text-2xl font-bold text-slate-800" id="stat-total-vouchers">0</p>
+                                <p class="text-xl font-bold text-slate-800" id="stat-total-vouchers">0</p>
                             </div>
-                            <div class="bg-rose-50 p-3 rounded-xl min-w-[150px]">
+                            <div class="bg-rose-50 p-3 rounded-xl flex-1 lg:flex-none min-w-[140px]">
                                 <p class="text-xs font-bold text-rose-400 uppercase">Revenue</p>
-                                <p class="text-2xl font-bold text-rose-600" id="stat-total-revenue">0 MMK</p>
+                                <p class="text-xl font-bold text-rose-600" id="stat-total-revenue">0 MMK</p>
                             </div>
                         </div>
                     </div>
@@ -280,13 +298,13 @@
                         <div>Customer & Method</div>
                         <div>Items</div>
                         <div class="text-right">Totals</div>
-                        <div class="text-center w-10">View</div>
+                        <div class="text-center w-12">View</div>
                     </div>
                     <div class="overflow-y-auto flex-1 relative">
                         <div id="history-body" class="divide-y divide-slate-100"></div>
                         <div id="empty-history-msg" class="absolute inset-0 p-12 flex flex-col items-center justify-center text-slate-400 bg-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                            <p>No sales found matching search criteria.</p>
+                            <svg class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                            <p>No sales found.</p>
                         </div>
                     </div>
                 </div>
@@ -294,31 +312,20 @@
             
             <!-- DAILY SUMMARY VIEW -->
             <div id="sales-summary-view" class="sales-view flex-1 flex flex-col hidden min-h-0 space-y-6">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 shrink-0 flex justify-between items-center">
-                    <h2 class="text-lg font-bold text-slate-800 hidden md:block">Summary Dashboard</h2>
-                    <div class="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 w-full md:w-auto justify-between">
-                        <button data-action="prev-date" data-target="summary-date" class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                        <input type="date" id="summary-date" class="px-2 py-1 bg-transparent text-sm focus:outline-none font-bold text-slate-700 text-center">
-                        <button data-action="next-date" data-target="summary-date" id="summary-date-next" class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                <!-- Grand Total Dashboard -->
+                <div class="bg-indigo-600 rounded-2xl shadow-md p-6 text-white shrink-0 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="text-center md:text-left">
+                        <h3 class="text-indigo-200 font-bold uppercase tracking-wider text-xs mb-1">Total Daily Revenue</h3>
+                        <p id="summary-overall-rev" class="text-3xl md:text-4xl font-black">0 MMK</p>
+                    </div>
+                    <div class="w-full md:w-auto flex-1 bg-indigo-700/50 rounded-xl p-4 max-h-[160px] overflow-y-auto custom-scroll">
+                        <h3 class="text-indigo-200 font-bold uppercase tracking-wider text-[10px] mb-2 border-b border-indigo-500/50 pb-1">Combined Items Sold (All Channels)</h3>
+                        <div id="summary-overall-items" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1"></div>
                     </div>
                 </div>
 
-                <!-- Grand Total Dashboard -->
-                <div class="bg-indigo-600 rounded-2xl shadow-sm border border-indigo-700 p-5 md:p-6 shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center text-white mb-2">
-                    <div class="mb-4 md:mb-0">
-                        <h3 class="text-indigo-200 text-sm font-bold uppercase tracking-wider mb-1">Overall Daily Revenue</h3>
-                        <p id="summary-grand-rev" class="text-3xl md:text-4xl font-black">0 MMK</p>
-                    </div>
-                    <div class="w-full md:w-auto flex-1 md:ml-12 lg:ml-24">
-                        <h3 class="text-indigo-200 text-xs font-bold uppercase tracking-wider mb-2">Total Items Sold (All Channels)</h3>
-                        <div id="summary-grand-items" class="text-sm font-medium bg-indigo-700/50 p-3 rounded-xl w-full max-h-32 overflow-y-auto space-y-1">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-                </div>
-                
+                <!-- Breakdown Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1 items-start overflow-y-auto pb-4">
-                    <!-- Retail -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
                         <div class="bg-rose-50 p-4 border-b border-rose-100 flex justify-between items-center shrink-0">
                             <h3 class="font-bold text-rose-800 uppercase tracking-wide text-sm">Retail</h3>
@@ -326,15 +333,13 @@
                         </div>
                         <div id="summary-retail-items" class="p-4 flex-1 overflow-y-auto space-y-2"></div>
                     </div>
-                    <!-- Wholesale -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
                         <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center shrink-0">
-                            <h3 class="font-bold text-blue-800 uppercase tracking-wide text-sm">Wholesale</h3>
+                            <h3 class="font-bold text-blue-800 uppercase tracking-wide text-sm">Wholesale (Inc Partner)</h3>
                             <span id="summary-wholesale-rev" class="font-black text-blue-600">0 MMK</span>
                         </div>
                         <div id="summary-wholesale-items" class="p-4 flex-1 overflow-y-auto space-y-2"></div>
                     </div>
-                    <!-- Credit -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
                         <div class="bg-amber-50 p-4 border-b border-amber-100 flex justify-between items-center shrink-0">
                             <h3 class="font-bold text-amber-800 uppercase tracking-wide text-sm">Credit</h3>
@@ -344,8 +349,43 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PENDING PAYMENTS VIEW -->
+            <div id="sales-pending-view" class="sales-view flex-1 flex flex-col hidden min-h-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-5 shrink-0 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
+                            Unpaid Vouchers
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">COD and Credit sales awaiting settlement.</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Total Pending</p>
+                        <p class="text-2xl font-bold text-amber-600" id="stat-pending-total">0 MMK</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex-1 flex flex-col">
+                    <div class="hidden md:grid grid-cols-[1fr_1.5fr_auto_1.5fr_auto] gap-4 p-4 bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200 shrink-0">
+                        <div>Voucher ID & Date</div>
+                        <div>Customer</div>
+                        <div class="text-center">Due Status</div>
+                        <div class="text-right">Amount</div>
+                        <div class="text-center w-24">Action</div>
+                    </div>
+                    <div class="overflow-y-auto flex-1 relative">
+                        <div id="pending-body" class="divide-y divide-slate-100"></div>
+                        <div id="empty-pending-msg" class="absolute inset-0 p-12 flex flex-col items-center justify-center text-slate-400 bg-white">
+                            <svg class="h-12 w-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <p>All vouchers are settled!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
+        <!-- Inventory Tab -->
         <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <h2 class="text-2xl font-bold text-slate-800 mb-5 flex items-center gap-2">Inventory Management</h2>
             
@@ -357,51 +397,52 @@
             <!-- ADJUST & LOG VIEW -->
             <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 xl:grid-cols-3 gap-6 items-start min-h-0">
                 
-                <!-- New Adjustment Cart Form -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 xl:col-span-1 shrink-0 flex flex-col h-full max-h-[700px]">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-                        Adjust Stock
-                    </h2>
-                    <div class="space-y-3 shrink-0">
-                        <div>
-                            <select id="inv-product" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
-                                <option value="" disabled selected>Select Product</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2">
-                            <select id="inv-size" disabled class="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 disabled:cursor-not-allowed">
-                                <option value="" disabled selected>Size</option>
-                            </select>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" id="inv-qty" min="1" placeholder="Qty" class="w-24 px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold">
-                        </div>
-                        <div class="flex gap-2 pt-1">
-                            <button type="button" data-action="add-adj" data-type="in" class="flex-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 py-2 rounded-lg text-sm font-bold transition-colors">+ Add to List</button>
-                            <button type="button" data-action="add-adj" data-type="out" class="flex-1 bg-rose-50 text-rose-700 hover:bg-rose-100 py-2 rounded-lg text-sm font-bold transition-colors">- Add to List</button>
-                        </div>
+                <!-- NEW ADJUSTMENT CART UI -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col xl:col-span-1 shrink-0 h-[600px]">
+                    <div class="p-5 border-b border-slate-100 shrink-0">
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                            Adjust Stock
+                        </h2>
                     </div>
                     
-                    <div class="mt-4 flex-1 overflow-y-auto border-t border-b border-slate-100 py-2 space-y-2 relative" id="adj-cart-container">
-                        <div id="adj-cart-empty" class="text-sm text-slate-400 text-center py-6 absolute inset-0 flex items-center justify-center">Adjustment list is empty.</div>
-                        <div id="adj-cart-items" class="space-y-2 relative z-10"></div>
+                    <div class="p-4 space-y-3 shrink-0 bg-slate-50">
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="inv-product" class="col-span-2 w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                                <option value="" disabled selected>Select Product</option>
+                            </select>
+                            <select id="inv-size" disabled class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-200 disabled:cursor-not-allowed">
+                                <option value="" disabled selected>Select Size</option>
+                            </select>
+                            <div class="flex items-center gap-1">
+                                <button type="button" data-action="toggle-inv-sign" id="inv-sign-btn" class="px-3 py-2 bg-emerald-100 text-emerald-700 font-bold rounded-lg text-sm transition-colors">+</button>
+                                <input type="number" inputmode="numeric" pattern="[0-9]*" id="inv-qty" min="1" placeholder="Qty" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold">
+                            </div>
+                        </div>
+                        <button type="button" data-action="add-to-adj-cart" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg text-sm font-bold shadow-sm transition-colors">Add to List</button>
                     </div>
 
-                    <div class="pt-4 shrink-0">
-                        <input type="text" id="inv-adj-notes" placeholder="Note (e.g. July Restock, Damage Audit)" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none mb-3">
-                        <button type="button" data-action="submit-adj" id="btn-submit-adj" disabled class="w-full bg-slate-800 hover:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl transition-colors shadow-sm">Submit Adjustment</button>
+                    <div class="flex-1 overflow-y-auto p-2" id="adj-cart-items">
+                        <div id="empty-adj-msg" class="h-full flex flex-col items-center justify-center text-slate-400">
+                            <p class="text-xs font-medium">Adjustment list is empty.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-t border-slate-100 shrink-0 bg-white">
+                        <input type="text" id="inv-notes" placeholder="Reason (e.g. Damage, Audit, Restock)" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none mb-3 font-medium bg-slate-50">
+                        <button type="button" data-action="submit-adjustment" id="submit-adj-btn" disabled class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-sm font-bold shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v-8m0 8l-3-3m3 3l3-3"></path></svg>
+                            Submit Adjustment
+                        </button>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden xl:col-span-2 flex flex-col h-full max-h-[700px]">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden xl:col-span-2 flex flex-col h-[600px]">
                     <div class="p-4 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 shrink-0 gap-3">
-                        <h3 class="font-bold text-slate-800">Daily Log</h3>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-slate-800">Daily Log</h3>
+                        </div>
                         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                            <select id="inv-log-product" class="px-2 py-1.5 rounded border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium bg-white max-w-[140px]">
-                                <option value="All">All Products</option>
-                            </select>
-                            <select id="inv-log-size" class="px-2 py-1.5 rounded border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium bg-white max-w-[100px]">
-                                <option value="All">All Sizes</option>
-                            </select>
                             <div class="flex items-center gap-1 bg-white border border-slate-200 rounded p-0.5 ml-auto md:ml-0">
                                 <button data-action="prev-date" data-target="inv-log-date" class="p-1 rounded hover:bg-slate-100 text-slate-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
                                 <input type="date" id="inv-log-date" class="px-1 py-1 text-sm focus:outline-none font-medium border-none bg-transparent w-[110px] text-center">
@@ -409,10 +450,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-y-auto flex-1 relative p-3">
-                        <div id="inv-log-body" class="space-y-3"></div>
+                    <div class="overflow-y-auto flex-1 relative bg-slate-50/50 p-4">
+                        <div id="inv-log-body" class="space-y-4"></div>
                         <div id="empty-inv-log-msg" class="absolute inset-0 p-8 flex flex-col items-center justify-center text-slate-400 bg-white">
-                            <p>No inventory changes logged matching criteria.</p>
+                            <p>No inventory changes logged on this date.</p>
                         </div>
                     </div>
                 </div>
@@ -427,31 +468,24 @@
                         <div class="w-3 h-3 rounded-full bg-rose-500"></div><span class="text-xs text-slate-500 font-medium">Out (0)</span>
                     </div>
                 </div>
-                <div class="overflow-y-auto flex-1">
+                <div class="overflow-y-auto flex-1 p-0">
                     <table class="w-full text-left border-collapse">
-                        <thead class="bg-white shadow-[0_2px_5px_rgba(0,0,0,0.02)] sticky top-0 z-10">
-                            <tr class="text-slate-400 text-xs uppercase border-b border-slate-100">
-                                <th class="px-5 py-3 font-semibold">Product</th>
-                                <th class="px-5 py-3 font-semibold">Size</th>
-                                <th class="px-5 py-3 font-semibold text-center">In Stock</th>
-                                <th class="px-5 py-3 font-semibold text-right">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventory-body" class="divide-y divide-slate-50"></tbody>
+                        <tbody id="inventory-body" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
+        <!-- Expenses Tab -->
         <section id="expense-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column -->
                 <div class="space-y-6 lg:col-span-1">
                     
                     <!-- Petty Cash Dashboard -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                        <h3 id="petty-cash-label" class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide transition-colors">Live Petty Cash</h3>
-                        <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500 transition-colors">0 MMK</p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center transition-colors duration-300" id="petty-cash-card">
+                        <h3 class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide" id="petty-cash-title">Live Petty Cash</h3>
+                        <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500">0 MMK</p>
                         
                         <div class="mt-5 border-t border-slate-100 pt-5">
                             <div class="flex gap-2">
@@ -464,7 +498,7 @@
                     <!-- Add Expense Form -->
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
+                            <svg class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
                             Log Expense
                         </h2>
                         <form id="expense-form" class="space-y-4">
@@ -528,6 +562,28 @@
         <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
+    <!-- Settle Payment Modal -->
+    <div id="settle-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm">
+            <h3 class="text-lg font-bold text-slate-800 mb-1">Settle Payment</h3>
+            <p class="text-xs text-slate-500 mb-4">Mark voucher <span id="settle-voucher-id" class="font-bold font-mono"></span> as Paid.</p>
+            
+            <input type="hidden" id="settle-hidden-id">
+            
+            <div class="space-y-3 mb-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Bank & Transaction ID (Notes)</label>
+                    <input type="text" id="settle-notes" placeholder="e.g. KBZPay: 09123456789" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 bg-slate-50">
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button data-action="close-settle" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors text-sm">Cancel</button>
+                <button data-action="confirm-settle" id="btn-confirm-settle" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-colors text-sm">Mark as Paid</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/40 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 shadow-2xl w-[90%] max-w-md">
@@ -538,17 +594,24 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-slate-600 mb-1">Google Sheets App URL</label>
-                    <input type="url" id="sheet-url" placeholder="Paste URL here..." class="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    <input type="url" id="sheet-url" placeholder="Paste URL here..." class="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 mb-3">
+                    <button type="button" data-action="save-settings" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-bold transition-colors">Save Connection</button>
                 </div>
-                <button type="button" data-action="save-settings" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-bold transition-colors">Save Connection</button>
+                
+                <hr class="border-slate-200">
+                
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800 mb-2">Data Troubleshooting</h3>
+                    <p class="text-xs text-slate-500 mb-3">If Google Sheets is missing data, you can force the web app to push its live inventory numbers to the 'Live Master Stock' sheet.</p>
+                    <button type="button" data-action="force-sync-inventory" id="btn-force-sync" class="w-full bg-orange-100 hover:bg-orange-200 text-orange-700 py-3 rounded-xl font-bold transition-colors text-sm">Force Sync Inventory to Sheets</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Voucher Preview & Action Modal -->
     <div id="voucher-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
-        <!-- iOS friendly flex pin container -->
-        <div class="bg-white md:rounded-2xl shadow-2xl flex flex-col w-full max-h-[100dvh] md:max-h-[90vh] md:max-w-[360px] rounded-t-2xl md:rounded-b-2xl">
+        <div class="bg-white md:rounded-2xl shadow-2xl flex flex-col w-full max-h-[100dvh] md:max-h-[90vh] md:max-w-[360px] rounded-t-2xl md:rounded-b-2xl relative">
             <div class="bg-slate-800 p-4 flex justify-between items-center text-white shrink-0 pt-safe rounded-t-2xl md:rounded-t-none">
                 <h3 class="font-bold flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -557,10 +620,15 @@
                 <button data-action="close-voucher" class="p-1 hover:bg-slate-700 rounded-lg transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
             
-            <div class="p-6 overflow-y-auto bg-slate-100 flex justify-center items-start flex-1 w-full" id="voucher-scroll-area">
-                <!-- Inner standard 80mm printable wrapper - Explicit Pixel constraints -->
-                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
-                    <div class="text-center mb-3">
+            <div class="p-6 overflow-y-auto bg-slate-100 flex flex-col items-center justify-start flex-1 w-full" id="voucher-scroll-area">
+                
+                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template relative" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
+                    <!-- Void Stamp Overlay -->
+                    <div id="print-void-stamp" class="hidden absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <div class="border-4 border-red-500 text-red-500 font-black text-4xl uppercase tracking-widest px-4 py-2 rounded-lg transform -rotate-12 opacity-80">VOIDED</div>
+                    </div>
+
+                    <div class="text-center mb-3 relative z-0">
                         <img src="logo.png" alt="Khay May" class="mx-auto print-logo object-contain" style="height: 40px; margin-bottom: 4px;">
                         <h1 style="font-size: 18px; font-weight: bold; margin: 0; line-height: 1.2;">Khay May</h1>
                         <p style="font-size: 11px; margin: 2px 0; line-height: 1.2;">Baby & Children Clothing</p>
@@ -570,7 +638,7 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px; position: relative; z-0">
                         <tr>
                             <td style="color: #444; padding-bottom: 4px; vertical-align: top;">Date: <span id="print-date" style="color: #000;"></span></td>
                             <td style="text-align: right; padding-bottom: 4px; vertical-align: top;">ID: <span id="print-id" style="font-weight: bold; color: #000;"></span></td>
@@ -582,11 +650,14 @@
                         <tr class="hidden" id="print-due-date-row">
                             <td colspan="2" style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;">Due: <span id="print-due-date" style="font-weight: bold; color: #000;"></span></td>
                         </tr>
+                        <tr class="hidden" id="print-settle-date-row">
+                            <td colspan="2" style="text-align: right; padding-bottom: 4px; color: #059669; vertical-align: top; font-weight: bold;">Settled: <span id="print-settle-date"></span></td>
+                        </tr>
                     </table>
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px; position: relative; z-0">
                         <tr>
                             <td style="color: #444; padding-bottom: 4px; vertical-align: top; max-width: 150px; word-wrap: break-word;">Name: <span id="print-customer-name" style="font-weight: bold; color: #000;"></span></td>
                             <td style="text-align: right; padding-bottom: 4px; color: #444; vertical-align: top;"><span class="hidden" id="print-phone-row">Ph: <span id="print-phone" style="font-weight: 500; color: #000;"></span></span></td>
@@ -600,8 +671,7 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <!-- STRICT TABLE WIDTHS to align headers and items perfectly -->
-                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px; table-layout: fixed;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 4px; table-layout: fixed; position: relative; z-0">
                         <thead>
                             <tr>
                                 <th style="text-align: left; padding-bottom: 4px;">Item</th>
@@ -613,13 +683,13 @@
                     
                     <hr style="border: none; border-top: 1px dashed #999; margin: 4px 0;">
                     
-                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; table-layout: fixed;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; table-layout: fixed; position: relative; z-0">
                         <tbody id="print-items"></tbody>
                     </table>
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; margin-bottom: 4px;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; margin-bottom: 4px; position: relative; z-0">
                         <div style="display: flex; justify-content: flex-end; width: 100%;">
                             <span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> 
                             <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span>
@@ -634,11 +704,12 @@
                             <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span>
                         </div>
                     </div>
-
-                    <div style="text-align: center; margin-top: 16px;">
-                        <p style="font-size: 12px; font-weight: bold; margin: 0;">Thank You!</p>
-                    </div>
                 </div>
+
+                <!-- NEW: Void Button placed directly below the receipt preview -->
+                <button data-action="void-voucher" id="btn-void-voucher" class="mt-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Void / Cancel Voucher
+                </button>
             </div>
             
             <div class="p-4 bg-white border-t border-slate-100 flex gap-3 shrink-0 pb-safe">
@@ -655,28 +726,33 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MODULE 3: MODULAR JAVASCRIPT LOGIC         -->
+    <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // --- 1. DATA & STATE ---
         const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
         
         const State = {
             currentCart: [],
-            adjustmentCart: [], // Cart specifically for inventory adjusting workflow
             sessionSales: [],
             allFirebaseSales: [],
             allFirebaseExpenses: [],
             allFirebaseInventoryLogs: [],
+            adjustmentCart: [],
             webAppUrl: "",
             currentSaleType: 'Retail',
             isMobileCartOpen: false,
             localInventory: {},
             currentPettyCash: 0,
             currentVoucherId: null,
-            db: null
+            db: null,
+            historyMode: 'day', 
+            historyAnchorDate: new Date()
         };
 
         const ProductData = {
@@ -714,22 +790,29 @@
                     setTimeout(() => toast.remove(), 300);
                 }, 3000);
             },
-            // Strict Yangon Time Converter (Solves Date rollover bugs permanently)
+            // STRICT timezone enforcer
             getYangonTime: () => {
-                const date = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Yangon"}));
-                const pad = (n) => String(n).padStart(2, '0');
-                const yy = String(date.getFullYear()).slice(-2);
-                const yyyy = date.getFullYear();
-                const mm = pad(date.getMonth() + 1);
-                const dd = pad(date.getDate());
-                const hh = pad(date.getHours());
-                const mins = pad(date.getMinutes());
-                const ss = pad(date.getSeconds());
-                
-                const dateStr = `${yyyy}-${mm}-${dd}`;
-                const iso = `${yyyy}-${mm}-${dd}T${hh}:${mins}:${ss}+06:30`;
-                
-                return { dateStr, iso, yy, mm, mmdd: `${mm}${dd}`, dateObj: date };
+                const now = new Date();
+                const yangonOffset = 390 * 60000; // +06:30 in milliseconds
+                return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + yangonOffset);
+            },
+            startOfDay: (d) => { const nd = new Date(d); nd.setHours(0,0,0,0); return nd; },
+            endOfDay: (d) => { const nd = new Date(d); nd.setHours(23,59,59,999); return nd; },
+            getWeekRange: (d) => {
+                const date = new Date(d);
+                const day = date.getDay();
+                const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is sunday
+                const start = new Date(date.setDate(diff));
+                start.setHours(0,0,0,0);
+                const end = new Date(start);
+                end.setDate(end.getDate() + 6);
+                end.setHours(23,59,59,999);
+                return { start, end };
+            },
+            getMonthRange: (d) => {
+                const start = new Date(d.getFullYear(), d.getMonth(), 1);
+                const end = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+                return { start, end };
             }
         };
 
@@ -770,7 +853,9 @@
 
             toggleMobileCart() {
                 State.isMobileCartOpen = !State.isMobileCartOpen;
-                document.getElementById('cart-panel').classList.toggle('translate-x-full');
+                const panel = document.getElementById('cart-panel');
+                if (State.isMobileCartOpen) panel.classList.remove('translate-x-full');
+                else panel.classList.add('translate-x-full');
             },
 
             toggleSettings() {
@@ -786,30 +871,55 @@
                 input.dispatchEvent(new Event('change'));
             },
 
+            setHistoryView(viewType) {
+                State.historyMode = viewType;
+                ['day', 'week', 'month'].forEach(v => {
+                    const btn = document.getElementById(`btn-hist-${v}`);
+                    if (v === viewType) { btn.className = 'flex-1 sm:flex-none px-4 py-1.5 bg-white shadow-sm rounded-md font-bold text-slate-800 text-sm transition-all'; }
+                    else { btn.className = 'flex-1 sm:flex-none px-4 py-1.5 text-slate-500 hover:text-slate-700 font-bold text-sm transition-all'; }
+                });
+                PosLogic.applyFilters();
+            },
+            
+            navHistory(dir) {
+                const d = new Date(State.historyAnchorDate);
+                if(State.historyMode === 'day') d.setDate(d.getDate() + dir);
+                else if(State.historyMode === 'week') d.setDate(d.getDate() + (dir * 7));
+                else if(State.historyMode === 'month') d.setMonth(d.getMonth() + dir);
+                State.historyAnchorDate = d;
+                PosLogic.applyFilters();
+            },
+
             setSaleType(type) {
                 State.currentSaleType = type;
                 document.getElementById('checkout-sale-type-label').innerText = type;
                 
-                ['Retail', 'Wholesale', 'Credit'].forEach(t => {
+                ['Retail', 'Wholesale', 'Credit', 'Partner'].forEach(t => {
                     const btn = document.getElementById(`btn-type-${t}`);
                     if (btn) {
-                        if (t === type) btn.className = 'flex-1 py-2 rounded-lg bg-rose-400 shadow-md text-sm font-bold text-white transition-all';
-                        else btn.className = 'flex-1 py-2 rounded-lg bg-white text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all';
+                        if (t === type) btn.className = 'flex-1 py-2 px-1 rounded-lg bg-rose-400 shadow-md text-xs sm:text-sm font-bold text-white transition-all';
+                        else btn.className = 'flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all';
                     }
                 });
 
                 if (type === 'Credit') {
                     document.getElementById('payment-method-box').classList.add('hidden');
-                    document.getElementById('payment-method').required = false;
-                    document.getElementById('payment-method').value = '';
+                    document.getElementById('payment-method').required = false; document.getElementById('payment-method').value = '';
                     document.getElementById('credit-period-box').classList.remove('hidden');
                     document.getElementById('credit-period').required = true;
+                    document.getElementById('partner-discount-box').classList.add('hidden');
+                } else if (type === 'Partner') {
+                    document.getElementById('payment-method-box').classList.remove('hidden');
+                    document.getElementById('payment-method').required = true;
+                    document.getElementById('credit-period-box').classList.add('hidden');
+                    document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
+                    document.getElementById('partner-discount-box').classList.remove('hidden');
                 } else {
                     document.getElementById('payment-method-box').classList.remove('hidden');
                     document.getElementById('payment-method').required = true;
                     document.getElementById('credit-period-box').classList.add('hidden');
-                    document.getElementById('credit-period').required = false;
-                    document.getElementById('credit-period').value = '';
+                    document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
+                    document.getElementById('partner-discount-box').classList.add('hidden');
                 }
                 UI.renderCart();
                 PosLogic.validateCheckout();
@@ -850,48 +960,63 @@
             renderHistory() {
                 const tb = document.getElementById('history-body');
                 const empty = document.getElementById('empty-history-msg');
+                const searchTerm = document.getElementById('sales-search').value.toLowerCase();
+                
                 tb.innerHTML = "";
                 
-                if (State.sessionSales.length === 0) { 
+                const filteredSales = State.sessionSales.filter(s => {
+                    if (!searchTerm) return true;
+                    const name = (s.customer || '').toLowerCase();
+                    const phone = (s.phone || '').toLowerCase();
+                    return name.includes(searchTerm) || phone.includes(searchTerm);
+                });
+                
+                if (filteredSales.length === 0) { 
                     empty.classList.remove('hidden'); 
                 } else {
                     empty.classList.add('hidden');
-                    tb.innerHTML = State.sessionSales.map(s => {
+                    tb.innerHTML = filteredSales.map(s => {
                         const d = new Date(s.isoDate); 
                         const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric'}); 
                         const tStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                        let color = s.saleType === 'Credit' ? 'bg-amber-100 text-amber-700' : (s.saleType === 'Wholesale' ? 'bg-blue-100 text-blue-700' : 'bg-rose-50 text-rose-600');
+                        let color = s.saleType === 'Credit' ? 'bg-amber-100 text-amber-700' : (s.saleType === 'Wholesale' || s.saleType === 'Partner' ? 'bg-blue-100 text-blue-700' : 'bg-rose-50 text-rose-600');
                         
+                        const isVoid = s.status === 'Voided';
+                        const opacity = isVoid ? 'opacity-50 grayscale' : '';
+                        const voidBadge = isVoid ? `<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">VOIDED</span>` : '';
+                        const stClass = isVoid ? 'line-through text-slate-400' : 'text-slate-800';
+
                         return `
-                        <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center">
+                        <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center ${opacity}">
                             
                             <!-- Mobile Compact View -->
                             <div class="flex justify-between items-start md:hidden w-full mb-1">
                                 <div>
-                                    <span class="font-mono text-sm text-slate-500 font-bold">${s.id}</span>
+                                    <span class="font-mono text-sm text-slate-500 font-bold ${isVoid?'line-through':''}">${s.id}</span>
                                     <span class="text-xs text-slate-400 ml-2">${dStr} ${tStr}</span>
                                 </div>
+                                ${voidBadge}
                             </div>
                             <div class="flex justify-between items-center md:hidden w-full mb-1">
                                 <div>
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span>
-                                    <span class="text-sm font-bold text-slate-800 ml-2">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
+                                    <span class="text-sm font-bold ${stClass} ml-2">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
                                 </div>
                             </div>
-                            <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2">
+                            <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">
                                 ${(s.items||[]).map(i=>`${i.qty}x ${i.category} (${i.size})`).join(', ')}
                             </div>
                             <div class="flex justify-between items-center md:hidden w-full mt-2 pt-2 border-t border-slate-100">
-                                <span class="font-bold text-slate-800">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)} MMK</span>
+                                <span class="font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)} MMK</span>
                                 <button data-action="view-voucher" data-id="${s.id}" class="text-indigo-500 bg-indigo-50 px-3 py-1 rounded-lg text-xs font-bold transition-colors">View</button>
                             </div>
 
                             <!-- Desktop View -->
-                            <div class="hidden md:block"><span class="font-bold text-slate-800">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
-                            <div class="hidden md:block font-mono text-sm text-slate-500">${s.id}</div>
-                            <div class="hidden md:block text-sm"><span class="font-bold text-slate-800">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
-                            <div class="hidden md:block text-xs text-slate-600"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
-                            <div class="hidden md:block text-right font-bold text-slate-800">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
+                            <div class="hidden md:block"><span class="font-bold ${stClass}">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
+                            <div class="hidden md:block font-mono text-sm text-slate-500 ${isVoid?'line-through':''}">${s.id} ${voidBadge}</div>
+                            <div class="hidden md:block text-sm"><span class="font-bold ${stClass}">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
+                            <div class="hidden md:block text-xs text-slate-600 ${isVoid?'line-through':''}"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
+                            <div class="hidden md:block text-right font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
                             <div class="hidden md:flex justify-end">
                                 <button data-action="view-voucher" data-id="${s.id}" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="View Voucher">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
@@ -902,26 +1027,99 @@
                 }
             },
 
+            renderPendingPayments() {
+                const tb = document.getElementById('pending-body');
+                const empty = document.getElementById('empty-pending-msg');
+                const badge = document.getElementById('pending-badge');
+                tb.innerHTML = "";
+                
+                // Filter unpaid, non-voided sales
+                const pendingSales = (State.allFirebaseSales || []).filter(s => s.paymentStatus === 'Pending' && s.status !== 'Voided');
+                
+                if (pendingSales.length > 0) {
+                    badge.innerText = pendingSales.length;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+                
+                document.getElementById('stat-pending-total').innerText = Utils.formatMMK(pendingSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
+
+                if (pendingSales.length === 0) {
+                    empty.classList.remove('hidden');
+                } else {
+                    empty.classList.add('hidden');
+                    
+                    const now = Utils.getYangonTime();
+                    now.setHours(0,0,0,0);
+
+                    tb.innerHTML = pendingSales.map(s => {
+                        const d = new Date(s.isoDate); 
+                        const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year: 'numeric'}); 
+                        const amount = Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0);
+                        
+                        let dueHtml = `<span class="text-xs text-slate-500">Awaiting COD</span>`;
+                        
+                        if (s.saleType === 'Credit') {
+                            const days = parseInt(s.paymentMethod) || 0;
+                            const dueDate = new Date(d.getTime() + (days * 86400000));
+                            dueDate.setHours(0,0,0,0);
+                            const diffDays = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+                            
+                            if (diffDays < 0) {
+                                dueHtml = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">OVERDUE (${Math.abs(diffDays)}d)</span>`;
+                            } else if (diffDays <= 10) {
+                                dueHtml = `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold">Due in ${diffDays}d</span>`;
+                            } else {
+                                dueHtml = `<span class="text-xs text-slate-500 font-medium">Due: ${dueDate.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>`;
+                            }
+                        }
+
+                        return `
+                        <div class="flex flex-col md:grid md:grid-cols-[1fr_1.5fr_auto_1.5fr_auto] gap-3 md:gap-4 p-4 hover:bg-slate-50 border-b border-slate-50 items-center">
+                            <div class="w-full md:w-auto flex justify-between md:block">
+                                <span class="font-mono text-sm text-slate-800 font-bold">${s.id}</span>
+                                <span class="text-xs text-slate-500 md:block md:mt-1">${dStr}</span>
+                            </div>
+                            <div class="w-full md:w-auto">
+                                <span class="font-bold text-slate-800 text-sm">${s.customer}</span>
+                                <span class="text-xs px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold ml-2">${s.paymentMethod}</span>
+                                ${s.phone ? `<div class="text-xs text-slate-500 mt-0.5">${s.phone}</div>` : ''}
+                            </div>
+                            <div class="w-full md:w-auto text-left md:text-center">
+                                ${dueHtml}
+                            </div>
+                            <div class="w-full md:w-auto text-left md:text-right font-bold text-slate-800 text-lg md:text-base">
+                                ${amount} <span class="text-xs text-slate-500 font-normal">MMK</span>
+                            </div>
+                            <div class="w-full md:w-auto flex justify-end">
+                                <button data-action="open-settle" data-id="${s.id}" class="w-full md:w-auto px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold rounded-lg text-sm transition-colors">Settle</button>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            },
+
             renderSalesSummary() {
                 const dateStr = document.getElementById('summary-date').value;
-                const localDateStr = Utils.getYangonTime().dateStr;
+                const localDateStr = Utils.getYangonTime().toISOString().split('T')[0];
                 const nextBtn = document.getElementById('summary-date-next');
                 if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
                 
-                let retailRev = 0, wholesaleRev = 0, creditRev = 0, grandRev = 0;
-                let retailItems = {}, wholesaleItems = {}, creditItems = {}, grandItems = {};
+                let retailRev = 0, wholesaleRev = 0, creditRev = 0;
+                let retailItems = {}, wholesaleItems = {}, creditItems = {};
+                let overallItems = {};
 
                 (State.allFirebaseSales || []).forEach(s => {
-                    if (s.date !== dateStr) return;
+                    if (s.date !== dateStr || s.status === 'Voided') return;
                     
                     const total = s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0;
                     const items = s.items || [];
-                    grandRev += total;
 
                     if (s.saleType === 'Retail') {
                         retailRev += total;
                         items.forEach(i => retailItems[`${i.category} (${i.size})`] = (retailItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    } else if (s.saleType === 'Wholesale') {
+                    } else if (s.saleType === 'Wholesale' || s.saleType === 'Partner') {
                         wholesaleRev += total;
                         items.forEach(i => wholesaleItems[`${i.category} (${i.size})`] = (wholesaleItems[`${i.category} (${i.size})`] || 0) + i.qty);
                     } else if (s.saleType === 'Credit') {
@@ -929,7 +1127,7 @@
                         items.forEach(i => creditItems[`${i.category} (${i.size})`] = (creditItems[`${i.category} (${i.size})`] || 0) + i.qty);
                     }
                     
-                    items.forEach(i => grandItems[`${i.category} (${i.size})`] = (grandItems[`${i.category} (${i.size})`] || 0) + i.qty);
+                    items.forEach(i => overallItems[`${i.category} (${i.size})`] = (overallItems[`${i.category} (${i.size})`] || 0) + i.qty);
                 });
 
                 const buildItemList = (itemObj) => {
@@ -938,15 +1136,17 @@
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${name}</span><span class="font-bold text-slate-800">${qty}</span></div>`).join('');
                 };
                 
-                const buildGrandItemList = (itemObj) => {
+                const buildOverallItemList = (itemObj) => {
                     const entries = Object.entries(itemObj);
-                    if(entries.length === 0) return '<div class="text-indigo-200 text-sm">No items sold.</div>';
+                    if(entries.length === 0) return '<div class="text-indigo-300 text-xs py-1">No items sold.</div>';
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm"><span class="text-indigo-100">${name}</span><span class="font-bold text-white">${qty}</span></div>`).join('');
                 };
 
-                document.getElementById('summary-grand-rev').innerText = Utils.formatMMK(grandRev) + " MMK";
-                document.getElementById('summary-grand-items').innerHTML = buildGrandItemList(grandItems);
+                // Overall Top Dashboard
+                document.getElementById('summary-overall-rev').innerText = Utils.formatMMK(retailRev + wholesaleRev + creditRev) + " MMK";
+                document.getElementById('summary-overall-items').innerHTML = buildOverallItemList(overallItems);
 
+                // Breakdown Columns
                 document.getElementById('summary-retail-rev').innerText = Utils.formatMMK(retailRev) + " MMK";
                 document.getElementById('summary-retail-items').innerHTML = buildItemList(retailItems);
                 
@@ -961,17 +1161,23 @@
                 const tb = document.getElementById('inventory-body'); if (!tb) return;
                 let low = 0; let html = '';
                 
-                // Group visually by Category
                 for (const p in ProductData) {
-                    html += `<tr class="bg-slate-50"><td colspan="4" class="px-5 py-2 font-bold text-slate-700 uppercase tracking-wide text-xs">${p}</td></tr>`;
+                    // Header Row for Product Grouping
+                    html += `<tr class="bg-slate-100/50"><td colspan="4" class="px-5 py-2 font-bold text-slate-800 text-sm border-y border-slate-200">${p}</td></tr>`;
+                    
                     ProductData[p].forEach(i => {
                         const stk = State.localInventory[`${p}_${i.size}`] || 0;
                         let stat = ''; let cls = 'text-slate-800';
-                        if (stk <= 0) { stat = '<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-[10px] font-bold">OUT OF STOCK</span>'; cls = 'text-rose-600 font-bold'; low++; }
-                        else if (stk < 5) { stat = '<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold">LOW STOCK</span>'; cls = 'text-orange-600 font-bold'; low++; }
-                        else { stat = '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">IN STOCK</span>'; }
+                        if (stk <= 0) { stat = '<span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded text-[10px] font-bold">OUT</span>'; cls = 'text-rose-600 font-bold'; low++; }
+                        else if (stk < 5) { stat = '<span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-bold">LOW</span>'; cls = 'text-orange-600 font-bold'; low++; }
+                        else { stat = '<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">OK</span>'; }
                         
-                        html += `<tr><td class="px-5 py-3 pl-8 text-sm font-semibold text-slate-600">${i.size}</td><td class="px-5 py-3 text-sm"></td><td class="px-5 py-3 text-center ${cls} text-sm">${stk}</td><td class="px-5 py-3 text-right">${stat}</td></tr>`;
+                        html += `<tr>
+                            <td class="px-5 py-2 pl-10 text-sm text-slate-400 border-r border-slate-50">↳</td>
+                            <td class="px-5 py-2 text-sm font-medium text-slate-700">${i.size}</td>
+                            <td class="px-5 py-2 text-center ${cls} text-sm">${stk}</td>
+                            <td class="px-5 py-2 text-right">${stat}</td>
+                        </tr>`;
                     });
                 }
                 tb.innerHTML = html;
@@ -982,115 +1188,98 @@
                 if (document.getElementById('item-product').value) PosLogic.updateSizeDropdown();
             },
 
-            renderAdjustmentCart() {
-                const cont = document.getElementById('adj-cart-items');
-                const empty = document.getElementById('adj-cart-empty');
-                const btn = document.getElementById('btn-submit-adj');
-                
-                if (State.adjustmentCart.length === 0) {
-                    cont.innerHTML = '';
-                    empty.classList.remove('hidden');
-                    btn.disabled = true;
-                } else {
-                    empty.classList.add('hidden');
-                    btn.disabled = false;
-                    cont.innerHTML = State.adjustmentCart.map((i, index) => {
-                        const color = i.change > 0 ? 'text-emerald-600' : 'text-rose-600';
-                        const prefix = i.change > 0 ? '+' : '';
-                        return `
-                        <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-100">
-                            <div>
-                                <div class="text-sm font-bold text-slate-800">${i.product}</div>
-                                <div class="text-xs text-slate-500">${i.size}</div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="font-bold text-sm ${color}">${prefix}${i.change}</span>
-                                <button type="button" data-action="remove-adj" data-idx="${index}" class="text-slate-400 hover:text-red-500 p-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                            </div>
-                        </div>`;
-                    }).join('');
-                }
-            },
-
             renderInventoryLogs() {
                 const dateStr = document.getElementById('inv-log-date').value;
-                const localDateStr = Utils.getYangonTime().dateStr;
+                const localDateStr = Utils.getYangonTime().toISOString().split('T')[0];
                 const nextBtn = document.getElementById('inv-log-date-next');
                 if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
                 
                 const pFilter = document.getElementById('inv-log-product').value;
                 const sFilter = document.getElementById('inv-log-size').value;
 
-                // Group the logs by their Voucher or Adjustment IDs instead of flattening them
-                const logs = (State.allFirebaseInventoryLogs || []).filter(l => {
-                    if (l.date !== dateStr) return false;
-                    // Apply filters if log has nested changes
-                    if (l.type === "Consolidated_Inventory") {
-                        const hasMatch = l.changes.some(c => {
-                            let pm = true, sm = true;
-                            if (pFilter && pFilter !== 'All') pm = c.product === pFilter;
-                            if (sFilter && sFilter !== 'All') sm = c.size === sFilter;
-                            return pm && sm;
-                        });
-                        return hasMatch;
-                    }
-                    return true;
-                });
+                // Group logs by ID for the UI
+                const dailyLogs = (State.allFirebaseInventoryLogs || []).filter(l => l.date === dateStr);
                 
                 const tb = document.getElementById('inv-log-body');
                 const empty = document.getElementById('empty-inv-log-msg');
                 
                 tb.innerHTML = "";
-                if (logs.length === 0) {
-                    empty.classList.remove('hidden');
-                } else {
-                    empty.classList.add('hidden');
-                    tb.innerHTML = logs.map(l => {
-                        if (l.type === "Consolidated_Inventory") {
-                            const tStr = new Date(l.isoDate).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                            
-                            // Filter the nested changes purely for display if filters are active
-                            let displayChanges = l.changes;
-                            if (pFilter && pFilter !== 'All') displayChanges = displayChanges.filter(c => c.product === pFilter);
-                            if (sFilter && sFilter !== 'All') displayChanges = displayChanges.filter(c => c.size === sFilter);
+                let hasVisibleLogs = false;
 
-                            const itemsHtml = displayChanges.map(c => {
-                                const color = c.change > 0 ? 'text-emerald-600' : 'text-rose-600';
-                                const prefix = c.change > 0 ? '+' : '';
-                                return `<div class="flex justify-between text-xs py-1 border-t border-slate-100 mt-1 pt-1"><span class="text-slate-600">${c.product} <span class="font-bold">(${c.size})</span></span><span class="font-bold ${color}">${prefix}${c.change}</span></div>`;
-                            }).join('');
-                            
-                            return `
-                            <div class="p-3 border border-slate-100 bg-white hover:bg-slate-50 transition-colors rounded-xl shadow-sm">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <div class="font-bold text-slate-800 text-sm font-mono">${l.id}</div>
-                                        <div class="text-xs text-slate-500 mt-0.5">${tStr} • <span class="font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">${l.notes}</span></div>
+                dailyLogs.forEach(logBox => {
+                    let changes = [];
+                    if (logBox.type === "Consolidated_Inventory") {
+                        changes = logBox.changes || [];
+                    } else {
+                        // Legacy single log support
+                        changes = [{ product: logBox.product, size: logBox.size, change: logBox.change, action: logBox.action }];
+                    }
+                    
+                    const filteredChanges = changes.filter(c => {
+                        if (pFilter && pFilter !== 'All' && c.product !== pFilter) return false;
+                        if (sFilter && sFilter !== 'All' && c.size !== sFilter) return false;
+                        return true;
+                    });
+                    
+                    if (filteredChanges.length > 0) {
+                        hasVisibleLogs = true;
+                        const tStr = new Date(logBox.isoDate).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+                        const isSale = logBox.id && logBox.id.includes('-');
+                        const isRevert = logBox.notes && logBox.notes.includes('Revert');
+                        const boxColor = isRevert ? 'border-amber-100 bg-amber-50/30' : (isSale ? 'border-rose-100' : 'border-indigo-100');
+                        const badgeColor = isRevert ? 'bg-amber-100 text-amber-700' : (isSale ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700');
+                        let icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />';
+                        if (isSale) icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />';
+                        if (isRevert) icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />';
+                        
+                        const itemsHtml = filteredChanges.map(c => {
+                            const color = c.change > 0 ? 'text-emerald-600' : 'text-rose-600';
+                            const prefix = c.change > 0 ? '+' : '';
+                            return `<div class="flex justify-between items-center text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${c.product} (${c.size})</span><span class="font-bold ${color}">${prefix}${c.change}</span></div>`;
+                        }).join('');
+                        
+                        tb.innerHTML += `
+                        <div class="bg-white rounded-xl border ${boxColor} p-4 shadow-sm">
+                            <div class="flex justify-between items-start mb-3 pb-3 border-b border-slate-50">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icon}</svg>
+                                        <span class="font-mono text-sm font-bold text-slate-800">${logBox.id || 'Manual'}</span>
+                                        <span class="text-xs px-2 py-0.5 rounded font-bold ${badgeColor}">${isRevert ? 'Reverted' : (isSale ? 'Sale' : 'Adjustment')}</span>
                                     </div>
+                                    <div class="text-xs text-slate-500">${tStr} ${logBox.notes && logBox.notes !== '-' ? `• ${logBox.notes}` : ''}</div>
                                 </div>
-                                <div class="pl-2 border-l-2 border-indigo-200 ml-1">
-                                    ${itemsHtml}
-                                </div>
-                            </div>`;
-                        }
-                    }).join('');
-                }
+                            </div>
+                            <div class="space-y-1 pl-6">
+                                ${itemsHtml}
+                            </div>
+                        </div>`;
+                    }
+                });
+
+                if (!hasVisibleLogs) empty.classList.remove('hidden');
+                else empty.classList.add('hidden');
             },
 
             updatePettyCashUI() {
                 const balEl = document.getElementById('petty-cash-balance');
-                const balLabel = document.getElementById('petty-cash-label');
+                const cardEl = document.getElementById('petty-cash-card');
+                const titleEl = document.getElementById('petty-cash-title');
+                
+                balEl.innerText = Utils.formatMMK(Math.abs(State.currentPettyCash)) + " MMK";
                 
                 if (State.currentPettyCash < 0) {
-                    balLabel.innerText = "AMOUNT OWED TO STAFF";
-                    balLabel.classList.replace('text-slate-500', 'text-red-500');
+                    cardEl.classList.add('bg-red-50', 'border-red-200');
+                    cardEl.classList.remove('bg-white', 'border-slate-100');
+                    titleEl.innerText = "⚠️ AMOUNT OWED TO STAFF";
+                    titleEl.classList.replace('text-slate-500', 'text-red-600');
                     balEl.classList.replace('text-emerald-500', 'text-red-600');
-                    balEl.innerText = Utils.formatMMK(Math.abs(State.currentPettyCash)) + " MMK";
                 } else {
-                    balLabel.innerText = "LIVE PETTY CASH";
-                    balLabel.classList.replace('text-red-500', 'text-slate-500');
+                    cardEl.classList.remove('bg-red-50', 'border-red-200');
+                    cardEl.classList.add('bg-white', 'border-slate-100');
+                    titleEl.innerText = "Live Petty Cash";
+                    titleEl.classList.replace('text-red-600', 'text-slate-500');
                     balEl.classList.replace('text-red-600', 'text-emerald-500');
-                    balEl.innerText = Utils.formatMMK(State.currentPettyCash) + " MMK";
                 }
             },
 
@@ -1102,7 +1291,6 @@
                 const selectedMonth = document.getElementById('expense-month-filter').value;
                 const filteredExpenses = (State.allFirebaseExpenses || []).filter(e => {
                     if (!selectedMonth) return true;
-                    // match 'YYYY-MM'
                     return e.isoDate.substring(0, 7) === selectedMonth;
                 });
 
@@ -1186,7 +1374,6 @@
                 const prod = prodSel.value; 
                 const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
                 const price = parseFloat(document.getElementById('item-price').value); 
-                // Default to 1 if input is empty
                 const qty = parseInt(document.getElementById('item-qty').value) || 1;
                 
                 if (prod && sizeText && price >= 0 && qty > 0) {
@@ -1215,27 +1402,33 @@
                 
                 State.currentCart.forEach(i => {
                     let disc = 0; const tq = qtys[i.category];
-                    if (State.currentSaleType === 'Wholesale') { 
+                    
+                    if (State.currentSaleType === 'Partner') {
+                        const pRate = parseInt(document.getElementById('partner-discount-rate').value) || 0;
+                        disc = pRate / 100;
+                    } else if (State.currentSaleType === 'Wholesale') { 
                         if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; 
                     } else if (State.currentSaleType === 'Credit') { 
                         if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; 
                     }
+                    
                     i.discountRate = disc; 
                     i.effectivePrice = i.basePrice * (1 - disc); 
                     i.total = i.effectivePrice * i.qty; 
                     subtotal += i.total;
                 });
 
-                // Smart Manual Discount logic (% or fixed MMK)
-                const discInput = document.getElementById('summary-discount').value.trim();
+                // Smart Manual Discount parsing
+                const discountInput = document.getElementById('summary-discount').value.trim();
                 let manual = 0;
-                if(discInput.endsWith('%')) {
-                    const pct = parseFloat(discInput.replace('%', '')) || 0;
-                    manual = subtotal * (pct / 100);
+                
+                if (discountInput.endsWith('%')) {
+                    const perc = parseFloat(discountInput.replace('%', '')) || 0;
+                    manual = subtotal * (perc / 100);
                 } else {
-                    manual = parseFloat(discInput) || 0;
+                    manual = parseFloat(discountInput) || 0;
                 }
-
+                
                 const grand = Math.max(0, subtotal - manual);
                 
                 document.getElementById('summary-subtotal').innerText = Utils.formatMMK(subtotal) + " MMK";
@@ -1243,7 +1436,10 @@
                 
                 const totItems = State.currentCart.reduce((s, i) => s + i.qty, 0);
                 const floatCart = document.getElementById('mobile-floating-cart');
-                if (floatCart) floatCart.className = totItems > 0 ? "lg:hidden fixed bottom-4 left-4 right-4 bg-slate-800 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-30 cursor-pointer mb-safe" : "hidden";
+                if (floatCart) {
+                    if (totItems > 0) floatCart.classList.remove('hidden');
+                    else floatCart.classList.add('hidden');
+                }
                 
                 document.getElementById('mobile-cart-badge').innerText = totItems; 
                 document.getElementById('mobile-cart-total').innerText = Utils.formatMMK(grand) + " MMK";
@@ -1265,13 +1461,23 @@
             },
             
             populateVoucherHTML(saleRec) {
-                document.getElementById('print-date').innerText = new Date(saleRec.isoDate).toLocaleString('en-US',{timeZone:"Asia/Yangon", hour12:false,hour:"numeric",minute:"numeric", year:"2-digit", month:"2-digit", day:"2-digit"});
+                // Formatting Yangon Time for Voucher
+                const d = new Date(saleRec.isoDate);
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                const yy = String(d.getFullYear()).slice(-2);
+                const hh = String(d.getHours()).padStart(2, '0');
+                const min = String(d.getMinutes()).padStart(2, '0');
+                
+                document.getElementById('print-date').innerText = `${mm}/${dd}/${yy}, ${hh}:${min}`;
                 document.getElementById('print-id').innerText = saleRec.id; 
                 document.getElementById('print-type').innerText = saleRec.saleType; 
                 document.getElementById('print-payment').innerText = saleRec.paymentMethod;
                 
                 const dueRow = document.getElementById('print-due-date-row');
-                if(saleRec.saleType === 'Credit') { 
+                const settleRow = document.getElementById('print-settle-date-row');
+                
+                if (saleRec.saleType === 'Credit') { 
                     dueRow.classList.remove('hidden'); 
                     const days = parseInt(saleRec.paymentMethod) || 0;
                     if(days) {
@@ -1280,14 +1486,35 @@
                     } else document.getElementById('print-due-date').innerText = "-";
                 } else dueRow.classList.add('hidden');
                 
+                if (saleRec.paymentStatus === 'Paid' && saleRec.settleDate) {
+                    settleRow.classList.remove('hidden');
+                    document.getElementById('print-settle-date').innerText = new Date(saleRec.settleDate).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+                } else {
+                    settleRow.classList.add('hidden');
+                }
+                
                 document.getElementById('print-customer-name').innerText = saleRec.customer;
                 if(saleRec.phone) { document.getElementById('print-phone-row').classList.remove('hidden'); document.getElementById('print-phone').innerText = saleRec.phone; } else document.getElementById('print-phone-row').classList.add('hidden');
-                if(saleRec.notes) { document.getElementById('print-notes-container').classList.remove('hidden'); document.getElementById('print-notes').innerText = saleRec.notes; } else document.getElementById('print-notes-container').classList.add('hidden');
+                if(saleRec.notes || saleRec.settleNotes) { 
+                    document.getElementById('print-notes-container').classList.remove('hidden'); 
+                    document.getElementById('print-notes').innerText = [saleRec.notes, saleRec.settleNotes].filter(Boolean).join('\n'); 
+                } else document.getElementById('print-notes-container').classList.add('hidden');
                 
                 document.getElementById('print-items').innerHTML = saleRec.items.map(i=>`<tr><td style="padding: 4px 0; vertical-align: top; padding-right: 4px; overflow: hidden;"><div style="font-weight: bold;">${i.category} (${i.size})</div><div style="font-size: 10px; color: #444;">@ ${Utils.formatMMK(i.price)}</div></td><td style="text-align: center; padding: 4px 0; vertical-align: top; width: 40px;">${i.qty}</td><td style="text-align: right; padding: 4px 0; vertical-align: top; width: 70px;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
                 document.getElementById('print-subtotal').innerText = Utils.formatMMK(saleRec.totals.subtotal); 
                 document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); 
                 document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";
+                
+                // Handle Void visuals
+                const voidStamp = document.getElementById('print-void-stamp');
+                const voidBtn = document.getElementById('btn-void-voucher');
+                if (saleRec.status === 'Voided') {
+                    voidStamp.classList.remove('hidden');
+                    voidBtn.classList.add('hidden');
+                } else {
+                    voidStamp.classList.add('hidden');
+                    voidBtn.classList.remove('hidden');
+                }
             },
             
             viewVoucher(id) {
@@ -1308,33 +1535,24 @@
                 const area = document.getElementById('print-area');
                 if(!area) return;
                 
-                // Add temporary styling to ensure the canvas captures a clean white background
                 area.style.backgroundColor = 'white';
-                
-                html2canvas(area, {
-                    scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, // dynamic high resolution
-                    useCORS: true,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `Voucher-${State.currentVoucherId || 'Export'}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    Utils.showToast("Voucher Image Saved!");
-                }).catch(err => {
-                    console.error(err);
-                    Utils.showToast("Error saving image", "error");
-                });
+                html2canvas(area, { scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+                    const link = document.createElement('a'); link.download = `Voucher-${State.currentVoucherId || 'Export'}.png`; link.href = canvas.toDataURL('image/png'); link.click(); Utils.showToast("Voucher Image Saved!");
+                }).catch(err => { console.error(err); Utils.showToast("Error saving image", "error"); });
             },
 
             async processCheckout() {
+                const btn = document.getElementById('checkout-btn');
+                btn.disabled = true; btn.innerText = "Saving...";
+                
                 const totals = PosLogic.calculateTotals();
-                const yt = Utils.getYangonTime();
+                const now = Utils.getYangonTime();
                 
-                // Sequential ID Generation MMYY-xxxx based on Yangon Time
-                const prefix = `${yt.mm}${yt.yy}-`;
+                // Sequential ID Generation MMYY-xxxx
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const yy = String(now.getFullYear()).slice(-2);
+                const prefix = `${mm}${yy}-`;
                 
-                // Robust Check: Find highest sequence number safely
                 const currentMonthSales = (State.allFirebaseSales || []).filter(s => s.id && s.id.startsWith(prefix));
                 const maxSequence = currentMonthSales.reduce((max, s) => {
                     const seq = parseInt(s.id.split('-')[1]);
@@ -1347,53 +1565,74 @@
                 const cName = document.getElementById('cust-name').value.trim(); 
                 const cPhone = document.getElementById('cust-phone').value.trim();
                 const notes = document.getElementById('sale-notes').value.trim();
+                
                 let pay = State.currentSaleType === 'Credit' ? document.getElementById('credit-period').value + ' Days' : document.getElementById('payment-method').value;
+                let payStatus = (State.currentSaleType === 'Credit' || pay === 'Cash on Delivery') ? 'Pending' : 'Paid';
                 
                 const saleRec = { 
-                    type: "Sale", id: id, date: yt.dateStr, isoDate: yt.iso, 
-                    saleType: State.currentSaleType, paymentMethod: pay, customer: cName, phone: cPhone, 
-                    notes: notes, items: State.currentCart.map(i=>({category:i.category, size:i.size, qty:i.qty, price:i.effectivePrice, total:i.total})), totals: totals 
+                    type: "Sale", id: id, date: now.toISOString().split('T')[0], isoDate: now.toISOString(), 
+                    saleType: State.currentSaleType, paymentMethod: pay, paymentStatus: payStatus, customer: cName, phone: cPhone, 
+                    notes: notes, status: "Active", items: State.currentCart.map(i=>({category:i.category, size:i.size, qty:i.qty, price:i.effectivePrice, total:i.total})), totals: totals 
                 };
 
                 // Populate Modal UI
                 PosLogic.populateVoucherHTML(saleRec);
                 State.currentVoucherId = id;
                 
-                // Save logic
-                Backend.pushSale(saleRec, State.currentCart);
-                if (State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(saleRec) }).catch(e=>{});
+                // Save logic STRICT CHAINING
+                const success = await Backend.pushSale(saleRec, State.currentCart);
                 
-                // Reveal Modal instead of direct print
-                document.getElementById('voucher-modal').classList.remove('hidden');
+                if (success) {
+                    if (State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(saleRec) }).catch(e=>{});
+                    
+                    document.getElementById('voucher-modal').classList.remove('hidden');
+                    
+                    // Reset Cart state
+                    State.currentCart = []; 
+                    document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
+                    if(State.isMobileCartOpen) UI.toggleMobileCart(); 
+                    UI.renderCart(); 
+                    Utils.showToast('Sale Saved Successfully!');
+                } else {
+                    Utils.showToast("Database Error: Could not save sale.", "error");
+                }
                 
-                // Reset Cart state
-                State.currentCart = []; 
-                document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
-                if(State.isMobileCartOpen) UI.toggleMobileCart(); 
-                UI.renderCart(); 
-                Utils.showToast('Sale Saved Successfully!');
+                btn.innerHTML = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Check Out`;
+                PosLogic.validateCheckout();
             },
 
             applyFilters() {
-                const start = document.getElementById('filter-start').value;
-                const end = document.getElementById('filter-end').value;
-                const search = document.getElementById('filter-search').value.toLowerCase().trim();
+                let start, end, label;
+                const d = State.historyAnchorDate;
+                
+                if (State.historyMode === 'day') {
+                    start = Utils.startOfDay(d);
+                    end = Utils.endOfDay(d);
+                    label = start.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+                } else if (State.historyMode === 'week') {
+                    const range = Utils.getWeekRange(d);
+                    start = range.start; end = range.end;
+                    label = `Week of ${start.toLocaleDateString('en-US', {month:'short', day:'numeric'})}`;
+                } else {
+                    const range = Utils.getMonthRange(d);
+                    start = range.start; end = range.end;
+                    label = start.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+                }
+                
+                document.getElementById('hist-date-label').innerText = label;
+                
                 if (!State.allFirebaseSales) return;
                 
-                State.sessionSales = State.allFirebaseSales.filter(s => {
-                    const inRange = (!start || s.date >= start) && (!end || s.date <= end);
-                    if (!inRange) return false;
-                    
-                    if (search) {
-                        const nameMatch = s.customer && s.customer.toLowerCase().includes(search);
-                        const phoneMatch = s.phone && s.phone.includes(search);
-                        return nameMatch || phoneMatch;
-                    }
-                    return true;
-                });
+                const startIso = start.toISOString();
+                const endIso = end.toISOString();
                 
-                document.getElementById('stat-total-vouchers').innerText = State.sessionSales.length;
-                document.getElementById('stat-total-revenue').innerText = Utils.formatMMK(State.sessionSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
+                State.sessionSales = State.allFirebaseSales.filter(s => s.isoDate >= startIso && s.isoDate <= endIso);
+                
+                // Do not count voided vouchers in top totals
+                const validSales = State.sessionSales.filter(s => s.status !== 'Voided');
+                document.getElementById('stat-total-vouchers').innerText = validSales.length;
+                document.getElementById('stat-total-revenue').innerText = Utils.formatMMK(validSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
+                
                 UI.renderHistory();
             }
         };
@@ -1402,9 +1641,9 @@
             updateInvSizeDropdown() {
                 const p = document.getElementById('inv-product').value; 
                 const sSel = document.getElementById('inv-size'); 
-                sSel.innerHTML = '<option value="" disabled selected>Size</option>';
+                sSel.innerHTML = '<option value="" disabled selected>Select Size</option>';
                 if(p) { 
-                    sSel.disabled = false; sSel.classList.remove('bg-slate-50','disabled:cursor-not-allowed'); sSel.classList.add('bg-white'); 
+                    sSel.disabled = false; sSel.classList.remove('bg-slate-200','disabled:cursor-not-allowed'); sSel.classList.add('bg-white'); 
                     ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size))); 
                 }
             },
@@ -1417,69 +1656,104 @@
                 }
                 UI.renderInventoryLogs();
             },
-            addToAdjustmentCart(isAdd) {
-                const p = document.getElementById('inv-product').value; 
-                const s = document.getElementById('inv-size').value; 
-                const q = parseInt(document.getElementById('inv-qty').value) || 1;
-                
-                if (p && s && q > 0) {
-                    const change = isAdd ? q : -q;
-                    const exist = State.adjustmentCart.find(i => i.product === p && i.size === s);
-                    if (exist) exist.change += change;
-                    else State.adjustmentCart.push({ product: p, size: s, change: change });
-                    UI.renderAdjustmentCart();
-                    Utils.showToast(`Added to Adjustment List`, 'success');
+            toggleSign() {
+                const btn = document.getElementById('inv-sign-btn');
+                if(btn.innerText === '+') {
+                    btn.innerText = '-';
+                    btn.className = 'px-3 py-2 bg-rose-100 text-rose-700 font-bold rounded-lg text-sm transition-colors';
+                } else {
+                    btn.innerText = '+';
+                    btn.className = 'px-3 py-2 bg-emerald-100 text-emerald-700 font-bold rounded-lg text-sm transition-colors';
                 }
             },
-            removeAdjustment(index) {
-                State.adjustmentCart.splice(index, 1);
-                UI.renderAdjustmentCart();
-            },
-            async submitAdjustments() {
-                if(State.adjustmentCart.length === 0) return;
+            addToAdjCart() {
+                const p = document.getElementById('inv-product').value;
+                const s = document.getElementById('inv-size').value;
+                const q = parseInt(document.getElementById('inv-qty').value);
+                const sign = document.getElementById('inv-sign-btn').innerText;
                 
-                const yt = Utils.getYangonTime();
-                const notes = document.getElementById('inv-adj-notes').value.trim() || 'Manual Adjustment';
-                
-                // Sequential ID Generation ADJ-MMDD-xxxx
-                const prefix = `ADJ-${yt.mmdd}-`;
-                const todayAdjs = (State.allFirebaseInventoryLogs || []).filter(l => l.id && l.id.startsWith(prefix));
-                const maxSequence = todayAdjs.reduce((max, s) => {
-                    const seq = parseInt(s.id.split('-')[2]);
-                    return (!isNaN(seq) && seq > max) ? seq : max;
-                }, 0);
-                const sequence = String(maxSequence + 1).padStart(4, '0');
-                const id = `${prefix}${sequence}`;
-
-                try { 
-                    const batch = writeBatch(State.db);
-                    const changesForLog = [];
+                if(p && s && q > 0) {
+                    const finalQty = sign === '+' ? q : -q;
+                    const existing = State.adjustmentCart.find(i => i.product === p && i.size === s);
                     
-                    State.adjustmentCart.forEach(item => {
-                        // Merge to live inventory
-                        batch.set(doc(State.db, 'inventory', `${item.product}_${item.size}`), { product: item.product, size: item.size, stock: increment(item.change) }, { merge: true }); 
-                        changesForLog.push({ product: item.product, size: item.size, change: item.change, action: item.change > 0 ? "Stock In" : "Remove" });
-                    });
-                    
-                    const logRec = {
-                        type: "Consolidated_Inventory", date: yt.dateStr, isoDate: yt.iso, notes: notes, id: id, changes: changesForLog
-                    };
-                    batch.set(doc(State.db, 'inventory_logs', id), logRec);
-                    await batch.commit();
-                    
-                    // Push to Sheet
-                    if(State.webAppUrl) {
-                        changesForLog.forEach(c => {
-                            fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({type: "Inventory", date: yt.iso, action: c.action, id: id, product: c.product, size: c.size, change: c.change}) }).catch(e=>{});
-                        });
+                    if(existing) {
+                        existing.change += finalQty;
+                        if(existing.change === 0) State.adjustmentCart = State.adjustmentCart.filter(i => i !== existing);
+                    } else {
+                        State.adjustmentCart.push({ id: Date.now(), product: p, size: s, change: finalQty, action: finalQty > 0 ? 'Stock In' : 'Remove' });
                     }
                     
-                    Utils.showToast('Inventory Adjusted Successfully!'); 
-                    State.adjustmentCart = [];
-                    UI.renderAdjustmentCart();
-                    document.getElementById('inv-qty').value = ''; 
-                    document.getElementById('inv-adj-notes').value = '';
-                } catch(e) { console.error(e); }
+                    InventoryLogic.renderAdjCart();
+                    document.getElementById('inv-qty').value = '';
+                }
+            },
+            removeFromAdjCart(id) {
+                State.adjustmentCart = State.adjustmentCart.filter(i => i.id !== id);
+                InventoryLogic.renderAdjCart();
+            },
+            renderAdjCart() {
+                const cont = document.getElementById('adj-cart-items');
+                const msg = document.getElementById('empty-adj-msg');
+                const btn = document.getElementById('submit-adj-btn');
+                
+                if(State.adjustmentCart.length === 0) {
+                    cont.innerHTML = ''; cont.appendChild(msg);
+                    msg.classList.remove('hidden'); btn.disabled = true;
+                } else {
+                    msg.classList.add('hidden'); btn.disabled = false;
+                    cont.innerHTML = State.adjustmentCart.map(i => {
+                        const color = i.change > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50';
+                        const prefix = i.change > 0 ? '+' : '';
+                        return `
+                        <div class="flex justify-between items-center p-2 mb-2 bg-white rounded-lg border border-slate-100 shadow-sm">
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-800">${i.product}</p>
+                                <p class="text-xs text-slate-500">${i.size}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-sm px-2 py-1 rounded ${color}">${prefix}${i.change}</span>
+                                <button type="button" data-action="remove-adj-item" data-id="${i.id}" class="text-red-400 hover:text-red-600 p-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            },
+            async submitAdjustment() {
+                if (State.adjustmentCart.length === 0) return;
+                const btn = document.getElementById('submit-adj-btn');
+                btn.disabled = true; btn.innerText = "Submitting...";
+                
+                const notes = document.getElementById('inv-notes').value.trim();
+                const now = Utils.getYangonTime();
+                
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const id = `ADJ-${mm}${dd}-${String(Date.now()).slice(-4)}`;
+
+                try {
+                    const batch = writeBatch(State.db);
+                    const changes = [];
+                    
+                    State.adjustmentCart.forEach(i => {
+                        batch.set(doc(State.db, 'inventory', `${i.product}_${i.size}`), { product: i.product, size: i.size, stock: increment(i.change) }, { merge: true });
+                        changes.push({ product: i.product, size: i.size, change: i.change, action: i.action });
+                    });
+                    
+                    const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: notes || "-", id: id, changes: changes };
+                    batch.set(doc(State.db, 'inventory_logs', id), logRec);
+                    
+                    await batch.commit();
+                    
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(logRec) }).catch(e=>{});
+                    
+                    State.adjustmentCart = []; InventoryLogic.renderAdjCart(); document.getElementById('inv-notes').value = '';
+                    Utils.showToast("Stock Adjusted Successfully!");
+                } catch(e) { 
+                    console.error("Adjustment Error", e); Utils.showToast("Database Error: Could not save.", "error"); 
+                }
+                
+                btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v-8m0 8l-3-3m3 3l3-3"></path></svg> Submit Adjustment`;
+                if(State.adjustmentCart.length > 0) btn.disabled = false;
             }
         };
 
@@ -1496,19 +1770,22 @@
             async processTopUp() {
                 const amount = parseInt(document.getElementById('topup-amount').value);
                 if (!amount || amount <= 0) { Utils.showToast('Enter a valid amount', 'error'); return; }
-                const yt = Utils.getYangonTime();
-                const rec = { type: "Top-Up", isoDate: yt.iso, amount: amount, notes: "Manual Top-Up" };
+                const now = Utils.getYangonTime();
+                const rec = { type: "Top-Up", isoDate: now.toISOString(), amount: amount, notes: "Manual Top-Up" };
                 
                 try {
                     const batch = writeBatch(State.db);
                     batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(amount) }, { merge: true });
                     batch.set(doc(collection(State.db, 'expenses')), rec);
                     await batch.commit();
-                } catch(e) { console.error(e); }
-                
-                if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
-                document.getElementById('topup-amount').value = '';
-                Utils.showToast(`Added ${Utils.formatMMK(amount)} to Petty Cash`);
+                    
+                    // Strict Chain
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
+                    document.getElementById('topup-amount').value = '';
+                    Utils.showToast(`Added ${Utils.formatMMK(amount)} to Petty Cash`);
+                } catch(e) { 
+                    console.error(e); Utils.showToast("Database Error", "error"); 
+                }
             },
             async submitExpense() {
                 const amt = parseInt(document.getElementById('exp-amount').value);
@@ -1519,22 +1796,25 @@
                 
                 if (!amt || !dept || !sub) return;
                 
-                const yt = Utils.getYangonTime();
-                const rec = { type: "Expense", isoDate: yt.iso, amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes };
+                const now = Utils.getYangonTime();
+                const rec = { type: "Expense", isoDate: now.toISOString(), amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes };
 
                 try {
                     const batch = writeBatch(State.db);
                     if (rec.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-rec.amount) }, { merge: true }); }
                     batch.set(doc(collection(State.db, 'expenses')), rec);
                     await batch.commit();
-                } catch(e) { console.error(e); }
-                
-                if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
-                
-                document.getElementById('exp-amount').value = ''; document.getElementById('exp-notes').value = '';
-                document.getElementById('exp-dept').value = ''; document.getElementById('exp-sub').value = ''; 
-                ExpenseLogic.updateExpenseSubCat();
-                Utils.showToast('Expense Logged Successfully!');
+                    
+                    // Strict Chain
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
+                    
+                    document.getElementById('exp-amount').value = ''; document.getElementById('exp-notes').value = '';
+                    document.getElementById('exp-dept').value = ''; document.getElementById('exp-sub').value = ''; 
+                    ExpenseLogic.updateExpenseSubCat();
+                    Utils.showToast('Expense Logged Successfully!');
+                } catch(e) { 
+                    console.error(e); Utils.showToast("Database Error", "error"); 
+                }
             }
         };
 
@@ -1544,6 +1824,29 @@
                 localStorage.setItem('khaymay_sheet_url', State.webAppUrl);
                 UI.toggleSettings(); 
                 Utils.showToast('Settings Saved!');
+            },
+            forceSyncInventory() {
+                if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
+                
+                const payload = { type: "ForceSyncInventory", date: Utils.getYangonTime().toISOString(), inventory: [] };
+                
+                for (const p in ProductData) {
+                    ProductData[p].forEach(i => {
+                        payload.inventory.push({ product: p, size: i.size, stock: State.localInventory[`${p}_${i.size}`] || 0 });
+                    });
+                }
+                
+                const btn = document.getElementById('btn-force-sync');
+                btn.innerText = "Syncing..."; btn.disabled = true;
+                
+                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+                    .then(() => {
+                        Utils.showToast('Live Inventory forced pushed to Sheets!');
+                        setTimeout(() => { btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false; }, 2000);
+                    }).catch(e => {
+                        console.error(e); Utils.showToast('Error syncing to sheets', 'error');
+                        btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false;
+                    });
             }
         };
 
@@ -1560,44 +1863,86 @@
                             changes.push({ product: i.category, size: i.size, change: -i.qty, action: "Sale" });
                         });
                         
-                        const logRec = {
-                            type: "Consolidated_Inventory", date: saleRec.date, isoDate: saleRec.isoDate, notes: `Voucher: ${saleRec.id}`, id: saleRec.id, changes: changes
-                        };
+                        const logRec = { type: "Consolidated_Inventory", date: saleRec.date, isoDate: saleRec.isoDate, notes: `Voucher: ${saleRec.id}`, id: saleRec.id, changes: changes };
                         batch.set(doc(State.db, 'inventory_logs', saleRec.id), logRec);
                     }
                     await batch.commit();
-                } catch(e) { console.error("Firebase save error:", e); }
+                    return true;
+                } catch(e) { console.error("Firebase save error:", e); return false; }
+            },
+            
+            async settlePayment(id, notes) {
+                try {
+                    const now = Utils.getYangonTime();
+                    await setDoc(doc(State.db, 'sales', id), { paymentStatus: 'Paid', settleNotes: notes, settleDate: now.toISOString() }, { merge: true });
+                    
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "SettlePayment", id: id, txnId: notes }) }).catch(e=>{});
+                    
+                    Utils.showToast("Payment Settled!");
+                    document.getElementById('settle-modal').classList.add('hidden');
+                } catch(e) {
+                    console.error("Settle Error", e); Utils.showToast("Error updating database", "error");
+                }
+            },
+            
+            async voidVoucher(id) {
+                if(!confirm(`WARNING: Are you sure you want to VOID voucher ${id}?\n\nThis will cross it out in history and return all items back into live inventory.`)) return;
+                
+                const sale = State.allFirebaseSales.find(s => s.id === id);
+                if(!sale) return;
+                
+                try {
+                    const batch = writeBatch(State.db);
+                    
+                    // Mark as voided
+                    batch.set(doc(State.db, 'sales', id), { status: 'Voided' }, { merge: true });
+                    
+                    // Revert Inventory
+                    const changes = [];
+                    sale.items.forEach(i => {
+                        batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(i.qty) }, { merge: true });
+                        changes.push({ product: i.category, size: i.size, change: i.qty, action: "Voided" });
+                    });
+                    
+                    const now = Utils.getYangonTime();
+                    const logId = `REVERT-${id}`;
+                    const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Reverted Voucher: ${id}`, id: logId, changes: changes };
+                    batch.set(doc(State.db, 'inventory_logs', logId), logRec);
+                    
+                    await batch.commit();
+                    
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidSale", id: id }) }).catch(e=>{});
+                    
+                    PosLogic.closeVoucher();
+                    Utils.showToast("Voucher Voided Successfully");
+                } catch(e) {
+                    console.error("Void error", e); Utils.showToast("Error voiding voucher", "error");
+                }
             },
             
             init() {
+                // Use exact provided credentials
                 const p1 = "AIzaSyC_y2V"; const p2 = "R9T9-PGQ5Y-mKnK"; const p3 = "JSdslJm3ISQWc";
                 const config = {
-                    apiKey: p1 + p2 + p3,
-                    authDomain: "khay-may-pos.firebaseapp.com",
-                    projectId: "khay-may-pos",
-                    storageBucket: "khay-may-pos.firebasestorage.app",
-                    messagingSenderId: "1058775733436",
-                    appId: "1:1058775733436:web:a932499046aa82816aacb9"
+                    apiKey: p1 + p2 + p3, authDomain: "khay-may-pos.firebaseapp.com", projectId: "khay-may-pos",
+                    storageBucket: "khay-may-pos.firebasestorage.app", messagingSenderId: "1058775733436", appId: "1:1058775733436:web:a932499046aa82816aacb9"
                 };
 
                 try {
-                    const app = initializeApp(config); 
-                    State.db = getFirestore(app); 
-                    const auth = getAuth(app);
+                    const app = initializeApp(config); State.db = getFirestore(app); const auth = getAuth(app);
                     enableIndexedDbPersistence(State.db).catch(err => console.warn(err.code));
 
                     signInAnonymously(auth).then(() => {
                         let salesTimeout, invTimeout, expTimeout, logTimeout;
                         
-                        onSnapshot(collection(State.db, 'sales'), (snap) => {
+                        // Generous limit to protect quota while maintaining full recent history live sync
+                        const salesQuery = query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000));
+                        onSnapshot(salesQuery, (snap) => {
                             const d = []; snap.forEach(doc => d.push(doc.data())); 
                             clearTimeout(salesTimeout);
                             salesTimeout = setTimeout(() => {
-                                State.allFirebaseSales = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate));
-                                PosLogic.applyFilters();
-                                UI.renderSalesSummary();
-                                const syncEl = document.getElementById('sync-status');
-                                if (syncEl) syncEl.innerHTML = '<span class="relative flex h-2 w-2 mr-2"><span class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span> Live Synced';
+                                State.allFirebaseSales = d; // already ordered by desc
+                                PosLogic.applyFilters(); UI.renderSalesSummary(); UI.renderPendingPayments();
                             }, 300);
                         });
                         
@@ -1609,12 +1954,12 @@
                             }, 300);
                         });
                         
-                        onSnapshot(collection(State.db, 'inventory_logs'), (snap) => {
+                        const logsQuery = query(collection(State.db, 'inventory_logs'), orderBy('isoDate', 'desc'), limit(1500));
+                        onSnapshot(logsQuery, (snap) => {
                             const d = []; snap.forEach(doc => d.push(doc.data()));
                             clearTimeout(logTimeout);
                             logTimeout = setTimeout(() => {
-                                State.allFirebaseInventoryLogs = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate));
-                                UI.renderInventoryLogs();
+                                State.allFirebaseInventoryLogs = d; UI.renderInventoryLogs();
                             }, 300);
                         });
                         
@@ -1627,8 +1972,7 @@
                             const d = []; snap.forEach(doc => d.push(doc.data())); 
                             clearTimeout(expTimeout);
                             expTimeout = setTimeout(() => {
-                                State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate));
-                                UI.renderExpenses();
+                                State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate)); UI.renderExpenses();
                             }, 300);
                         });
                     });
@@ -1647,6 +1991,11 @@
                 if (action === 'switch-sales-tab') UI.switchSubTab('sales', btn.dataset.tab);
                 if (action === 'switch-inv-tab') UI.switchSubTab('inv', btn.dataset.tab);
                 
+                // History Nav
+                if (action === 'set-history-view') UI.setHistoryView(btn.dataset.view);
+                if (action === 'nav-history') UI.navHistory(Number(btn.dataset.dir));
+                
+                // Date Navigators
                 if (action === 'prev-date') UI.changeDateBy(btn.dataset.target, -1);
                 if (action === 'next-date') UI.changeDateBy(btn.dataset.target, 1);
                 
@@ -1657,32 +2006,56 @@
                 if (action === 'remove-item') PosLogic.updateQuantity(Number(btn.dataset.id), -999);
                 if (action === 'process-checkout') PosLogic.processCheckout();
                 
-                if (action === 'add-adj') InventoryLogic.addToAdjustmentCart(btn.dataset.type === 'in');
-                if (action === 'remove-adj') InventoryLogic.removeAdjustment(Number(btn.dataset.idx));
-                if (action === 'submit-adj') InventoryLogic.submitAdjustments();
+                // Inventory Adj
+                if (action === 'toggle-inv-sign') InventoryLogic.toggleSign();
+                if (action === 'add-to-adj-cart') InventoryLogic.addToAdjCart();
+                if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
+                if (action === 'submit-adjustment') InventoryLogic.submitAdjustment();
                 
                 if (action === 'process-topup') ExpenseLogic.processTopUp();
                 if (action === 'save-settings') AppSettings.save();
+                if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
                 
+                // Voucher Modals & Void
                 if (action === 'view-voucher') PosLogic.viewVoucher(btn.dataset.id);
                 if (action === 'close-voucher') PosLogic.closeVoucher();
                 if (action === 'print-voucher') window.print();
                 if (action === 'download-voucher') PosLogic.downloadVoucherImage();
+                if (action === 'void-voucher') Backend.voidVoucher(State.currentVoucherId);
+                
+                // Settle Modals
+                if (action === 'open-settle') {
+                    const id = btn.dataset.id;
+                    document.getElementById('settle-voucher-id').innerText = id;
+                    document.getElementById('settle-hidden-id').value = id;
+                    document.getElementById('settle-notes').value = '';
+                    document.getElementById('settle-modal').classList.remove('hidden');
+                }
+                if (action === 'close-settle') document.getElementById('settle-modal').classList.add('hidden');
+                if (action === 'confirm-settle') {
+                    const btnSettle = document.getElementById('btn-confirm-settle');
+                    btnSettle.disabled = true; btnSettle.innerText = "Saving...";
+                    const id = document.getElementById('settle-hidden-id').value;
+                    const notes = document.getElementById('settle-notes').value.trim();
+                    Backend.settlePayment(id, notes).then(() => {
+                        btnSettle.disabled = false; btnSettle.innerText = "Mark as Paid";
+                    });
+                }
             });
 
             document.getElementById('item-product').addEventListener('change', PosLogic.updateSizeDropdown);
             document.getElementById('item-size').addEventListener('change', PosLogic.updatePrice);
             document.getElementById('add-item-form').addEventListener('submit', (e) => { e.preventDefault(); PosLogic.addItem(); });
             
+            document.getElementById('partner-discount-rate').addEventListener('input', UI.renderCart);
             document.getElementById('summary-discount').addEventListener('input', UI.renderCart);
-            document.getElementById('filter-start').addEventListener('change', PosLogic.applyFilters);
-            document.getElementById('filter-end').addEventListener('change', PosLogic.applyFilters);
-            document.getElementById('filter-search').addEventListener('input', PosLogic.applyFilters);
+            document.getElementById('sales-search').addEventListener('input', UI.renderHistory);
             
             document.getElementById('inv-product').addEventListener('change', InventoryLogic.updateInvSizeDropdown);
             document.getElementById('expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.submitExpense(); });
             document.getElementById('exp-dept').addEventListener('change', ExpenseLogic.updateExpenseSubCat);
             
+            // Sub-tabs filters
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
             
@@ -1715,16 +2088,15 @@
                 if(invLogProductSelect) invLogProductSelect.appendChild(new Option(product, product));
             }
             
-            const yt = Utils.getYangonTime();
-            document.getElementById('filter-end').value = yt.dateStr;
-            document.getElementById('filter-start').value = yt.dateStr;
-            document.getElementById('summary-date').value = yt.dateStr;
-            document.getElementById('inv-log-date').value = yt.dateStr;
+            const localDate = Utils.getYangonTime();
+            const localDateStr = localDate.toISOString().split('T')[0];
+            document.getElementById('summary-date').value = localDateStr;
+            document.getElementById('inv-log-date').value = localDateStr;
             
             const expFilter = document.getElementById('expense-month-filter');
-            if (expFilter) {
-                expFilter.value = `${yt.dateObj.getFullYear()}-${yt.mm}`;
-            }
+            if (expFilter) expFilter.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
+
+            State.historyAnchorDate = localDate;
 
             State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || DEFAULT_SHEET_URL;
             document.getElementById('sheet-url').value = State.webAppUrl;
@@ -1739,7 +2111,6 @@
             
             UI.renderCart(); 
         });
-
     </script>
 </body>
 </html>

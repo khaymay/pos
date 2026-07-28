@@ -48,7 +48,6 @@
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
 
-    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden lg:flex flex-col z-20 shrink-0">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -76,7 +75,6 @@
 
     <main class="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-slate-50 relative z-10 pt-safe">
         
-        <!-- Mobile Header -->
         <header class="lg:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20 shrink-0 overflow-x-auto hide-scrollbar">
             <div class="flex items-center gap-2 mr-4 shrink-0">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -93,7 +91,6 @@
             </div>
         </header>
 
-        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 lg:pb-6">
                 <!-- Sale Type Selector -->
@@ -140,7 +137,6 @@
                 </div>
             </div>
 
-            <!-- Checkout Panel -->
             <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 lg:relative lg:translate-x-0 lg:w-[350px] xl:w-[420px] flex flex-col lg:border-l lg:border-slate-200">
                 <div class="lg:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md shrink-0">
                     <h2 class="font-bold text-lg">Checkout (<span id="checkout-sale-type-label">Retail</span>)</h2>
@@ -180,7 +176,7 @@
                                 </div>
                             </div>
                             
-                            <!-- New Partner Deal Checkbox -->
+                            <!-- Partner Deal Checkbox -->
                             <div id="partner-discount-container" class="hidden mt-3 pt-3 border-t border-slate-200">
                                 <label class="flex items-center gap-2 cursor-pointer bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg border border-indigo-200 transition-colors">
                                     <input type="checkbox" id="is-partner-deal" class="w-4 h-4 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500">
@@ -237,7 +233,6 @@
             </div>
         </section>
 
-        <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="flex justify-between items-center mb-5 shrink-0">
                 <h2 class="text-2xl font-bold text-slate-800">Sales Tracking</h2>
@@ -387,7 +382,6 @@
             </div>
         </section>
 
-        <!-- Inventory Tab -->
         <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <h2 class="text-2xl font-bold text-slate-800 mb-5 flex items-center gap-2">Inventory Management</h2>
             
@@ -399,7 +393,6 @@
             <!-- ADJUST & LOG VIEW -->
             <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 xl:grid-cols-3 gap-6 items-start min-h-0">
                 
-                <!-- NEW ADJUSTMENT CART UI -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col xl:col-span-1 shrink-0 h-[600px]">
                     <div class="p-5 border-b border-slate-100 shrink-0">
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -450,11 +443,10 @@
                             <h3 class="font-bold text-slate-800">Daily Log</h3>
                         </div>
                         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                            <!-- FIXED: Added Missing Filters -->
-                            <select id="inv-log-product" class="px-2 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium text-slate-600 shadow-sm">
+                            <select id="inv-log-product" class="px-2 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium text-slate-600 shadow-sm flex-1 md:flex-none">
                                 <option value="All">All Products</option>
                             </select>
-                            <select id="inv-log-size" class="px-2 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium text-slate-600 shadow-sm">
+                            <select id="inv-log-size" class="px-2 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium text-slate-600 shadow-sm flex-1 md:flex-none">
                                 <option value="All">All Sizes</option>
                             </select>
                             <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-lg shadow-sm p-0.5 ml-auto md:ml-0">
@@ -490,13 +482,11 @@
             </div>
         </section>
 
-        <!-- Expenses Tab -->
         <section id="expense-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column -->
                 <div class="space-y-6 lg:col-span-1">
                     
-                    <!-- Petty Cash Dashboard -->
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center transition-colors duration-300" id="petty-cash-card">
                         <h3 class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide" id="petty-cash-title">Live Petty Cash</h3>
                         <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500">0 MMK</p>
@@ -509,7 +499,6 @@
                         </div>
                     </div>
 
-                    <!-- Add Expense Form -->
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                             <svg class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
@@ -554,22 +543,27 @@
                 <!-- Right Column: Recent Expenses -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden lg:col-span-2 flex flex-col">
                     <div class="p-5 border-b border-slate-100 flex flex-col bg-slate-50 shrink-0 gap-4">
-                        <div class="flex justify-between items-center">
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                             <h2 class="text-lg font-bold text-slate-800">Expenses Dashboard</h2>
-                            <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm">
+                            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                                <select id="expense-filter-dept" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm flex-1 md:flex-none">
+                                    <option value="">All Depts</option>
+                                    <option value="KhayMay">KhayMay Office</option>
+                                    <option value="SYM">SYM Production</option>
+                                    <option value="Main">Main Building</option>
+                                </select>
+                                <select id="expense-filter-sub" disabled class="bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-slate-400 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm flex-1 md:flex-none disabled:opacity-50">
+                                    <option value="">All Categories</option>
+                                </select>
+                                <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm flex-1 md:flex-none">
+                            </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent</p>
-                                <p class="text-xl font-bold text-slate-800 truncate" id="exp-total-val">0 MMK</p>
-                            </div>
-                            <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 shadow-sm flex flex-col justify-center">
-                                <p class="text-[10px] font-bold text-indigo-400 uppercase mb-1">By Owner</p>
-                                <p class="text-xl font-bold text-indigo-600 truncate" id="exp-owner-val">0 MMK</p>
-                            </div>
-                            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 shadow-sm flex flex-col justify-center">
-                                <p class="text-[10px] font-bold text-emerald-400 uppercase mb-1">By Petty Cash</p>
-                                <p class="text-xl font-bold text-emerald-600 truncate" id="exp-petty-val">0 MMK</p>
+
+                        <div class="grid grid-cols-1 w-full">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent (Filtered)</p>
+                                <p class="text-3xl font-black text-rose-600 truncate" id="exp-total-val">0 MMK</p>
                             </div>
                         </div>
                     </div>
@@ -582,14 +576,14 @@
                     <div class="overflow-y-auto flex-1">
                         <div id="expense-body" class="divide-y divide-slate-50"></div>
                         <div id="empty-expense-msg" class="p-12 flex flex-col items-center justify-center text-slate-400 hidden">
-                            <p>No expenses logged for this month.</p>
+                            <p>No expenses logged for these filters.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
+        <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
     </main>
 
     <!-- Settle Payment Modal -->
@@ -621,6 +615,12 @@
                 <h2 class="text-xl font-bold text-slate-800">System Settings</h2>
                 <button data-action="toggle-settings" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
+            
+            <!-- Connection Warning -->
+            <div id="config-warning" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs font-semibold">
+                ⚠️ Firebase is not configured. Please paste your config in the HTML file to connect to the database.
+            </div>
+
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-slate-600 mb-1">Google Sheets App URL</label>
@@ -639,7 +639,7 @@
         </div>
     </div>
 
-    <!-- Voucher Preview & Action Modal -->
+    <!-- Voucher Preview Modal -->
     <div id="voucher-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
         <div class="bg-white md:rounded-2xl shadow-2xl flex flex-col w-full max-h-[100dvh] md:max-h-[90vh] md:max-w-[360px] rounded-t-2xl md:rounded-b-2xl relative">
             <div class="bg-slate-800 p-4 flex justify-between items-center text-white shrink-0 pt-safe rounded-t-2xl md:rounded-t-none">
@@ -719,7 +719,7 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <!-- FIXED: Replaced Flexbox Divs with a clean, image-safe Table for Totals -->
+                    <!-- STURDY HTML TABLE FOR VOUCHER TOTALS -->
                     <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 8px; position: relative; z-0">
                         <tr>
                             <td style="text-align: right; padding: 2px 0; color: #444;">Subtotal:</td>
@@ -762,9 +762,12 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- 1. DATA & STATE ---
-        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
+        // ==========================================
+        // ⚠️ PASTE YOUR CONFIGURATIONS HERE ⚠️
+        // ==========================================
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
         
+        // 1. DATA & STATE
         const State = {
             currentCart: [],
             sessionSales: [],
@@ -772,7 +775,6 @@
             allFirebaseExpenses: [],
             allFirebaseInventoryLogs: [],
             adjustmentCart: [],
-            adjMode: 'in', // Add adjustment mode state
             webAppUrl: "",
             currentSaleType: 'Retail',
             isMobileCartOpen: false,
@@ -804,14 +806,14 @@
             "SYM": ["RawMaterials", "Machines", "Accessories", "Accessories for Clients", "Salary", "Cutting"]
         };
 
-        // --- 2. UTILITY FUNCTIONS ---
+        // 2. UTILITY FUNCTIONS
         const Utils = {
             formatMMK: (num) => Number(num).toLocaleString('en-US'),
             showToast: (msg, type = 'success') => {
                 const container = document.getElementById('toast-container');
                 if (!container) return;
                 const toast = document.createElement('div');
-                toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter`;
+                toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter mb-2 pointer-events-auto`;
                 toast.innerHTML = msg;
                 container.appendChild(toast);
                 setTimeout(() => {
@@ -844,7 +846,7 @@
             }
         };
 
-        // --- 3. UI CONTROLLERS ---
+        // 3. UI CONTROLLERS
         const UI = {
             switchTab(tabId) {
                 ['pos-tab', 'sales-tab', 'inventory-tab', 'expense-tab'].forEach(id => {
@@ -946,7 +948,6 @@
                     document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
                     if(partnerContainer) partnerContainer.classList.remove('hidden');
                 } else {
-                    // Retail
                     document.getElementById('payment-method-box').classList.remove('hidden');
                     document.getElementById('payment-method').required = true;
                     document.getElementById('credit-period-box').classList.add('hidden');
@@ -1021,6 +1022,10 @@
                         const voidBadge = isVoid ? `<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">VOIDED</span>` : '';
                         const stClass = isVoid ? 'line-through text-slate-400' : 'text-slate-800';
 
+                        const paymentBadge = s.paymentStatus === 'Paid' 
+                            ? `<span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ml-2 tracking-wide">PAID</span>`
+                            : `<span class="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ml-2 tracking-wide">PENDING</span>`;
+
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center ${opacity}">
                             
@@ -1033,9 +1038,11 @@
                                 ${voidBadge}
                             </div>
                             <div class="flex justify-between items-center md:hidden w-full mb-1">
-                                <div>
+                                <div class="flex items-center flex-wrap gap-1">
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span>
-                                    <span class="text-sm font-bold ${stClass} ml-2">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
+                                    <span class="text-sm font-bold ${stClass} ml-1">${s.customer||'-'}</span> 
+                                    <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
+                                    ${paymentBadge}
                                 </div>
                             </div>
                             <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">
@@ -1049,7 +1056,13 @@
                             <!-- Desktop View -->
                             <div class="hidden md:block"><span class="font-bold ${stClass}">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
                             <div class="hidden md:block font-mono text-sm text-slate-500 ${isVoid?'line-through':''}">${s.id} ${voidBadge}</div>
-                            <div class="hidden md:block text-sm"><span class="font-bold ${stClass}">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
+                            <div class="hidden md:block text-sm">
+                                <div class="flex items-center">
+                                    <span class="font-bold ${stClass}">${s.customer||'-'}</span>
+                                    ${paymentBadge}
+                                </div>
+                                <span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span>
+                            </div>
                             <div class="hidden md:block text-xs text-slate-600 ${isVoid?'line-through':''}"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
                             <div class="hidden md:block text-right font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
                             <div class="hidden md:flex justify-end">
@@ -1171,11 +1184,9 @@
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm"><span class="text-indigo-100">${name}</span><span class="font-bold text-white">${qty}</span></div>`).join('');
                 };
 
-                // Overall Top Dashboard
                 document.getElementById('summary-overall-rev').innerText = Utils.formatMMK(retailRev + wholesaleRev + creditRev) + " MMK";
                 document.getElementById('summary-overall-items').innerHTML = buildOverallItemList(overallItems);
 
-                // Breakdown Columns
                 document.getElementById('summary-retail-rev').innerText = Utils.formatMMK(retailRev) + " MMK";
                 document.getElementById('summary-retail-items').innerHTML = buildItemList(retailItems);
                 
@@ -1252,7 +1263,7 @@
                     if (filteredChanges.length > 0) {
                         hasVisibleLogs = true;
                         const tStr = new Date(logBox.isoDate).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                        const isSale = logBox.id && logBox.id.includes('-');
+                        const isSale = logBox.id && logBox.id.includes('-') && !logBox.id.startsWith('INV-') && !logBox.id.startsWith('ADJ-');
                         const isRevert = logBox.notes && logBox.notes.includes('Revert');
                         const boxColor = isRevert ? 'border-amber-100 bg-amber-50/30' : (isSale ? 'border-rose-100' : 'border-indigo-100');
                         const badgeColor = isRevert ? 'bg-amber-100 text-amber-700' : (isSale ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700');
@@ -1316,11 +1327,17 @@
                 const empty = document.getElementById('empty-expense-msg');
                 tb.innerHTML = "";
                 
-                let total = 0, owner = 0, petty = 0;
+                let total = 0;
                 const selectedMonth = document.getElementById('expense-month-filter').value;
+                const selectedDept = document.getElementById('expense-filter-dept').value;
+                const selectedSub = document.getElementById('expense-filter-sub').value;
+
                 const filteredExpenses = (State.allFirebaseExpenses || []).filter(e => {
-                    if (!selectedMonth) return true;
-                    return e.isoDate.substring(0, 7) === selectedMonth;
+                    if (e.type === "Top-Up") return false; // Ignore top-ups for metrics
+                    if (selectedMonth && e.isoDate.substring(0, 7) !== selectedMonth) return false;
+                    if (selectedDept && e.department !== selectedDept) return false;
+                    if (selectedSub && e.subCategory !== selectedSub) return false;
+                    return true;
                 });
 
                 if (filteredExpenses.length === 0) { 
@@ -1332,22 +1349,7 @@
                         const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric'}); 
                         const tStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
                         
-                        if (e.type === "Top-Up") {
-                            return `
-                            <div class="flex flex-col md:grid md:grid-cols-4 gap-2 md:gap-4 p-4 bg-emerald-50/50 border-b border-slate-50 items-start md:items-center">
-                                <div class="flex justify-between w-full md:w-auto">
-                                    <span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span>
-                                    <span class="md:hidden font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</span>
-                                </div>
-                                <div><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Top-Up</span></div>
-                                <div class="text-xs text-slate-600">${e.notes||'-'}</div>
-                                <div class="hidden md:block text-right font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</div>
-                            </div>`;
-                        }
-                        
                         total += e.amount;
-                        if (e.paidBy === 'Petty Cash') petty += e.amount;
-                        else owner += e.amount;
                         
                         const paidByBadge = e.paidBy === 'Petty Cash' 
                             ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">Petty Cash</span>` 
@@ -1373,12 +1375,10 @@
                 }
                 
                 document.getElementById('exp-total-val').innerText = Utils.formatMMK(total) + " MMK";
-                document.getElementById('exp-owner-val').innerText = Utils.formatMMK(owner) + " MMK";
-                document.getElementById('exp-petty-val').innerText = Utils.formatMMK(petty) + " MMK";
             }
         };
 
-        // --- 4. CORE BUSINESS LOGIC ---
+        // 4. CORE BUSINESS LOGIC
         const PosLogic = {
             updateSizeDropdown() {
                 const prod = document.getElementById('item-product').value; 
@@ -1444,7 +1444,6 @@
                 const qtys = {}; 
                 State.currentCart.forEach(i => qtys[i.category] = (qtys[i.category] || 0) + i.qty);
                 
-                // Partner Deal Logic
                 const partnerCheckbox = document.getElementById('is-partner-deal');
                 const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
 
@@ -1465,7 +1464,6 @@
                     subtotal += i.total;
                 });
 
-                // Smart Manual Discount parsing
                 const discountInput = document.getElementById('summary-discount').value.trim();
                 let manual = 0;
                 
@@ -1780,9 +1778,19 @@
                 const notes = document.getElementById('inv-notes').value.trim();
                 const now = Utils.getYangonTime();
                 
+                // SEQUENTIAL INV ID LOGIC
                 const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const id = `ADJ-${mm}${dd}-${String(Date.now()).slice(-4)}`;
+                const yy = String(now.getFullYear()).slice(-2);
+                const prefix = `INV-${mm}${yy}-`;
+                
+                const currentMonthLogs = (State.allFirebaseInventoryLogs || []).filter(l => l.id && l.id.startsWith(prefix));
+                const maxSequence = currentMonthLogs.reduce((max, l) => {
+                    const seq = parseInt(l.id.split('-')[2]);
+                    return (!isNaN(seq) && seq > max) ? seq : max;
+                }, 0);
+                
+                const sequence = String(maxSequence + 1).padStart(4, '0');
+                const id = `${prefix}${sequence}`;
 
                 try {
                     const batch = writeBatch(State.db);
@@ -1820,6 +1828,22 @@
                     subSel.disabled = false; subSel.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed'); subSel.classList.add('bg-white');
                     ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
                 }
+            },
+            updateExpenseFilterSubCat() {
+                const dept = document.getElementById('expense-filter-dept').value;
+                const subSel = document.getElementById('expense-filter-sub');
+                subSel.innerHTML = '<option value="">All Categories</option>';
+                if (dept && ExpenseCategories[dept]) {
+                    subSel.disabled = false;
+                    subSel.classList.remove('bg-slate-50', 'disabled:opacity-50');
+                    subSel.classList.add('bg-white');
+                    ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
+                } else {
+                    subSel.disabled = true;
+                    subSel.classList.add('bg-slate-50', 'disabled:opacity-50');
+                    subSel.classList.remove('bg-white');
+                }
+                UI.renderExpenses();
             },
             async processTopUp() {
                 const amount = parseInt(document.getElementById('topup-amount').value);
@@ -1902,7 +1926,7 @@
             }
         };
 
-        // --- 5. FIREBASE & BACKEND CONFIGURATION ---
+        // 5. FIREBASE & BACKEND CONFIGURATION
         const Backend = {
             async pushSale(saleRec, cart) {
                 try { 
@@ -1982,6 +2006,8 @@
                     enableIndexedDbPersistence(State.db).catch(err => console.warn(err.code));
 
                     signInAnonymously(auth).then(() => {
+                        document.getElementById('config-warning').classList.add('hidden');
+
                         let salesTimeout, invTimeout, expTimeout, logTimeout;
                         
                         const salesQuery = query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000));
@@ -2023,12 +2049,18 @@
                                 State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate)); UI.renderExpenses();
                             }, 300);
                         });
+                    }).catch((error) => {
+                        console.error("Auth failed. Check Firebase config.", error);
+                        document.getElementById('config-warning').classList.remove('hidden');
                     });
-                } catch(e) { console.error("Firebase init error:", e); }
+                } catch(e) { 
+                    console.error("Firebase init error. Bad Config.", e); 
+                    document.getElementById('config-warning').classList.remove('hidden');
+                }
             }
         };
 
-        // --- 6. EVENT DELEGATION SETUP ---
+        // 6. EVENT DELEGATION SETUP
         function attachEvents() {
             document.body.addEventListener('click', (e) => {
                 const btn = e.target.closest('[data-action]');
@@ -2054,8 +2086,6 @@
                 if (action === 'remove-item') PosLogic.updateQuantity(Number(btn.dataset.id), -999);
                 if (action === 'process-checkout') PosLogic.processCheckout();
                 
-                if (action === 'toggle-inv-sign') InventoryLogic.toggleSign();
-                if (action === 'add-to-adj-cart') InventoryLogic.addToAdjCart();
                 if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
                 if (action === 'submit-adjustment') InventoryLogic.submitAdjustment();
                 
@@ -2104,6 +2134,10 @@
             
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
+            const expFiltDept = document.getElementById('expense-filter-dept');
+            if (expFiltDept) expFiltDept.addEventListener('change', ExpenseLogic.updateExpenseFilterSubCat);
+            const expFiltSub = document.getElementById('expense-filter-sub');
+            if (expFiltSub) expFiltSub.addEventListener('change', UI.renderExpenses);
             
             const invLogDate = document.getElementById('inv-log-date');
             if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
@@ -2120,7 +2154,7 @@
             });
         }
 
-        // --- 7. BOOTSTRAP INITIALIZATION ---
+        // 7. BOOTSTRAP INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
             const productSelect = document.getElementById('item-product');
             const invProductSelect = document.getElementById('inv-product');
@@ -2140,7 +2174,7 @@
 
             State.historyAnchorDate = localDate;
 
-            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || DEFAULT_SHEET_URL;
+            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || APPS_SCRIPT_URL;
             document.getElementById('sheet-url').value = State.webAppUrl;
 
             attachEvents();

@@ -2277,7 +2277,7 @@
                 
                 if (action === 'process-topup') ExpenseLogic.processTopUp();
                 if (action === 'del-exp') Backend.deleteExpense(btn.dataset.id);
-                if (action === 'edit-exp') ExpenseLogic.openEditModal(btn.dataset.id);
+                if (action === 'edit-exp') UI.openEditModal(btn.dataset.id);
                 if (action === 'close-edit-exp') document.getElementById('edit-expense-modal').classList.add('hidden');
                 
                 if (action === 'revert-inv') Backend.revertInventoryLog(btn.dataset.id);

@@ -48,6 +48,7 @@
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
 
+    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden lg:flex flex-col z-20 shrink-0">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -75,6 +76,7 @@
 
     <main class="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-slate-50 relative z-10 pt-safe">
         
+        <!-- Mobile Header -->
         <header class="lg:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20 shrink-0 overflow-x-auto hide-scrollbar">
             <div class="flex items-center gap-2 mr-4 shrink-0">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -91,6 +93,7 @@
             </div>
         </header>
 
+        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
             <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 lg:pb-6">
                 <!-- Sale Type Selector -->
@@ -137,6 +140,7 @@
                 </div>
             </div>
 
+            <!-- Checkout Panel -->
             <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 lg:relative lg:translate-x-0 lg:w-[350px] xl:w-[420px] flex flex-col lg:border-l lg:border-slate-200">
                 <div class="lg:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md shrink-0">
                     <h2 class="font-bold text-lg">Checkout (<span id="checkout-sale-type-label">Retail</span>)</h2>
@@ -233,6 +237,7 @@
             </div>
         </section>
 
+        <!-- Sales Tracking Tab -->
         <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="flex justify-between items-center mb-5 shrink-0">
                 <h2 class="text-2xl font-bold text-slate-800">Sales Tracking</h2>
@@ -382,6 +387,7 @@
             </div>
         </section>
 
+        <!-- Inventory Tab -->
         <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <h2 class="text-2xl font-bold text-slate-800 mb-5 flex items-center gap-2">Inventory Management</h2>
             
@@ -393,6 +399,7 @@
             <!-- ADJUST & LOG VIEW -->
             <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 xl:grid-cols-3 gap-6 items-start min-h-0">
                 
+                <!-- NEW ADJUSTMENT CART UI -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col xl:col-span-1 shrink-0 h-[600px]">
                     <div class="p-5 border-b border-slate-100 shrink-0">
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -449,7 +456,7 @@
                             <select id="inv-log-size" class="px-2 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white font-medium text-slate-600 shadow-sm flex-1 md:flex-none">
                                 <option value="All">All Sizes</option>
                             </select>
-                            <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-lg shadow-sm p-0.5 ml-auto md:ml-0">
+                            <div class="flex items-center gap-1 bg-white border border-slate-200 rounded p-0.5 ml-auto md:ml-0">
                                 <button data-action="prev-date" data-target="inv-log-date" class="p-1 rounded hover:bg-slate-100 text-slate-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
                                 <input type="date" id="inv-log-date" class="px-1 py-1 text-sm focus:outline-none font-medium border-none bg-transparent w-[110px] text-center">
                                 <button data-action="next-date" data-target="inv-log-date" id="inv-log-date-next" class="p-1 rounded hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
@@ -482,11 +489,13 @@
             </div>
         </section>
 
+        <!-- Expenses Tab -->
         <section id="expense-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column -->
                 <div class="space-y-6 lg:col-span-1">
                     
+                    <!-- Petty Cash Dashboard -->
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center transition-colors duration-300" id="petty-cash-card">
                         <h3 class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide" id="petty-cash-title">Live Petty Cash</h3>
                         <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500">0 MMK</p>
@@ -499,6 +508,7 @@
                         </div>
                     </div>
 
+                    <!-- Add Expense Form -->
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                             <svg class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
@@ -543,27 +553,14 @@
                 <!-- Right Column: Recent Expenses -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden lg:col-span-2 flex flex-col">
                     <div class="p-5 border-b border-slate-100 flex flex-col bg-slate-50 shrink-0 gap-4">
-                        
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                        <div class="flex justify-between items-center">
                             <h2 class="text-lg font-bold text-slate-800">Expenses Dashboard</h2>
-                            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                                <select id="expense-filter-dept" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm flex-1 md:flex-none">
-                                    <option value="">All Depts</option>
-                                    <option value="KhayMay">KhayMay Office</option>
-                                    <option value="SYM">SYM Production</option>
-                                    <option value="Main">Main Building</option>
-                                </select>
-                                <select id="expense-filter-sub" disabled class="bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-slate-400 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm flex-1 md:flex-none disabled:opacity-50">
-                                    <option value="">All Categories</option>
-                                </select>
-                                <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm flex-1 md:flex-none">
-                            </div>
+                            <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm">
                         </div>
-
-                        <div class="grid grid-cols-1 w-full">
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent (Filtered)</p>
-                                <p class="text-3xl font-black text-rose-600 truncate" id="exp-total-val">0 MMK</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent</p>
+                                <p class="text-xl font-bold text-slate-800 truncate" id="exp-total-val">0 MMK</p>
                             </div>
                         </div>
                     </div>
@@ -576,14 +573,14 @@
                     <div class="overflow-y-auto flex-1">
                         <div id="expense-body" class="divide-y divide-slate-50"></div>
                         <div id="empty-expense-msg" class="p-12 flex flex-col items-center justify-center text-slate-400 hidden">
-                            <p>No expenses logged for these filters.</p>
+                            <p>No expenses logged for this month.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+        <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2"></div>
     </main>
 
     <!-- Settle Payment Modal -->
@@ -608,19 +605,63 @@
         </div>
     </div>
 
+    <!-- Edit Expense Modal -->
+    <div id="edit-expense-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Edit Expense
+            </h3>
+            <form id="edit-expense-form" class="space-y-4">
+                <input type="hidden" id="edit-exp-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (MMK)</label>
+                    <input type="number" id="edit-exp-amount" required min="1" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none font-bold text-slate-800">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Department</label>
+                    <select id="edit-exp-dept" required class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white">
+                        <option value="KhayMay">KhayMay Office</option>
+                        <option value="SYM">SYM Production</option>
+                        <option value="Main">Main Building</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Sub-Category</label>
+                    <select id="edit-exp-sub" required class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white">
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Paid By</label>
+                    <select id="edit-exp-paidby" required class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-bold text-amber-700">
+                        <option value="Petty Cash">Petty Cash</option>
+                        <option value="Business Owner">Business Owner (Out of pocket)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Notes</label>
+                    <textarea id="edit-exp-notes" rows="2" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white resize-none"></textarea>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" data-action="close-edit-exp" class="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-sm transition-colors hover:bg-slate-200">Cancel</button>
+                    <button type="submit" id="btn-submit-edit-exp" class="flex-1 py-2.5 bg-amber-500 text-white font-bold rounded-xl text-sm shadow-md transition-colors hover:bg-amber-600">Update Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-900/40 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 shadow-2xl w-[90%] max-w-md">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-slate-800">System Settings</h2>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                    System Settings
+                    <button data-action="toggle-admin" class="ml-2 p-1.5 rounded-lg text-slate-300 hover:bg-slate-100 hover:text-amber-500 transition-colors" title="Toggle Admin Mode">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </button>
+                </h2>
                 <button data-action="toggle-settings" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            
-            <!-- Connection Warning -->
-            <div id="config-warning" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-xs font-semibold">
-                ⚠️ Firebase is not configured. Please paste your config in the HTML file to connect to the database.
-            </div>
-
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-slate-600 mb-1">Google Sheets App URL</label>
@@ -639,7 +680,7 @@
         </div>
     </div>
 
-    <!-- Voucher Preview Modal -->
+    <!-- Voucher Preview & Action Modal -->
     <div id="voucher-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex items-end md:items-center justify-center p-0 md:p-4 backdrop-blur-sm">
         <div class="bg-white md:rounded-2xl shadow-2xl flex flex-col w-full max-h-[100dvh] md:max-h-[90vh] md:max-w-[360px] rounded-t-2xl md:rounded-b-2xl relative">
             <div class="bg-slate-800 p-4 flex justify-between items-center text-white shrink-0 pt-safe rounded-t-2xl md:rounded-t-none">
@@ -719,24 +760,21 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <!-- STURDY HTML TABLE FOR VOUCHER TOTALS -->
-                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 8px; position: relative; z-0">
-                        <tr>
-                            <td style="text-align: right; padding: 2px 0; color: #444;">Subtotal:</td>
-                            <td id="print-subtotal" style="text-align: right; padding: 2px 0; font-weight: bold; width: 90px;"></td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right; padding: 2px 0; color: #444;">Discount:</td>
-                            <td id="print-discount" style="text-align: right; padding: 2px 0; font-weight: bold; width: 90px;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><hr style="border: none; border-top: 1px solid #ccc; margin: 4px 0;"></td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right; padding: 4px 0; font-size: 14px; font-weight: bold;">Total:</td>
-                            <td id="print-total" style="text-align: right; padding: 4px 0; font-size: 14px; font-weight: bold; width: 90px;"></td>
-                        </tr>
-                    </table>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; margin-bottom: 4px; position: relative; z-0">
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> 
+                            <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <span style="width: 70px; text-align: left; color: #444;">Discount:</span> 
+                            <span id="print-discount" style="width: 80px; text-align: right; font-weight: bold;"></span>
+                        </div>
+                        <hr style="border: none; border-top: 1px solid #ccc; width: 100%; margin: 2px 0;">
+                        <div style="display: flex; justify-content: flex-end; width: 100%; font-size: 14px; margin-top: 2px;">
+                            <span style="width: 70px; text-align: left; font-weight: bold;">Total:</span> 
+                            <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -762,12 +800,9 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ==========================================
-        // ⚠️ PASTE YOUR CONFIGURATIONS HERE ⚠️
-        // ==========================================
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
+        // --- 1. DATA & STATE ---
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
         
-        // 1. DATA & STATE
         const State = {
             currentCart: [],
             sessionSales: [],
@@ -783,7 +818,8 @@
             currentVoucherId: null,
             db: null,
             historyMode: 'day', 
-            historyAnchorDate: new Date()
+            historyAnchorDate: new Date(),
+            isAdmin: false // Determines if edit/delete powers are active
         };
 
         const ProductData = {
@@ -806,14 +842,14 @@
             "SYM": ["RawMaterials", "Machines", "Accessories", "Accessories for Clients", "Salary", "Cutting"]
         };
 
-        // 2. UTILITY FUNCTIONS
+        // --- 2. UTILITY FUNCTIONS ---
         const Utils = {
             formatMMK: (num) => Number(num).toLocaleString('en-US'),
             showToast: (msg, type = 'success') => {
                 const container = document.getElementById('toast-container');
                 if (!container) return;
                 const toast = document.createElement('div');
-                toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter mb-2 pointer-events-auto`;
+                toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter`;
                 toast.innerHTML = msg;
                 container.appendChild(toast);
                 setTimeout(() => {
@@ -846,7 +882,7 @@
             }
         };
 
-        // 3. UI CONTROLLERS
+        // --- 3. UI CONTROLLERS ---
         const UI = {
             switchTab(tabId) {
                 ['pos-tab', 'sales-tab', 'inventory-tab', 'expense-tab'].forEach(id => {
@@ -890,6 +926,23 @@
 
             toggleSettings() {
                 document.getElementById('settings-modal').classList.toggle('hidden');
+            },
+            
+            toggleAdmin() {
+                if (State.isAdmin) {
+                    State.isAdmin = false;
+                    Utils.showToast("Admin Mode Disabled");
+                } else {
+                    const pin = prompt("Enter Admin PIN to unlock Edit/Delete features:");
+                    if (pin === "785400") {
+                        State.isAdmin = true;
+                        Utils.showToast("Admin Mode Enabled", "success");
+                    } else if (pin !== null) {
+                        Utils.showToast("Incorrect PIN", "error");
+                    }
+                }
+                UI.renderExpenses();
+                UI.renderInventoryLogs();
             },
             
             changeDateBy(targetId, delta) {
@@ -1022,10 +1075,6 @@
                         const voidBadge = isVoid ? `<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">VOIDED</span>` : '';
                         const stClass = isVoid ? 'line-through text-slate-400' : 'text-slate-800';
 
-                        const paymentBadge = s.paymentStatus === 'Paid' 
-                            ? `<span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ml-2 tracking-wide">PAID</span>`
-                            : `<span class="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ml-2 tracking-wide">PENDING</span>`;
-
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center ${opacity}">
                             
@@ -1038,11 +1087,9 @@
                                 ${voidBadge}
                             </div>
                             <div class="flex justify-between items-center md:hidden w-full mb-1">
-                                <div class="flex items-center flex-wrap gap-1">
+                                <div>
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span>
-                                    <span class="text-sm font-bold ${stClass} ml-1">${s.customer||'-'}</span> 
-                                    <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
-                                    ${paymentBadge}
+                                    <span class="text-sm font-bold ${stClass} ml-2">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
                                 </div>
                             </div>
                             <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">
@@ -1056,13 +1103,7 @@
                             <!-- Desktop View -->
                             <div class="hidden md:block"><span class="font-bold ${stClass}">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
                             <div class="hidden md:block font-mono text-sm text-slate-500 ${isVoid?'line-through':''}">${s.id} ${voidBadge}</div>
-                            <div class="hidden md:block text-sm">
-                                <div class="flex items-center">
-                                    <span class="font-bold ${stClass}">${s.customer||'-'}</span>
-                                    ${paymentBadge}
-                                </div>
-                                <span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span>
-                            </div>
+                            <div class="hidden md:block text-sm"><span class="font-bold ${stClass}">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
                             <div class="hidden md:block text-xs text-slate-600 ${isVoid?'line-through':''}"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
                             <div class="hidden md:block text-right font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
                             <div class="hidden md:flex justify-end">
@@ -1184,9 +1225,11 @@
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm"><span class="text-indigo-100">${name}</span><span class="font-bold text-white">${qty}</span></div>`).join('');
                 };
 
+                // Overall Top Dashboard
                 document.getElementById('summary-overall-rev').innerText = Utils.formatMMK(retailRev + wholesaleRev + creditRev) + " MMK";
                 document.getElementById('summary-overall-items').innerHTML = buildOverallItemList(overallItems);
 
+                // Breakdown Columns
                 document.getElementById('summary-retail-rev').innerText = Utils.formatMMK(retailRev) + " MMK";
                 document.getElementById('summary-retail-items').innerHTML = buildItemList(retailItems);
                 
@@ -1263,10 +1306,12 @@
                     if (filteredChanges.length > 0) {
                         hasVisibleLogs = true;
                         const tStr = new Date(logBox.isoDate).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                        const isSale = logBox.id && logBox.id.includes('-') && !logBox.id.startsWith('INV-') && !logBox.id.startsWith('ADJ-');
-                        const isRevert = logBox.notes && logBox.notes.includes('Revert');
-                        const boxColor = isRevert ? 'border-amber-100 bg-amber-50/30' : (isSale ? 'border-rose-100' : 'border-indigo-100');
-                        const badgeColor = isRevert ? 'bg-amber-100 text-amber-700' : (isSale ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700');
+                        const isSale = logBox.id && logBox.id.includes('-') && !logBox.id.startsWith('INV-') && !logBox.id.startsWith('ADJ-') && !logBox.id.startsWith('REVERT-');
+                        const isRevert = logBox.isReverted || (logBox.notes && logBox.notes.includes('REVERTED'));
+                        
+                        const boxColor = isRevert ? 'border-slate-200 bg-slate-50/50 grayscale opacity-75' : (isSale ? 'border-rose-100' : 'border-indigo-100');
+                        const badgeColor = isRevert ? 'bg-slate-200 text-slate-600' : (isSale ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700');
+                        
                         let icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />';
                         if (isSale) icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />';
                         if (isRevert) icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />';
@@ -1274,20 +1319,23 @@
                         const itemsHtml = filteredChanges.map(c => {
                             const color = c.change > 0 ? 'text-emerald-600' : 'text-rose-600';
                             const prefix = c.change > 0 ? '+' : '';
-                            return `<div class="flex justify-between items-center text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${c.product} (${c.size})</span><span class="font-bold ${color}">${prefix}${c.change}</span></div>`;
+                            return `<div class="flex justify-between items-center text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${c.product} (${c.size})</span><span class="font-bold ${color} ${isRevert ? 'line-through text-slate-400' : ''}">${prefix}${c.change}</span></div>`;
                         }).join('');
                         
+                        const adminBtn = (State.isAdmin && !isRevert && !isSale) ? `<button data-action="revert-inv" data-id="${logBox.id}" class="px-2 py-1 bg-red-50 text-red-600 rounded-lg border border-red-200 text-[10px] font-bold hover:bg-red-100 transition-colors ml-auto shadow-sm">Delete / Revert</button>` : '';
+
                         tb.innerHTML += `
-                        <div class="bg-white rounded-xl border ${boxColor} p-4 shadow-sm">
+                        <div class="bg-white rounded-xl border ${boxColor} p-4 shadow-sm relative">
                             <div class="flex justify-between items-start mb-3 pb-3 border-b border-slate-50">
                                 <div>
                                     <div class="flex items-center gap-2 mb-1">
                                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icon}</svg>
-                                        <span class="font-mono text-sm font-bold text-slate-800">${logBox.id || 'Manual'}</span>
-                                        <span class="text-xs px-2 py-0.5 rounded font-bold ${badgeColor}">${isRevert ? 'Reverted' : (isSale ? 'Sale' : 'Adjustment')}</span>
+                                        <span class="font-mono text-sm font-bold text-slate-800 ${isRevert ? 'line-through text-slate-500' : ''}">${logBox.id || 'Manual'}</span>
+                                        <span class="text-xs px-2 py-0.5 rounded font-bold ${badgeColor}">${isRevert ? 'REVERTED' : (isSale ? 'Sale' : 'Adjustment')}</span>
                                     </div>
                                     <div class="text-xs text-slate-500">${tStr} ${logBox.notes && logBox.notes !== '-' ? `• ${logBox.notes}` : ''}</div>
                                 </div>
+                                ${adminBtn}
                             </div>
                             <div class="space-y-1 pl-6">
                                 ${itemsHtml}
@@ -1329,15 +1377,9 @@
                 
                 let total = 0;
                 const selectedMonth = document.getElementById('expense-month-filter').value;
-                const selectedDept = document.getElementById('expense-filter-dept').value;
-                const selectedSub = document.getElementById('expense-filter-sub').value;
-
                 const filteredExpenses = (State.allFirebaseExpenses || []).filter(e => {
-                    if (e.type === "Top-Up") return false; // Ignore top-ups for metrics
-                    if (selectedMonth && e.isoDate.substring(0, 7) !== selectedMonth) return false;
-                    if (selectedDept && e.department !== selectedDept) return false;
-                    if (selectedSub && e.subCategory !== selectedSub) return false;
-                    return true;
+                    if (!selectedMonth) return true;
+                    return e.isoDate.substring(0, 7) === selectedMonth;
                 });
 
                 if (filteredExpenses.length === 0) { 
@@ -1349,14 +1391,34 @@
                         const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric'}); 
                         const tStr = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
                         
+                        if (e.type === "Top-Up") {
+                            return `
+                            <div class="flex flex-col md:grid md:grid-cols-4 gap-2 md:gap-4 p-4 bg-emerald-50/50 border-b border-slate-50 items-start md:items-center">
+                                <div class="flex justify-between w-full md:w-auto">
+                                    <span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span>
+                                    <span class="md:hidden font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</span>
+                                </div>
+                                <div><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Top-Up</span></div>
+                                <div class="text-xs text-slate-600">${e.notes||'-'}</div>
+                                <div class="hidden md:block text-right font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</div>
+                            </div>`;
+                        }
+                        
                         total += e.amount;
                         
                         const paidByBadge = e.paidBy === 'Petty Cash' 
                             ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">Petty Cash</span>` 
                             : `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">Business Owner</span>`;
                         
+                        const adminBtns = State.isAdmin ? `
+                            <div class="flex gap-2 justify-end w-full md:w-auto mt-2 md:mt-0 col-span-full md:col-span-1">
+                                <button data-action="edit-exp" data-id="${e.firestoreId}" class="px-3 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors shadow-sm">Edit</button>
+                                <button data-action="del-exp" data-id="${e.firestoreId}" class="px-3 py-1 bg-red-50 border border-red-200 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors shadow-sm">Delete</button>
+                            </div>
+                        ` : '';
+                        
                         return `
-                        <div class="flex flex-col md:grid md:grid-cols-4 gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-start md:items-center">
+                        <div class="flex flex-col md:grid md:grid-cols-${State.isAdmin ? '5' : '4'} gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-start md:items-center">
                             <div class="flex justify-between w-full md:w-auto">
                                 <span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span>
                                 <span class="md:hidden font-bold text-rose-600">-${Utils.formatMMK(e.amount)}</span>
@@ -1370,15 +1432,33 @@
                                 <div class="text-xs text-slate-500">${e.notes||'-'}</div>
                             </div>
                             <div class="hidden md:block text-right font-bold text-rose-600">-${Utils.formatMMK(e.amount)}</div>
+                            ${adminBtns}
                         </div>`;
                     }).join('');
                 }
                 
                 document.getElementById('exp-total-val').innerText = Utils.formatMMK(total) + " MMK";
+            },
+            
+            openEditModal(firestoreId) {
+                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
+                if(!exp) return;
+                
+                document.getElementById('edit-exp-id').value = exp.firestoreId;
+                document.getElementById('edit-exp-amount').value = exp.amount;
+                document.getElementById('edit-exp-dept').value = exp.department;
+                
+                ExpenseLogic.updateEditExpenseSubCat();
+                document.getElementById('edit-exp-sub').value = exp.subCategory;
+                
+                document.getElementById('edit-exp-paidby').value = exp.paidBy;
+                document.getElementById('edit-exp-notes').value = exp.notes || '';
+                
+                document.getElementById('edit-expense-modal').classList.remove('hidden');
             }
         };
 
-        // 4. CORE BUSINESS LOGIC
+        // --- 4. CORE BUSINESS LOGIC ---
         const PosLogic = {
             updateSizeDropdown() {
                 const prod = document.getElementById('item-product').value; 
@@ -1444,6 +1524,7 @@
                 const qtys = {}; 
                 State.currentCart.forEach(i => qtys[i.category] = (qtys[i.category] || 0) + i.qty);
                 
+                // Partner Deal Logic
                 const partnerCheckbox = document.getElementById('is-partner-deal');
                 const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
 
@@ -1464,6 +1545,7 @@
                     subtotal += i.total;
                 });
 
+                // Smart Manual Discount parsing
                 const discountInput = document.getElementById('summary-discount').value.trim();
                 let manual = 0;
                 
@@ -1778,7 +1860,6 @@
                 const notes = document.getElementById('inv-notes').value.trim();
                 const now = Utils.getYangonTime();
                 
-                // SEQUENTIAL INV ID LOGIC
                 const mm = String(now.getMonth() + 1).padStart(2, '0');
                 const yy = String(now.getFullYear()).slice(-2);
                 const prefix = `INV-${mm}${yy}-`;
@@ -1829,32 +1910,29 @@
                     ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
                 }
             },
-            updateExpenseFilterSubCat() {
-                const dept = document.getElementById('expense-filter-dept').value;
-                const subSel = document.getElementById('expense-filter-sub');
-                subSel.innerHTML = '<option value="">All Categories</option>';
+            updateEditExpenseSubCat() {
+                const dept = document.getElementById('edit-exp-dept').value;
+                const subSel = document.getElementById('edit-exp-sub');
+                subSel.innerHTML = '<option value="" disabled>Select Sub-Category</option>';
                 if (dept && ExpenseCategories[dept]) {
-                    subSel.disabled = false;
-                    subSel.classList.remove('bg-slate-50', 'disabled:opacity-50');
-                    subSel.classList.add('bg-white');
                     ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
-                } else {
-                    subSel.disabled = true;
-                    subSel.classList.add('bg-slate-50', 'disabled:opacity-50');
-                    subSel.classList.remove('bg-white');
                 }
-                UI.renderExpenses();
             },
             async processTopUp() {
                 const amount = parseInt(document.getElementById('topup-amount').value);
                 if (!amount || amount <= 0) { Utils.showToast('Enter a valid amount', 'error'); return; }
+                
                 const now = Utils.getYangonTime();
-                const rec = { type: "Top-Up", isoDate: now.toISOString(), amount: amount, notes: "Manual Top-Up" };
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const id = `TOP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
+                
+                const rec = { id: id, type: "Top-Up", isoDate: now.toISOString(), amount: amount, notes: "Manual Top-Up" };
                 
                 try {
                     const batch = writeBatch(State.db);
                     batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(amount) }, { merge: true });
-                    batch.set(doc(collection(State.db, 'expenses')), rec);
+                    batch.set(doc(State.db, 'expenses', id), rec);
                     await batch.commit();
                     
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
@@ -1874,12 +1952,16 @@
                 if (!amt || !dept || !sub) return;
                 
                 const now = Utils.getYangonTime();
-                const rec = { type: "Expense", isoDate: now.toISOString(), amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes };
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const id = `EXP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
+                
+                const rec = { id: id, type: "Expense", isoDate: now.toISOString(), amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes };
 
                 try {
                     const batch = writeBatch(State.db);
                     if (rec.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-rec.amount) }, { merge: true }); }
-                    batch.set(doc(collection(State.db, 'expenses')), rec);
+                    batch.set(doc(State.db, 'expenses', id), rec);
                     await batch.commit();
                     
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
@@ -1891,6 +1973,21 @@
                 } catch(e) { 
                     console.error(e); Utils.showToast("Database Error", "error"); 
                 }
+            },
+            async updateEditedExpense() {
+                const btn = document.getElementById('btn-submit-edit-exp');
+                btn.disabled = true; btn.innerText = "Saving...";
+                
+                const firestoreId = document.getElementById('edit-exp-id').value;
+                const amt = parseInt(document.getElementById('edit-exp-amount').value);
+                const dept = document.getElementById('edit-exp-dept').value;
+                const sub = document.getElementById('edit-exp-sub').value;
+                const paidBy = document.getElementById('edit-exp-paidby').value;
+                const notes = document.getElementById('edit-exp-notes').value.trim();
+                
+                await Backend.editExpense(firestoreId, { amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes });
+                
+                btn.disabled = false; btn.innerText = "Update Expense";
             }
         };
 
@@ -1926,7 +2023,7 @@
             }
         };
 
-        // 5. FIREBASE & BACKEND CONFIGURATION
+        // --- 5. FIREBASE & BACKEND CONFIGURATION ---
         const Backend = {
             async pushSale(saleRec, cart) {
                 try { 
@@ -1993,8 +2090,104 @@
                     console.error("Void error", e); Utils.showToast("Error voiding voucher", "error");
                 }
             },
+
+            async deleteExpense(firestoreId) {
+                if (!confirm("ADMIN: Are you sure you want to permanently delete this expense? This action cannot be undone.")) return;
+                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
+                if (!exp) return;
+                
+                try {
+                    const batch = writeBatch(State.db);
+                    
+                    // Refund petty cash if applicable
+                    if (exp.paidBy === "Petty Cash") {
+                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(exp.amount) }, { merge: true });
+                    }
+                    
+                    batch.delete(doc(State.db, 'expenses', firestoreId));
+                    await batch.commit();
+                    
+                    if(State.webAppUrl) {
+                        fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidExpense", id: exp.id, amount: exp.amount, isoDate: exp.isoDate }) }).catch(e=>{});
+                    }
+                    Utils.showToast("Expense Deleted Successfully!");
+                } catch(e) {
+                    console.error(e); Utils.showToast("Error deleting expense", "error");
+                }
+            },
+
+            async editExpense(firestoreId, newData) {
+                const oldExp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
+                if (!oldExp) return;
+                
+                try {
+                    const batch = writeBatch(State.db);
+                    
+                    // 1. Refund the OLD amount mathematically
+                    if (oldExp.paidBy === "Petty Cash") {
+                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(oldExp.amount) }, { merge: true });
+                    }
+                    
+                    // 2. Deduct the NEW amount mathematically
+                    if (newData.paidBy === "Petty Cash") {
+                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-newData.amount) }, { merge: true });
+                    }
+                    
+                    // 3. Save the new document info
+                    const merged = { ...oldExp, ...newData };
+                    batch.set(doc(State.db, 'expenses', firestoreId), merged);
+                    await batch.commit();
+                    
+                    // Push to Google Sheets (Void old, log new)
+                    if(State.webAppUrl) {
+                        fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "EditExpense", oldId: oldExp.id, newExp: merged, isoDate: oldExp.isoDate }) }).catch(e=>{});
+                    }
+                    
+                    document.getElementById('edit-expense-modal').classList.add('hidden');
+                    Utils.showToast("Expense Updated Successfully!");
+                } catch(e) {
+                    console.error(e); Utils.showToast("Error editing expense", "error");
+                }
+            },
+
+            async revertInventoryLog(id) {
+                if (!confirm("ADMIN: Are you sure you want to REVERT this inventory log? This will undo all stock changes made in this batch.")) return;
+                const log = State.allFirebaseInventoryLogs.find(l => l.id === id);
+                if (!log) return;
+                
+                try {
+                    const batch = writeBatch(State.db);
+                    const reverseChanges = [];
+                    
+                    const changesArray = log.type === "Consolidated_Inventory" ? (log.changes || []) : [{ product: log.product, size: log.size, change: log.change, action: log.action }];
+                    
+                    // Reverse math on Master Stock
+                    changesArray.forEach(c => {
+                        batch.set(doc(State.db, 'inventory', `${c.product}_${c.size}`), { stock: increment(-c.change) }, { merge: true });
+                        reverseChanges.push({ product: c.product, size: c.size, change: -c.change, action: "Revert" });
+                    });
+                    
+                    // Mark original log as reverted
+                    batch.set(doc(State.db, 'inventory_logs', id), { isReverted: true }, { merge: true });
+                    
+                    // Create new reverse log for audit trail
+                    const now = Utils.getYangonTime();
+                    const revId = `REVERT-${id}`;
+                    const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Admin Reversal: ${id}`, id: revId, changes: reverseChanges };
+                    batch.set(doc(State.db, 'inventory_logs', revId), logRec);
+                    
+                    await batch.commit();
+                    
+                    if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidInventory", id: id, isoDate: log.isoDate }) }).catch(e=>{});
+                    
+                    Utils.showToast("Inventory Successfully Reverted!");
+                } catch(e) {
+                    console.error(e); Utils.showToast("Error reverting inventory", "error");
+                }
+            },
             
             init() {
+                // IMPORTANT: Replace these with your actual Firebase config keys
                 const p1 = "AIzaSyC_y2V"; const p2 = "R9T9-PGQ5Y-mKnK"; const p3 = "JSdslJm3ISQWc";
                 const config = {
                     apiKey: p1 + p2 + p3, authDomain: "khay-may-pos.firebaseapp.com", projectId: "khay-may-pos",
@@ -2006,8 +2199,6 @@
                     enableIndexedDbPersistence(State.db).catch(err => console.warn(err.code));
 
                     signInAnonymously(auth).then(() => {
-                        document.getElementById('config-warning').classList.add('hidden');
-
                         let salesTimeout, invTimeout, expTimeout, logTimeout;
                         
                         const salesQuery = query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000));
@@ -2043,24 +2234,18 @@
                         });
                         
                         onSnapshot(collection(State.db, 'expenses'), (snap) => {
-                            const d = []; snap.forEach(doc => d.push(doc.data())); 
+                            const d = []; snap.forEach(doc => d.push({ ...doc.data(), firestoreId: doc.id })); 
                             clearTimeout(expTimeout);
                             expTimeout = setTimeout(() => {
                                 State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate)); UI.renderExpenses();
                             }, 300);
                         });
-                    }).catch((error) => {
-                        console.error("Auth failed. Check Firebase config.", error);
-                        document.getElementById('config-warning').classList.remove('hidden');
-                    });
-                } catch(e) { 
-                    console.error("Firebase init error. Bad Config.", e); 
-                    document.getElementById('config-warning').classList.remove('hidden');
-                }
+                    }).catch((error) => { console.error("Auth failed. Check Firebase config.", error); });
+                } catch(e) { console.error("Firebase init error:", e); }
             }
         };
 
-        // 6. EVENT DELEGATION SETUP
+        // --- 6. EVENT DELEGATION SETUP ---
         function attachEvents() {
             document.body.addEventListener('click', (e) => {
                 const btn = e.target.closest('[data-action]');
@@ -2078,18 +2263,25 @@
                 
                 if (action === 'add-adj-in') InventoryLogic.addToAdjCart('in');
                 if (action === 'add-adj-out') InventoryLogic.addToAdjCart('out');
+                if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
+                if (action === 'submit-adjustment') InventoryLogic.submitAdjustment();
                 
                 if (action === 'toggle-cart') UI.toggleMobileCart();
                 if (action === 'toggle-settings') UI.toggleSettings();
+                if (action === 'toggle-admin') UI.toggleAdmin();
+                
                 if (action === 'set-sale-type') UI.setSaleType(btn.dataset.type);
                 if (action === 'update-qty') PosLogic.updateQuantity(Number(btn.dataset.id), Number(btn.dataset.delta));
                 if (action === 'remove-item') PosLogic.updateQuantity(Number(btn.dataset.id), -999);
                 if (action === 'process-checkout') PosLogic.processCheckout();
                 
-                if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
-                if (action === 'submit-adjustment') InventoryLogic.submitAdjustment();
-                
                 if (action === 'process-topup') ExpenseLogic.processTopUp();
+                if (action === 'del-exp') Backend.deleteExpense(btn.dataset.id);
+                if (action === 'edit-exp') ExpenseLogic.openEditModal(btn.dataset.id);
+                if (action === 'close-edit-exp') document.getElementById('edit-expense-modal').classList.add('hidden');
+                
+                if (action === 'revert-inv') Backend.revertInventoryLog(btn.dataset.id);
+                
                 if (action === 'save-settings') AppSettings.save();
                 if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
                 
@@ -2130,14 +2322,13 @@
             
             document.getElementById('inv-product').addEventListener('change', InventoryLogic.updateInvSizeDropdown);
             document.getElementById('expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.submitExpense(); });
+            document.getElementById('edit-expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.updateEditedExpense(); });
+            
             document.getElementById('exp-dept').addEventListener('change', ExpenseLogic.updateExpenseSubCat);
+            document.getElementById('edit-exp-dept').addEventListener('change', ExpenseLogic.updateEditExpenseSubCat);
             
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
-            const expFiltDept = document.getElementById('expense-filter-dept');
-            if (expFiltDept) expFiltDept.addEventListener('change', ExpenseLogic.updateExpenseFilterSubCat);
-            const expFiltSub = document.getElementById('expense-filter-sub');
-            if (expFiltSub) expFiltSub.addEventListener('change', UI.renderExpenses);
             
             const invLogDate = document.getElementById('inv-log-date');
             if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
@@ -2154,7 +2345,7 @@
             });
         }
 
-        // 7. BOOTSTRAP INITIALIZATION
+        // --- 7. BOOTSTRAP INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             const productSelect = document.getElementById('item-product');
             const invProductSelect = document.getElementById('inv-product');
@@ -2174,7 +2365,7 @@
 
             State.historyAnchorDate = localDate;
 
-            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || APPS_SCRIPT_URL;
+            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || DEFAULT_SHEET_URL;
             document.getElementById('sheet-url').value = State.webAppUrl;
 
             attachEvents();

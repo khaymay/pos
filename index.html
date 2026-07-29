@@ -33,6 +33,7 @@
 
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
         .pt-safe { padding-top: env(safe-area-inset-top); }
+        .mb-safe { margin-bottom: env(safe-area-inset-bottom); }
 
         @media print {
             body > *:not(#voucher-modal) { display: none !important; }
@@ -48,7 +49,6 @@
 </head>
 <body class="text-slate-800 h-[100dvh] flex overflow-hidden">
 
-    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-white shadow-xl hidden lg:flex flex-col z-20 shrink-0">
         <div class="p-6 flex flex-col items-center border-b border-slate-100">
             <img src="logo.png" alt="Khay May Logo" class="h-16 w-auto mb-2 logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -76,7 +76,6 @@
 
     <main class="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-slate-50 relative z-10 pt-safe">
         
-        <!-- Mobile Header -->
         <header class="lg:hidden bg-white shadow-sm p-4 flex justify-between items-center z-20 shrink-0 overflow-x-auto hide-scrollbar">
             <div class="flex items-center gap-2 mr-4 shrink-0">
                 <img src="logo.png" alt="Khay May Logo" class="h-8 w-auto logo-tint object-contain" onerror="this.src='https://placehold.co/100x100/e11d48/white?text=KM'">
@@ -93,17 +92,16 @@
             </div>
         </header>
 
-        <!-- POS Terminal Tab -->
         <section id="pos-tab" class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
-            <div class="flex-1 flex flex-col p-4 lg:p-6 overflow-y-auto pb-24 lg:pb-6">
+            <div class="flex-1 flex flex-col p-3 lg:p-6 overflow-y-auto pb-24 lg:pb-6">
                 <!-- Sale Type Selector -->
-                <div class="bg-slate-200/70 p-1.5 rounded-xl flex flex-wrap gap-1 mb-5 shrink-0">
+                <div class="bg-slate-200/70 p-1.5 rounded-xl flex flex-wrap gap-1 mb-4 shrink-0">
                     <button data-action="set-sale-type" data-type="Retail" id="btn-type-Retail" class="flex-1 py-2 px-1 rounded-lg bg-rose-400 shadow-md text-xs sm:text-sm font-bold text-white transition-all">Retail</button>
                     <button data-action="set-sale-type" data-type="Wholesale" id="btn-type-Wholesale" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Wholesale</button>
                     <button data-action="set-sale-type" data-type="Credit" id="btn-type-Credit" class="flex-1 py-2 px-1 rounded-lg bg-white text-xs sm:text-sm font-semibold text-slate-500 shadow-sm hover:bg-slate-50 transition-all">Credit</button>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 md:p-6 mb-4 shrink-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-6 mb-4 shrink-0">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800">
                             <svg class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item
@@ -140,7 +138,6 @@
                 </div>
             </div>
 
-            <!-- Checkout Panel -->
             <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-50 shadow-[0_0_40px_rgba(0,0,0,0.1)] transform translate-x-full transition-transform duration-300 lg:relative lg:translate-x-0 lg:w-[350px] xl:w-[420px] flex flex-col lg:border-l lg:border-slate-200">
                 <div class="lg:hidden bg-slate-800 text-white p-4 flex justify-between items-center shadow-md shrink-0">
                     <h2 class="font-bold text-lg">Checkout (<span id="checkout-sale-type-label">Retail</span>)</h2>
@@ -237,16 +234,15 @@
             </div>
         </section>
 
-        <!-- Sales Tracking Tab -->
-        <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
-            <div class="flex justify-between items-center mb-5 shrink-0">
+        <section id="sales-tab" class="hidden flex-1 flex-col p-3 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
+            <div class="flex justify-between items-center mb-4 shrink-0">
                 <h2 class="text-2xl font-bold text-slate-800">Sales Tracking</h2>
                 <div class="flex items-center gap-2">
                     <button data-action="toggle-settings" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition-colors" title="Settings"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></button>
                 </div>
             </div>
             
-            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[450px]">
+            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-4 shrink-0 max-w-[450px]">
                 <button data-action="switch-sales-tab" data-tab="list" id="btn-sales-list" class="sales-btn flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-slate-800 transition-all">History</button>
                 <button data-action="switch-sales-tab" data-tab="summary" id="btn-sales-summary" class="sales-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Summary</button>
                 <button data-action="switch-sales-tab" data-tab="pending" id="btn-sales-pending" class="sales-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all flex items-center justify-center gap-1">
@@ -256,7 +252,7 @@
 
             <!-- VOUCHERS LIST VIEW -->
             <div id="sales-list-view" class="sales-view flex-1 flex flex-col min-h-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 md:p-5 mb-5 shrink-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4 shrink-0">
                     <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
                         <div class="space-y-3 w-full lg:w-auto">
                             <!-- Navigation Toggles -->
@@ -327,22 +323,22 @@
                 </div>
 
                 <!-- Breakdown Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1 items-start overflow-y-auto pb-4">
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 items-start overflow-y-auto pb-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-[50vh] md:h-full max-h-[600px]">
                         <div class="bg-rose-50 p-4 border-b border-rose-100 flex justify-between items-center shrink-0">
                             <h3 class="font-bold text-rose-800 uppercase tracking-wide text-sm">Retail</h3>
                             <span id="summary-retail-rev" class="font-black text-rose-600">0 MMK</span>
                         </div>
                         <div id="summary-retail-items" class="p-4 flex-1 overflow-y-auto space-y-2"></div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-[50vh] md:h-full max-h-[600px]">
                         <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center shrink-0">
                             <h3 class="font-bold text-blue-800 uppercase tracking-wide text-sm">Wholesale</h3>
                             <span id="summary-wholesale-rev" class="font-black text-blue-600">0 MMK</span>
                         </div>
                         <div id="summary-wholesale-items" class="p-4 flex-1 overflow-y-auto space-y-2"></div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full max-h-[600px]">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-[50vh] md:h-full max-h-[600px]">
                         <div class="bg-amber-50 p-4 border-b border-amber-100 flex justify-between items-center shrink-0">
                             <h3 class="font-bold text-amber-800 uppercase tracking-wide text-sm">Credit</h3>
                             <span id="summary-credit-rev" class="font-black text-amber-600">0 MMK</span>
@@ -354,7 +350,7 @@
 
             <!-- PENDING PAYMENTS VIEW -->
             <div id="sales-pending-view" class="sales-view flex-1 flex flex-col hidden min-h-0">
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 mb-5 shrink-0 flex items-center justify-between">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4 shrink-0 flex items-center justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                             <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
@@ -387,11 +383,10 @@
             </div>
         </section>
 
-        <!-- Inventory Tab -->
-        <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
-            <h2 class="text-2xl font-bold text-slate-800 mb-5 flex items-center gap-2">Inventory Management</h2>
+        <section id="inventory-tab" class="hidden flex-1 flex-col p-3 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">Inventory Management</h2>
             
-            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[400px]">
+            <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-4 shrink-0 max-w-[400px]">
                 <button data-action="switch-inv-tab" data-tab="log" id="btn-inv-log" class="inv-btn flex-1 py-2 rounded-lg bg-white shadow-sm text-sm font-bold text-slate-800 transition-all">Adjust & Daily Log</button>
                 <button data-action="switch-inv-tab" data-tab="master" id="btn-inv-master" class="inv-btn flex-1 py-2 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-200 transition-all">Master Stock</button>
             </div>
@@ -400,15 +395,15 @@
             <div id="inv-log-view" class="inv-view flex-1 grid grid-cols-1 xl:grid-cols-3 gap-6 items-start min-h-0">
                 
                 <!-- NEW ADJUSTMENT CART UI -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col xl:col-span-1 shrink-0 h-[600px]">
-                    <div class="p-5 border-b border-slate-100 shrink-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col xl:col-span-1 shrink-0 min-h-[400px] h-[65vh] xl:h-[600px]">
+                    <div class="p-4 border-b border-slate-100 shrink-0">
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                             <svg class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                             Adjust Stock
                         </h2>
                     </div>
                     
-                    <div class="p-4 space-y-3 shrink-0 bg-slate-50">
+                    <div class="p-3 space-y-2 shrink-0 bg-slate-50">
                         <div class="grid grid-cols-2 gap-2">
                             <select id="inv-product" class="col-span-2 w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
                                 <option value="" disabled selected>Select Product</option>
@@ -419,10 +414,10 @@
                             <input type="number" inputmode="numeric" pattern="[0-9]*" id="inv-qty" min="1" placeholder="Qty" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold">
                         </div>
                         <div class="flex gap-2 mt-1">
-                            <button type="button" data-action="add-adj-in" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-sm transition-colors flex justify-center items-center gap-1">
+                            <button type="button" data-action="add-adj-in" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex justify-center items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Stock In (+)
                             </button>
-                            <button type="button" data-action="add-adj-out" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-sm transition-colors flex justify-center items-center gap-1">
+                            <button type="button" data-action="add-adj-out" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex justify-center items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg> Stock Out (-)
                             </button>
                         </div>
@@ -435,17 +430,17 @@
                         </div>
                     </div>
 
-                    <div class="p-4 border-t border-slate-100 shrink-0 bg-white">
-                        <input type="text" id="inv-notes" placeholder="Reason (e.g. Damage, Audit, Restock)" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none mb-3 font-medium bg-slate-50">
-                        <button type="button" data-action="submit-adjustment" id="submit-adj-btn" disabled class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-sm font-bold shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
+                    <div class="p-3 border-t border-slate-100 shrink-0 bg-white">
+                        <input type="text" id="inv-notes" placeholder="Reason (e.g. Damage, Audit, Restock)" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none mb-2 font-medium bg-slate-50">
+                        <button type="button" data-action="submit-adjustment" id="submit-adj-btn" disabled class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v-8m0 8l-3-3m3 3l3-3"></path></svg>
                             Submit Adjustment
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden xl:col-span-2 flex flex-col h-[600px]">
-                    <div class="p-4 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 shrink-0 gap-3">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden xl:col-span-2 flex flex-col min-h-[400px] h-[65vh] xl:h-[600px]">
+                    <div class="p-3 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 shrink-0 gap-3">
                         <div class="flex items-center gap-2">
                             <h3 class="font-bold text-slate-800">Daily Log</h3>
                         </div>
@@ -474,7 +469,7 @@
 
             <!-- MASTER INVENTORY VIEW -->
             <div id="inv-master-view" class="inv-view hidden flex-1 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+                <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
                     <h2 class="text-lg font-bold text-slate-800">Live Master Stock</h2>
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded-full bg-orange-400"></div><span class="text-xs text-slate-500 font-medium mr-2">Low (< 5)</span>
@@ -489,18 +484,17 @@
             </div>
         </section>
 
-        <!-- Expenses Tab -->
-        <section id="expense-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <section id="expense-tab" class="hidden flex-1 flex-col p-3 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
                 <!-- Left Column -->
-                <div class="space-y-6 lg:col-span-1">
+                <div class="space-y-4 lg:col-span-1">
                     
                     <!-- Petty Cash Dashboard -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center transition-colors duration-300" id="petty-cash-card">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 text-center transition-colors duration-300" id="petty-cash-card">
                         <h3 class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide" id="petty-cash-title">Live Petty Cash</h3>
                         <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500">0 MMK</p>
                         
-                        <div id="topup-controls" class="hidden mt-5 border-t border-slate-100 pt-5">
+                        <div id="topup-controls" class="hidden mt-4 border-t border-slate-100 pt-4">
                             <div class="flex gap-2">
                                 <input type="number" inputmode="numeric" pattern="[0-9]*" id="topup-amount" min="1" placeholder="Amount (MMK)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                                 <button type="button" data-action="process-topup" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-colors">Top-Up</button>
@@ -509,12 +503,12 @@
                     </div>
 
                     <!-- Add Expense Form -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                        <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                        <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
                             <svg class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
                             Log Expense
                         </h2>
-                        <form id="expense-form" class="space-y-4">
+                        <form id="expense-form" class="space-y-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (MMK)</label>
                                 <input type="number" inputmode="numeric" pattern="[0-9]*" id="exp-amount" required min="1" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none font-bold text-slate-800">
@@ -535,8 +529,8 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 mb-1">Paid By</label>
-                                <select id="exp-paidby" required class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white text-amber-700 font-bold">
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Paid By (Required)</label>
+                                <select id="exp-paidby" required class="w-full px-3 py-2 text-sm rounded-lg border border-rose-200 focus:ring-2 focus:ring-amber-500 outline-none bg-rose-50 text-rose-700 font-bold">
                                     <option value="" disabled selected>Select Payment Source</option>
                                     <option value="Petty Cash">Petty Cash</option>
                                     <option value="Business Owner">Business Owner (Out of pocket)</option>
@@ -553,19 +547,28 @@
 
                 <!-- Right Column: Recent Expenses -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden lg:col-span-2 flex flex-col">
-                    <div class="p-5 border-b border-slate-100 flex flex-col bg-slate-50 shrink-0 gap-4">
+                    <div class="p-4 md:p-5 border-b border-slate-100 flex flex-col bg-slate-50 shrink-0 gap-3">
                         <div class="flex justify-between items-center">
                             <h2 class="text-lg font-bold text-slate-800">Expenses Dashboard</h2>
-                            <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm">
+                            <input type="month" id="expense-month-filter" class="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer shadow-sm">
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-                            <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent</p>
-                                <p class="text-xl font-bold text-slate-800 truncate" id="exp-total-val">0 MMK</p>
-                            </div>
+                        <div class="flex gap-2 w-full mt-1">
+                            <select id="expense-dept-filter" class="flex-1 bg-white border border-slate-200 px-2 py-1.5 rounded-lg text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm">
+                                <option value="All">All Depts</option>
+                                <option value="KhayMay">KhayMay Office</option>
+                                <option value="SYM">SYM Production</option>
+                                <option value="Main">Main Building</option>
+                            </select>
+                            <select id="expense-sub-filter" class="flex-1 bg-white border border-slate-200 px-2 py-1.5 rounded-lg text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm">
+                                <option value="All">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center mt-1">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Spent (Filtered)</p>
+                            <p class="text-2xl font-bold text-slate-800 truncate" id="exp-total-val">0 MMK</p>
                         </div>
                     </div>
-                    <div class="hidden md:grid grid-cols-4 gap-4 p-4 bg-white text-slate-400 text-xs uppercase font-semibold border-b border-slate-100 shrink-0">
+                    <div class="hidden md:grid grid-cols-4 gap-4 p-3 px-4 bg-white text-slate-400 text-xs uppercase font-semibold border-b border-slate-100 shrink-0">
                         <div>Date</div>
                         <div>Category</div>
                         <div>Paid By / Notes</div>
@@ -574,7 +577,7 @@
                     <div class="overflow-y-auto flex-1">
                         <div id="expense-body" class="divide-y divide-slate-50"></div>
                         <div id="empty-expense-msg" class="p-12 flex flex-col items-center justify-center text-slate-400 hidden">
-                            <p>No expenses logged for this month.</p>
+                            <p>No expenses logged for this filter.</p>
                         </div>
                     </div>
                 </div>
@@ -694,7 +697,7 @@
             
             <div class="p-6 overflow-y-auto bg-slate-100 flex flex-col items-center justify-start flex-1 w-full" id="voucher-scroll-area">
                 
-                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template relative shrink-0" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
+                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template relative shrink-0 h-auto" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
                     <!-- Void Stamp Overlay -->
                     <div id="print-void-stamp" class="hidden absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                         <div class="border-4 border-red-500 text-red-500 font-black text-4xl uppercase tracking-widest px-4 py-2 rounded-lg transform -rotate-12 opacity-80">VOIDED</div>
@@ -761,21 +764,21 @@
 
                     <hr style="border: none; border-top: 1px dashed #999; margin: 8px 0;">
 
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; margin-bottom: 4px; position: relative; z-0">
-                        <div style="display: flex; justify-content: flex-end; width: 100%;">
-                            <span style="width: 70px; text-align: left; color: #444;">Subtotal:</span> 
-                            <span id="print-subtotal" style="width: 80px; text-align: right; font-weight: bold;"></span>
-                        </div>
-                        <div style="display: flex; justify-content: flex-end; width: 100%;">
-                            <span style="width: 70px; text-align: left; color: #444;">Discount:</span> 
-                            <span id="print-discount" style="width: 80px; text-align: right; font-weight: bold;"></span>
-                        </div>
-                        <hr style="border: none; border-top: 1px solid #ccc; width: 100%; margin: 2px 0;">
-                        <div style="display: flex; justify-content: flex-end; width: 100%; font-size: 14px; margin-top: 2px;">
-                            <span style="width: 70px; text-align: left; font-weight: bold;">Total:</span> 
-                            <span id="print-total" style="width: 90px; text-align: right; font-weight: bold;"></span>
-                        </div>
-                    </div>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; position: relative; z-0">
+                        <tr>
+                            <td style="text-align: right; color: #444; padding: 2px 0; width: 100%;">Subtotal:</td>
+                            <td id="print-subtotal" style="text-align: right; font-weight: bold; padding: 2px 0 2px 10px; white-space: nowrap;"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; color: #444; padding: 2px 0;">Discount:</td>
+                            <td id="print-discount" style="text-align: right; font-weight: bold; padding: 2px 0 2px 10px; white-space: nowrap;"></td>
+                        </tr>
+                        <tr><td colspan="2"><hr style="border: none; border-top: 1px solid #ccc; width: 100%; margin: 2px 0;"></td></tr>
+                        <tr>
+                            <td style="text-align: right; font-weight: bold; font-size: 14px; padding: 4px 0;">Total:</td>
+                            <td id="print-total" style="text-align: right; font-weight: bold; font-size: 14px; padding: 4px 0 4px 10px; white-space: nowrap;"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             
@@ -793,34 +796,30 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODULE 3: MODULAR JAVASCRIPT LOGIC         -->
-    <!-- ========================================== -->
     <script type="module">
+        // PASTE YOUR CONFIGS BELOW BEFORE RUNNING
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
+        
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyC_y2V" + "R9T9-PGQ5Y-mKnK" + "JSdslJm3ISQWc", // Put your exact pieces back together
+            authDomain: "khay-may-pos.firebaseapp.com", 
+            projectId: "khay-may-pos",
+            storageBucket: "khay-may-pos.firebasestorage.app", 
+            messagingSenderId: "1058775733436", 
+            appId: "1:1058775733436:web:a932499046aa82816aacb9"
+        };
+        // ==========================================
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, enableIndexedDbPersistence, writeBatch, increment, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- 1. DATA & STATE ---
-        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzvUlrJj9et8GXMvHtX-kLYuqDnGu9XZDN2UGc9EB5nMoZ4D2wL-HqEXIkiOMHvm4i6/exec";
-        
         const State = {
-            currentCart: [],
-            sessionSales: [],
-            allFirebaseSales: [],
-            allFirebaseExpenses: [],
-            allFirebaseInventoryLogs: [],
-            adjustmentCart: [],
-            webAppUrl: "",
-            currentSaleType: 'Retail',
-            isMobileCartOpen: false,
-            localInventory: {},
-            currentPettyCash: 0,
-            currentVoucherId: null,
-            db: null,
-            historyMode: 'day', 
-            historyAnchorDate: new Date(),
-            isAdmin: false // Determines if edit/delete powers are active
+            currentCart: [], sessionSales: [], allFirebaseSales: [], allFirebaseExpenses: [],
+            allFirebaseInventoryLogs: [], adjustmentCart: [], webAppUrl: "",
+            currentSaleType: 'Retail', isMobileCartOpen: false, localInventory: {},
+            currentPettyCash: 0, currentVoucherId: null, db: null, historyMode: 'day', historyAnchorDate: new Date(),
+            isAdmin: false
         };
 
         const ProductData = {
@@ -843,7 +842,6 @@
             "SYM": ["RawMaterials", "Machines", "Accessories", "Accessories for Clients", "Salary", "Cutting"]
         };
 
-        // --- 2. UTILITY FUNCTIONS ---
         const Utils = {
             formatMMK: (num) => Number(num).toLocaleString('en-US'),
             showToast: (msg, type = 'success') => {
@@ -853,27 +851,19 @@
                 toast.className = `${type === 'success' ? 'bg-emerald-500' : 'bg-red-600'} text-white px-6 py-3 rounded-xl shadow-lg text-sm font-bold toast-enter`;
                 toast.innerHTML = msg;
                 container.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.replace('toast-enter', 'toast-exit');
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
+                setTimeout(() => { toast.classList.replace('toast-enter', 'toast-exit'); setTimeout(() => toast.remove(), 300); }, 3000);
             },
             getYangonTime: () => {
-                const now = new Date();
-                const yangonOffset = 390 * 60000;
+                const now = new Date(); const yangonOffset = 390 * 60000;
                 return new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + yangonOffset);
             },
             startOfDay: (d) => { const nd = new Date(d); nd.setHours(0,0,0,0); return nd; },
             endOfDay: (d) => { const nd = new Date(d); nd.setHours(23,59,59,999); return nd; },
             getWeekRange: (d) => {
-                const date = new Date(d);
-                const day = date.getDay();
+                const date = new Date(d); const day = date.getDay();
                 const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-                const start = new Date(date.setDate(diff));
-                start.setHours(0,0,0,0);
-                const end = new Date(start);
-                end.setDate(end.getDate() + 6);
-                end.setHours(23,59,59,999);
+                const start = new Date(date.setDate(diff)); start.setHours(0,0,0,0);
+                const end = new Date(start); end.setDate(end.getDate() + 6); end.setHours(23,59,59,999);
                 return { start, end };
             },
             getMonthRange: (d) => {
@@ -883,7 +873,6 @@
             }
         };
 
-        // --- 3. UI CONTROLLERS ---
         const UI = {
             switchTab(tabId) {
                 ['pos-tab', 'sales-tab', 'inventory-tab', 'expense-tab'].forEach(id => {
@@ -903,61 +892,37 @@
 
             switchSubTab(section, tabName) {
                 document.querySelectorAll(`.${section}-view`).forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll(`.${section}-btn`).forEach(el => {
-                    el.classList.remove('bg-white', 'shadow-sm', 'text-slate-800');
-                    el.classList.add('text-slate-500', 'hover:bg-slate-200');
-                });
-                
-                const targetView = document.getElementById(`${section}-${tabName}-view`);
-                if (targetView) targetView.classList.remove('hidden');
-                
+                document.querySelectorAll(`.${section}-btn`).forEach(el => { el.classList.remove('bg-white', 'shadow-sm', 'text-slate-800'); el.classList.add('text-slate-500', 'hover:bg-slate-200'); });
+                const targetView = document.getElementById(`${section}-${tabName}-view`); if (targetView) targetView.classList.remove('hidden');
                 const btn = document.getElementById(`btn-${section}-${tabName}`);
-                if(btn) {
-                    btn.classList.add('bg-white', 'shadow-sm', 'text-slate-800');
-                    btn.classList.remove('text-slate-500', 'hover:bg-slate-200');
-                }
+                if(btn) { btn.classList.add('bg-white', 'shadow-sm', 'text-slate-800'); btn.classList.remove('text-slate-500', 'hover:bg-slate-200'); }
             },
 
             toggleMobileCart() {
                 State.isMobileCartOpen = !State.isMobileCartOpen;
                 const panel = document.getElementById('cart-panel');
-                if (State.isMobileCartOpen) panel.classList.remove('translate-x-full');
-                else panel.classList.add('translate-x-full');
+                if (State.isMobileCartOpen) panel.classList.remove('translate-x-full'); else panel.classList.add('translate-x-full');
             },
 
-            toggleSettings() {
-                document.getElementById('settings-modal').classList.toggle('hidden');
-            },
+            toggleSettings() { document.getElementById('settings-modal').classList.toggle('hidden'); },
             
             toggleAdmin() {
                 if (State.isAdmin) {
-                    State.isAdmin = false;
-                    Utils.showToast("Admin Mode Disabled");
+                    State.isAdmin = false; Utils.showToast("Admin Mode Disabled");
                 } else {
-                    const pin = prompt("Enter Admin PIN to unlock Edit/Delete features:");
-                    if (pin === "785400") {
-                        State.isAdmin = true;
-                        Utils.showToast("Admin Mode Enabled", "success");
-                    } else if (pin !== null) {
-                        Utils.showToast("Incorrect PIN", "error");
-                    }
+                    const pin = prompt("Enter Admin PIN to unlock Edit/Delete/Top-Up:");
+                    if (pin === "785400") { State.isAdmin = true; Utils.showToast("Admin Mode Enabled", "success"); } 
+                    else if (pin !== null) { Utils.showToast("Incorrect PIN", "error"); }
                 }
                 const topupControls = document.getElementById('topup-controls');
-                if (topupControls) {
-                    if (State.isAdmin) topupControls.classList.remove('hidden');
-                    else topupControls.classList.add('hidden');
-                }
-                UI.renderExpenses();
-                UI.renderInventoryLogs();
+                if (topupControls) { if (State.isAdmin) topupControls.classList.remove('hidden'); else topupControls.classList.add('hidden'); }
+                UI.renderExpenses(); UI.renderInventoryLogs();
             },
             
             changeDateBy(targetId, delta) {
-                const input = document.getElementById(targetId);
-                if(!input || !input.value) return;
-                const d = new Date(input.value);
-                d.setUTCDate(d.getUTCDate() + delta);
-                input.value = d.toISOString().split('T')[0];
-                input.dispatchEvent(new Event('change'));
+                const input = document.getElementById(targetId); if(!input || !input.value) return;
+                const d = new Date(input.value); d.setUTCDate(d.getUTCDate() + delta);
+                input.value = d.toISOString().split('T')[0]; input.dispatchEvent(new Event('change'));
             },
 
             setHistoryView(viewType) {
@@ -975,8 +940,7 @@
                 if(State.historyMode === 'day') d.setDate(d.getDate() + dir);
                 else if(State.historyMode === 'week') d.setDate(d.getDate() + (dir * 7));
                 else if(State.historyMode === 'month') d.setMonth(d.getMonth() + dir);
-                State.historyAnchorDate = d;
-                PosLogic.applyFilters();
+                State.historyAnchorDate = d; PosLogic.applyFilters();
             },
 
             setSaleType(type) {
@@ -995,42 +959,29 @@
                 const partnerCheckbox = document.getElementById('is-partner-deal');
 
                 if (type === 'Credit') {
-                    document.getElementById('payment-method-box').classList.add('hidden');
-                    document.getElementById('payment-method').required = false; document.getElementById('payment-method').value = '';
-                    document.getElementById('credit-period-box').classList.remove('hidden');
-                    document.getElementById('credit-period').required = true;
+                    document.getElementById('payment-method-box').classList.add('hidden'); document.getElementById('payment-method').required = false; document.getElementById('payment-method').value = '';
+                    document.getElementById('credit-period-box').classList.remove('hidden'); document.getElementById('credit-period').required = true;
                     if(partnerContainer) partnerContainer.classList.remove('hidden');
                 } else if (type === 'Wholesale') {
-                    document.getElementById('payment-method-box').classList.remove('hidden');
-                    document.getElementById('payment-method').required = true;
-                    document.getElementById('credit-period-box').classList.add('hidden');
-                    document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
+                    document.getElementById('payment-method-box').classList.remove('hidden'); document.getElementById('payment-method').required = true;
+                    document.getElementById('credit-period-box').classList.add('hidden'); document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
                     if(partnerContainer) partnerContainer.classList.remove('hidden');
                 } else {
-                    document.getElementById('payment-method-box').classList.remove('hidden');
-                    document.getElementById('payment-method').required = true;
-                    document.getElementById('credit-period-box').classList.add('hidden');
-                    document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
-                    if(partnerContainer) {
-                        partnerContainer.classList.add('hidden');
-                        partnerCheckbox.checked = false;
-                    }
+                    document.getElementById('payment-method-box').classList.remove('hidden'); document.getElementById('payment-method').required = true;
+                    document.getElementById('credit-period-box').classList.add('hidden'); document.getElementById('credit-period').required = false; document.getElementById('credit-period').value = '';
+                    if(partnerContainer) { partnerContainer.classList.add('hidden'); partnerCheckbox.checked = false; }
                 }
-                UI.renderCart();
-                PosLogic.validateCheckout();
+                UI.renderCart(); PosLogic.validateCheckout();
             },
 
             renderCart() {
                 PosLogic.calculateTotals();
-                const cont = document.getElementById('cart-items');
-                const msg = document.getElementById('empty-cart-msg');
+                const cont = document.getElementById('cart-items'); const msg = document.getElementById('empty-cart-msg');
                 
                 if (State.currentCart.length === 0) {
-                    cont.classList.add('hidden');
-                    msg.classList.remove('hidden');
+                    cont.classList.add('hidden'); msg.classList.remove('hidden');
                 } else {
-                    cont.classList.remove('hidden');
-                    msg.classList.add('hidden');
+                    cont.classList.remove('hidden'); msg.classList.add('hidden');
                     cont.innerHTML = State.currentCart.map(i => `
                         <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                             <div class="flex-1">
@@ -1053,22 +1004,17 @@
             },
 
             renderHistory() {
-                const tb = document.getElementById('history-body');
-                const empty = document.getElementById('empty-history-msg');
+                const tb = document.getElementById('history-body'); const empty = document.getElementById('empty-history-msg');
                 const searchTerm = document.getElementById('sales-search').value.toLowerCase();
-                
                 tb.innerHTML = "";
                 
                 const filteredSales = State.sessionSales.filter(s => {
                     if (!searchTerm) return true;
-                    const name = (s.customer || '').toLowerCase();
-                    const phone = (s.phone || '').toLowerCase();
+                    const name = (s.customer || '').toLowerCase(); const phone = (s.phone || '').toLowerCase();
                     return name.includes(searchTerm) || phone.includes(searchTerm);
                 });
                 
-                if (filteredSales.length === 0) { 
-                    empty.classList.remove('hidden'); 
-                } else {
+                if (filteredSales.length === 0) { empty.classList.remove('hidden'); } else {
                     empty.classList.add('hidden');
                     tb.innerHTML = filteredSales.map(s => {
                         const d = new Date(s.isoDate); 
@@ -1080,56 +1026,37 @@
                         const opacity = isVoid ? 'opacity-50 grayscale' : '';
                         const voidBadge = isVoid ? `<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">VOIDED</span>` : '';
                         const stClass = isVoid ? 'line-through text-slate-400' : 'text-slate-800';
-                        
+
                         let payBadge = '';
-                        if (s.paymentStatus === 'Paid') {
-                            payBadge = `<div class="mt-1"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PAID</span></div>`;
-                        } else if (s.paymentStatus === 'Pending') {
-                            payBadge = `<div class="mt-1"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PENDING</span></div>`;
-                        }
+                        if (s.paymentStatus === 'Paid') { payBadge = `<div class="mt-1"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PAID</span></div>`; } 
+                        else if (s.paymentStatus === 'Pending') { payBadge = `<div class="mt-1"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PENDING</span></div>`; }
 
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center ${opacity}">
-                            
                             <!-- Mobile Compact View -->
                             <div class="flex justify-between items-start md:hidden w-full mb-1">
-                                <div>
-                                    <span class="font-mono text-sm text-slate-500 font-bold ${isVoid?'line-through':''}">${s.id}</span>
-                                    <span class="text-xs text-slate-400 ml-2">${dStr} ${tStr}</span>
-                                </div>
-                                ${voidBadge}
+                                <div><span class="font-mono text-sm text-slate-500 font-bold ${isVoid?'line-through':''}">${s.id}</span><span class="text-xs text-slate-400 ml-2">${dStr} ${tStr}</span></div>${voidBadge}
                             </div>
                             <div class="flex justify-between items-center md:hidden w-full mb-1">
                                 <div>
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span>
-                                    <div class="mt-1">
-                                        <span class="text-sm font-bold ${stClass}">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
-                                    </div>
+                                    <div class="mt-1"><span class="text-sm font-bold ${stClass}">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span></div>
                                     ${payBadge}
                                 </div>
                             </div>
-                            <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">
-                                ${(s.items||[]).map(i=>`${i.qty}x ${i.category} (${i.size})`).join(', ')}
-                            </div>
+                            <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">${(s.items||[]).map(i=>`${i.qty}x ${i.category} (${i.size})`).join(', ')}</div>
                             <div class="flex justify-between items-center md:hidden w-full mt-2 pt-2 border-t border-slate-100">
                                 <span class="font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)} MMK</span>
                                 <button data-action="view-voucher" data-id="${s.id}" class="text-indigo-500 bg-indigo-50 px-3 py-1 rounded-lg text-xs font-bold transition-colors">View</button>
                             </div>
-
                             <!-- Desktop View -->
                             <div class="hidden md:block"><span class="font-bold ${stClass}">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
                             <div class="hidden md:block font-mono text-sm text-slate-500 ${isVoid?'line-through':''}">${s.id} ${voidBadge}</div>
-                            <div class="hidden md:block text-sm">
-                                <span class="font-bold ${stClass}">${s.customer||'-'}</span><br>
-                                <span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span>
-                                ${payBadge}
-                            </div>
+                            <div class="hidden md:block text-sm"><span class="font-bold ${stClass}">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span>${payBadge}</div>
                             <div class="hidden md:block text-xs text-slate-600 ${isVoid?'line-through':''}"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
                             <div class="hidden md:block text-right font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
                             <div class="hidden md:flex justify-end">
-                                <button data-action="view-voucher" data-id="${s.id}" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="View Voucher">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
+                                <button data-action="view-voucher" data-id="${s.id}" class="text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors" title="View Voucher"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
                             </div>
                         </div>`;
                     }).join('');
@@ -1137,127 +1064,73 @@
             },
 
             renderPendingPayments() {
-                const tb = document.getElementById('pending-body');
-                const empty = document.getElementById('empty-pending-msg');
-                const badge = document.getElementById('pending-badge');
+                const tb = document.getElementById('pending-body'); const empty = document.getElementById('empty-pending-msg'); const badge = document.getElementById('pending-badge');
                 tb.innerHTML = "";
-                
                 const pendingSales = (State.allFirebaseSales || []).filter(s => s.paymentStatus === 'Pending' && s.status !== 'Voided');
                 
-                if (pendingSales.length > 0) {
-                    badge.innerText = pendingSales.length;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
-                
+                if (pendingSales.length > 0) { badge.innerText = pendingSales.length; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
                 document.getElementById('stat-pending-total').innerText = Utils.formatMMK(pendingSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
 
-                if (pendingSales.length === 0) {
-                    empty.classList.remove('hidden');
-                } else {
+                if (pendingSales.length === 0) { empty.classList.remove('hidden'); } else {
                     empty.classList.add('hidden');
-                    
-                    const now = Utils.getYangonTime();
-                    now.setHours(0,0,0,0);
-
+                    const now = Utils.getYangonTime(); now.setHours(0,0,0,0);
                     tb.innerHTML = pendingSales.map(s => {
-                        const d = new Date(s.isoDate); 
-                        const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year: 'numeric'}); 
+                        const d = new Date(s.isoDate); const dStr = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year: 'numeric'}); 
                         const amount = Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0);
                         
                         let dueHtml = `<span class="text-xs text-slate-500">Awaiting COD</span>`;
-                        
                         if (s.saleType.includes('Credit')) {
                             const days = parseInt(s.paymentMethod) || 0;
-                            const dueDate = new Date(d.getTime() + (days * 86400000));
-                            dueDate.setHours(0,0,0,0);
+                            const dueDate = new Date(d.getTime() + (days * 86400000)); dueDate.setHours(0,0,0,0);
                             const diffDays = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
                             
-                            if (diffDays < 0) {
-                                dueHtml = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">OVERDUE (${Math.abs(diffDays)}d)</span>`;
-                            } else if (diffDays <= 10) {
-                                dueHtml = `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold">Due in ${diffDays}d</span>`;
-                            } else {
-                                dueHtml = `<span class="text-xs text-slate-500 font-medium">Due: ${dueDate.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>`;
-                            }
+                            if (diffDays < 0) { dueHtml = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">OVERDUE (${Math.abs(diffDays)}d)</span>`; } 
+                            else if (diffDays <= 10) { dueHtml = `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold">Due in ${diffDays}d</span>`; } 
+                            else { dueHtml = `<span class="text-xs text-slate-500 font-medium">Due: ${dueDate.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>`; }
                         }
 
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-[1fr_1.5fr_auto_1.5fr_auto] gap-3 md:gap-4 p-4 hover:bg-slate-50 border-b border-slate-50 items-center">
-                            <div class="w-full md:w-auto flex justify-between md:block">
-                                <span class="font-mono text-sm text-slate-800 font-bold">${s.id}</span>
-                                <span class="text-xs text-slate-500 md:block md:mt-1">${dStr}</span>
-                            </div>
-                            <div class="w-full md:w-auto">
-                                <span class="font-bold text-slate-800 text-sm">${s.customer}</span>
-                                <span class="text-xs px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold ml-2">${s.paymentMethod}</span>
-                                ${s.phone ? `<div class="text-xs text-slate-500 mt-0.5">${s.phone}</div>` : ''}
-                            </div>
-                            <div class="w-full md:w-auto text-left md:text-center">
-                                ${dueHtml}
-                            </div>
-                            <div class="w-full md:w-auto text-left md:text-right font-bold text-slate-800 text-lg md:text-base">
-                                ${amount} <span class="text-xs text-slate-500 font-normal">MMK</span>
-                            </div>
-                            <div class="w-full md:w-auto flex justify-end">
-                                <button data-action="open-settle" data-id="${s.id}" class="w-full md:w-auto px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold rounded-lg text-sm transition-colors">Settle</button>
-                            </div>
+                            <div class="w-full md:w-auto flex justify-between md:block"><span class="font-mono text-sm text-slate-800 font-bold">${s.id}</span><span class="text-xs text-slate-500 md:block md:mt-1">${dStr}</span></div>
+                            <div class="w-full md:w-auto"><span class="font-bold text-slate-800 text-sm">${s.customer}</span><span class="text-xs px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold ml-2">${s.paymentMethod}</span>${s.phone ? `<div class="text-xs text-slate-500 mt-0.5">${s.phone}</div>` : ''}</div>
+                            <div class="w-full md:w-auto text-left md:text-center">${dueHtml}</div>
+                            <div class="w-full md:w-auto text-left md:text-right font-bold text-slate-800 text-lg md:text-base">${amount} <span class="text-xs text-slate-500 font-normal">MMK</span></div>
+                            <div class="w-full md:w-auto flex justify-end"><button data-action="open-settle" data-id="${s.id}" class="w-full md:w-auto px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold rounded-lg text-sm transition-colors">Settle</button></div>
                         </div>`;
                     }).join('');
                 }
             },
 
             renderSalesSummary() {
-                let retailRev = 0, wholesaleRev = 0, creditRev = 0;
-                let retailItems = {}, wholesaleItems = {}, creditItems = {};
-                let overallItems = {};
+                let retailRev = 0, wholesaleRev = 0, creditRev = 0; let retailItems = {}, wholesaleItems = {}, creditItems = {}; let overallItems = {};
 
                 (State.sessionSales || []).forEach(s => {
                     if (s.status === 'Voided') return;
-                    
                     const total = s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0;
                     const items = s.items || [];
 
-                    if (s.saleType === 'Retail') {
-                        retailRev += total;
-                        items.forEach(i => retailItems[`${i.category} (${i.size})`] = (retailItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    } else if (s.saleType.includes('Wholesale') || s.saleType.includes('Partner')) {
-                        wholesaleRev += total;
-                        items.forEach(i => wholesaleItems[`${i.category} (${i.size})`] = (wholesaleItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    } else if (s.saleType.includes('Credit')) {
-                        creditRev += total;
-                        items.forEach(i => creditItems[`${i.category} (${i.size})`] = (creditItems[`${i.category} (${i.size})`] || 0) + i.qty);
-                    }
+                    if (s.saleType === 'Retail') { retailRev += total; items.forEach(i => retailItems[`${i.category} (${i.size})`] = (retailItems[`${i.category} (${i.size})`] || 0) + i.qty); } 
+                    else if (s.saleType.includes('Wholesale') || s.saleType.includes('Partner')) { wholesaleRev += total; items.forEach(i => wholesaleItems[`${i.category} (${i.size})`] = (wholesaleItems[`${i.category} (${i.size})`] || 0) + i.qty); } 
+                    else if (s.saleType.includes('Credit')) { creditRev += total; items.forEach(i => creditItems[`${i.category} (${i.size})`] = (creditItems[`${i.category} (${i.size})`] || 0) + i.qty); }
                     
                     items.forEach(i => overallItems[`${i.category} (${i.size})`] = (overallItems[`${i.category} (${i.size})`] || 0) + i.qty);
                 });
 
                 const buildItemList = (itemObj) => {
-                    const entries = Object.entries(itemObj);
-                    if(entries.length === 0) return '<div class="text-slate-400 text-xs py-2">No items.</div>';
+                    const entries = Object.entries(itemObj); if(entries.length === 0) return '<div class="text-slate-400 text-xs py-2">No items.</div>';
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${name}</span><span class="font-bold text-slate-800">${qty}</span></div>`).join('');
                 };
-                
                 const buildOverallItemList = (itemObj) => {
-                    const entries = Object.entries(itemObj);
-                    if(entries.length === 0) return '<div class="text-indigo-300 text-xs py-1">No items sold.</div>';
+                    const entries = Object.entries(itemObj); if(entries.length === 0) return '<div class="text-indigo-300 text-xs py-1">No items sold.</div>';
                     return entries.map(([name, qty]) => `<div class="flex justify-between text-sm"><span class="text-indigo-100">${name}</span><span class="font-bold text-white">${qty}</span></div>`).join('');
                 };
 
-                // Overall Top Dashboard
                 document.getElementById('summary-overall-rev').innerText = Utils.formatMMK(retailRev + wholesaleRev + creditRev) + " MMK";
                 document.getElementById('summary-overall-items').innerHTML = buildOverallItemList(overallItems);
 
-                // Breakdown Columns
-                document.getElementById('summary-retail-rev').innerText = Utils.formatMMK(retailRev) + " MMK";
-                document.getElementById('summary-retail-items').innerHTML = buildItemList(retailItems);
-                
-                document.getElementById('summary-wholesale-rev').innerText = Utils.formatMMK(wholesaleRev) + " MMK";
-                document.getElementById('summary-wholesale-items').innerHTML = buildItemList(wholesaleItems);
-                
-                document.getElementById('summary-credit-rev').innerText = Utils.formatMMK(creditRev) + " MMK";
-                document.getElementById('summary-credit-items').innerHTML = buildItemList(creditItems);
+                document.getElementById('summary-retail-rev').innerText = Utils.formatMMK(retailRev) + " MMK"; document.getElementById('summary-retail-items').innerHTML = buildItemList(retailItems);
+                document.getElementById('summary-wholesale-rev').innerText = Utils.formatMMK(wholesaleRev) + " MMK"; document.getElementById('summary-wholesale-items').innerHTML = buildItemList(wholesaleItems);
+                document.getElementById('summary-credit-rev').innerText = Utils.formatMMK(creditRev) + " MMK"; document.getElementById('summary-credit-items').innerHTML = buildItemList(creditItems);
             },
 
             updateInventoryUI() {
@@ -1267,7 +1140,6 @@
                     
                     for (const p in ProductData) {
                         html += `<tr class="bg-slate-100/50"><td colspan="4" class="px-5 py-2 font-bold text-slate-800 text-sm border-y border-slate-200">${p}</td></tr>`;
-                        
                         ProductData[p].forEach(i => {
                             const stk = State.localInventory[`${p}_${i.size}`] || 0;
                             let stat = ''; let cls = 'text-slate-800';
@@ -1275,12 +1147,7 @@
                             else if (stk < 5) { stat = '<span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-[10px] font-bold">LOW</span>'; cls = 'text-orange-600 font-bold'; low++; }
                             else { stat = '<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">OK</span>'; }
                             
-                            html += `<tr>
-                                <td class="px-5 py-2 pl-10 text-sm text-slate-400 border-r border-slate-50">↳</td>
-                                <td class="px-5 py-2 text-sm font-medium text-slate-700">${i.size}</td>
-                                <td class="px-5 py-2 text-center ${cls} text-sm">${stk}</td>
-                                <td class="px-5 py-2 text-right">${stat}</td>
-                            </tr>`;
+                            html += `<tr><td class="px-5 py-2 pl-10 text-sm text-slate-400 border-r border-slate-50">↳</td><td class="px-5 py-2 text-sm font-medium text-slate-700">${i.size}</td><td class="px-5 py-2 text-center ${cls} text-sm">${stk}</td><td class="px-5 py-2 text-right">${stat}</td></tr>`;
                         });
                     }
                     tb.innerHTML = html;
@@ -1293,29 +1160,19 @@
             },
 
             renderInventoryLogs() {
-                const dateStr = document.getElementById('inv-log-date').value;
-                const localDateStr = Utils.getYangonTime().toISOString().split('T')[0];
-                const nextBtn = document.getElementById('inv-log-date-next');
-                if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
+                const dateStr = document.getElementById('inv-log-date').value; const localDateStr = Utils.getYangonTime().toISOString().split('T')[0];
+                const nextBtn = document.getElementById('inv-log-date-next'); if (nextBtn) nextBtn.disabled = (dateStr >= localDateStr);
                 
-                const pFilter = document.getElementById('inv-log-product').value;
-                const sFilter = document.getElementById('inv-log-size').value;
-
+                const pFilter = document.getElementById('inv-log-product').value; const sFilter = document.getElementById('inv-log-size').value;
                 const dailyLogs = (State.allFirebaseInventoryLogs || []).filter(l => l.date === dateStr);
                 
-                const tb = document.getElementById('inv-log-body');
-                const empty = document.getElementById('empty-inv-log-msg');
-                
-                tb.innerHTML = "";
-                let hasVisibleLogs = false;
+                const tb = document.getElementById('inv-log-body'); const empty = document.getElementById('empty-inv-log-msg');
+                tb.innerHTML = ""; let hasVisibleLogs = false;
 
                 dailyLogs.forEach(logBox => {
                     let changes = [];
-                    if (logBox.type === "Consolidated_Inventory") {
-                        changes = logBox.changes || [];
-                    } else {
-                        changes = [{ product: logBox.product, size: logBox.size, change: logBox.change, action: logBox.action }];
-                    }
+                    if (logBox.type === "Consolidated_Inventory") { changes = logBox.changes || []; } 
+                    else { changes = [{ product: logBox.product, size: logBox.size, change: logBox.change, action: logBox.action }]; }
                     
                     const filteredChanges = changes.filter(c => {
                         if (pFilter && pFilter !== 'All' && c.product !== pFilter) return false;
@@ -1337,8 +1194,7 @@
                         if (isRevert) icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />';
                         
                         const itemsHtml = filteredChanges.map(c => {
-                            const color = c.change > 0 ? 'text-emerald-600' : 'text-rose-600';
-                            const prefix = c.change > 0 ? '+' : '';
+                            const color = c.change > 0 ? 'text-emerald-600' : 'text-rose-600'; const prefix = c.change > 0 ? '+' : '';
                             return `<div class="flex justify-between items-center text-sm py-1 border-b border-slate-50 last:border-0"><span class="text-slate-600">${c.product} (${c.size})</span><span class="font-bold ${color} ${isRevert ? 'line-through text-slate-400' : ''}">${prefix}${c.change}</span></div>`;
                         }).join('');
                         
@@ -1364,47 +1220,38 @@
                     }
                 });
 
-                if (!hasVisibleLogs) empty.classList.remove('hidden');
-                else empty.classList.add('hidden');
+                if (!hasVisibleLogs) empty.classList.remove('hidden'); else empty.classList.add('hidden');
             },
 
             updatePettyCashUI() {
-                const balEl = document.getElementById('petty-cash-balance');
-                const cardEl = document.getElementById('petty-cash-card');
-                const titleEl = document.getElementById('petty-cash-title');
-                
+                const balEl = document.getElementById('petty-cash-balance'); const cardEl = document.getElementById('petty-cash-card'); const titleEl = document.getElementById('petty-cash-title');
                 balEl.innerText = Utils.formatMMK(Math.abs(State.currentPettyCash)) + " MMK";
                 
                 if (State.currentPettyCash < 0) {
-                    cardEl.classList.add('bg-red-50', 'border-red-200');
-                    cardEl.classList.remove('bg-white', 'border-slate-100');
-                    titleEl.innerText = "⚠️ AMOUNT OWED TO STAFF";
-                    titleEl.classList.replace('text-slate-500', 'text-red-600');
-                    balEl.classList.replace('text-emerald-500', 'text-red-600');
+                    cardEl.classList.add('bg-red-50', 'border-red-200'); cardEl.classList.remove('bg-white', 'border-slate-100');
+                    titleEl.innerText = "⚠️ AMOUNT OWED TO STAFF"; titleEl.classList.replace('text-slate-500', 'text-red-600'); balEl.classList.replace('text-emerald-500', 'text-red-600');
                 } else {
-                    cardEl.classList.remove('bg-red-50', 'border-red-200');
-                    cardEl.classList.add('bg-white', 'border-slate-100');
-                    titleEl.innerText = "Live Petty Cash";
-                    titleEl.classList.replace('text-red-600', 'text-slate-500');
-                    balEl.classList.replace('text-red-600', 'text-emerald-500');
+                    cardEl.classList.remove('bg-red-50', 'border-red-200'); cardEl.classList.add('bg-white', 'border-slate-100');
+                    titleEl.innerText = "Live Petty Cash"; titleEl.classList.replace('text-red-600', 'text-slate-500'); balEl.classList.replace('text-red-600', 'text-emerald-500');
                 }
             },
 
             renderExpenses() {
-                const tb = document.getElementById('expense-body'); 
-                const empty = document.getElementById('empty-expense-msg');
-                tb.innerHTML = "";
+                const tb = document.getElementById('expense-body'); const empty = document.getElementById('empty-expense-msg');
+                tb.innerHTML = ""; let total = 0;
                 
-                let total = 0;
                 const selectedMonth = document.getElementById('expense-month-filter').value;
+                const selectedDept = document.getElementById('expense-dept-filter').value;
+                const selectedSub = document.getElementById('expense-sub-filter').value;
+
                 const filteredExpenses = (State.allFirebaseExpenses || []).filter(e => {
-                    if (!selectedMonth) return true;
-                    return e.isoDate.substring(0, 7) === selectedMonth;
+                    if (selectedMonth && e.isoDate.substring(0, 7) !== selectedMonth) return false;
+                    if (selectedDept && selectedDept !== 'All' && e.department !== selectedDept && e.type !== "Top-Up") return false;
+                    if (selectedSub && selectedSub !== 'All' && e.subCategory !== selectedSub && e.type !== "Top-Up") return false;
+                    return true;
                 });
 
-                if (filteredExpenses.length === 0) { 
-                    empty.classList.remove('hidden'); 
-                } else {
+                if (filteredExpenses.length === 0) { empty.classList.remove('hidden'); } else {
                     empty.classList.add('hidden');
                     tb.innerHTML = filteredExpenses.map(e => {
                         const d = new Date(e.isoDate); 
@@ -1414,10 +1261,7 @@
                         if (e.type === "Top-Up") {
                             return `
                             <div class="flex flex-col md:grid md:grid-cols-4 gap-2 md:gap-4 p-4 bg-emerald-50/50 border-b border-slate-50 items-start md:items-center">
-                                <div class="flex justify-between w-full md:w-auto">
-                                    <span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span>
-                                    <span class="md:hidden font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</span>
-                                </div>
+                                <div class="flex justify-between w-full md:w-auto"><span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span><span class="md:hidden font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</span></div>
                                 <div><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Top-Up</span></div>
                                 <div class="text-xs text-slate-600">${e.notes||'-'}</div>
                                 <div class="hidden md:block text-right font-bold text-emerald-600">+${Utils.formatMMK(e.amount)}</div>
@@ -1425,7 +1269,6 @@
                         }
                         
                         total += e.amount;
-                        
                         const paidByBadge = e.paidBy === 'Petty Cash' 
                             ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">Petty Cash</span>` 
                             : `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">Business Owner</span>`;
@@ -1439,269 +1282,141 @@
                         
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-${State.isAdmin ? '5' : '4'} gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-start md:items-center">
-                            <div class="flex justify-between w-full md:w-auto">
-                                <span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span>
-                                <span class="md:hidden font-bold text-rose-600">-${Utils.formatMMK(e.amount)}</span>
-                            </div>
-                            <div>
-                                <span class="font-semibold text-slate-700 text-sm">${e.department}</span>
-                                <span class="text-xs text-slate-500 md:block ml-2 md:ml-0">(${e.subCategory})</span>
-                            </div>
-                            <div>
-                                <div class="mb-1">${paidByBadge}</div>
-                                <div class="text-xs text-slate-500">${e.notes||'-'}</div>
-                            </div>
+                            <div class="flex justify-between w-full md:w-auto"><span class="font-bold text-slate-800 text-sm">${dStr} <span class="text-xs text-slate-500 font-normal ml-1">${tStr}</span></span><span class="md:hidden font-bold text-rose-600">-${Utils.formatMMK(e.amount)}</span></div>
+                            <div><span class="font-semibold text-slate-700 text-sm">${e.department}</span><span class="text-xs text-slate-500 md:block ml-2 md:ml-0">(${e.subCategory})</span></div>
+                            <div><div class="mb-1">${paidByBadge}</div><div class="text-xs text-slate-500">${e.notes||'-'}</div></div>
                             <div class="hidden md:block text-right font-bold text-rose-600">-${Utils.formatMMK(e.amount)}</div>
                             ${adminBtns}
                         </div>`;
                     }).join('');
                 }
-                
                 document.getElementById('exp-total-val').innerText = Utils.formatMMK(total) + " MMK";
             },
             
             openEditModal(firestoreId) {
-                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
-                if(!exp) return;
-                
-                document.getElementById('edit-exp-id').value = exp.firestoreId;
-                document.getElementById('edit-exp-amount').value = exp.amount;
-                document.getElementById('edit-exp-dept').value = exp.department;
-                
+                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId); if(!exp) return;
+                document.getElementById('edit-exp-id').value = exp.firestoreId; document.getElementById('edit-exp-amount').value = exp.amount; document.getElementById('edit-exp-dept').value = exp.department;
                 ExpenseLogic.updateEditExpenseSubCat();
-                document.getElementById('edit-exp-sub').value = exp.subCategory;
-                
-                document.getElementById('edit-exp-paidby').value = exp.paidBy;
-                document.getElementById('edit-exp-notes').value = exp.notes || '';
-                
+                document.getElementById('edit-exp-sub').value = exp.subCategory; document.getElementById('edit-exp-paidby').value = exp.paidBy; document.getElementById('edit-exp-notes').value = exp.notes || '';
                 document.getElementById('edit-expense-modal').classList.remove('hidden');
             }
         };
 
-        // --- 4. CORE BUSINESS LOGIC ---
         const PosLogic = {
             updateSizeDropdown() {
-                const prod = document.getElementById('item-product').value; 
-                const sizeSel = document.getElementById('item-size'); 
-                const curr = sizeSel.value;
-                
-                sizeSel.innerHTML = '<option value="" disabled selected>Select Size</option>'; 
-                document.getElementById('item-price').value = '';
-                document.getElementById('item-qty').value = ''; 
-                
+                const prod = document.getElementById('item-product').value; const sizeSel = document.getElementById('item-size'); const curr = sizeSel.value;
+                sizeSel.innerHTML = '<option value="" disabled selected>Select Size</option>'; document.getElementById('item-price').value = ''; document.getElementById('item-qty').value = ''; 
                 if (prod) {
-                    sizeSel.disabled = false; 
-                    sizeSel.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed'); 
-                    sizeSel.classList.add('bg-white');
-                    ProductData[prod].forEach((i, idx) => { 
-                        const stock = State.localInventory[`${prod}_${i.size}`] || 0; 
-                        const opt = new Option(`${i.size} (Stock: ${stock})`, idx); 
-                        opt.dataset.realsize = i.size; 
-                        sizeSel.appendChild(opt); 
-                    });
-                    if (curr !== "") { 
-                        sizeSel.value = curr; 
-                        PosLogic.updatePrice(); 
-                    }
+                    sizeSel.disabled = false; sizeSel.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed'); sizeSel.classList.add('bg-white');
+                    ProductData[prod].forEach((i, idx) => { const stock = State.localInventory[`${prod}_${i.size}`] || 0; const opt = new Option(`${i.size} (Stock: ${stock})`, idx); opt.dataset.realsize = i.size; sizeSel.appendChild(opt); });
+                    if (curr !== "") { sizeSel.value = curr; PosLogic.updatePrice(); }
                 }
             },
-
             updatePrice() {
-                const prod = document.getElementById('item-product').value; 
-                const idx = document.getElementById('item-size').value;
+                const prod = document.getElementById('item-product').value; const idx = document.getElementById('item-size').value;
                 if (prod && idx !== "") document.getElementById('item-price').value = ProductData[prod][idx].price;
             },
-
             addItem() {
-                const prodSel = document.getElementById('item-product'); 
-                const sizeSel = document.getElementById('item-size');
-                const prod = prodSel.value; 
-                const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
-                const price = parseFloat(document.getElementById('item-price').value); 
-                const qty = parseInt(document.getElementById('item-qty').value) || 1;
+                const prodSel = document.getElementById('item-product'); const sizeSel = document.getElementById('item-size');
+                const prod = prodSel.value; const sizeText = sizeSel.options[sizeSel.selectedIndex] ? sizeSel.options[sizeSel.selectedIndex].dataset.realsize : "";
+                const price = parseFloat(document.getElementById('item-price').value); const qty = parseInt(document.getElementById('item-qty').value) || 1;
                 
                 if (prod && sizeText && price >= 0 && qty > 0) {
                     const exist = State.currentCart.find(i => i.category === prod && i.size === sizeText);
-                    if (exist) exist.qty += qty; 
-                    else State.currentCart.push({ id: Date.now(), category: prod, size: sizeText, basePrice: price, qty: qty });
-                    
-                    UI.renderCart(); 
-                    Utils.showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
+                    if (exist) exist.qty += qty; else State.currentCart.push({ id: Date.now(), category: prod, size: sizeText, basePrice: price, qty: qty });
+                    UI.renderCart(); Utils.showToast(`Added ${qty}x ${prod} (${sizeText})`, 'success');
                 }
             },
-
             updateQuantity(id, delta) {
                 const item = State.currentCart.find(i => i.id === id);
-                if (item) { 
-                    item.qty += delta; 
-                    if (item.qty <= 0 || delta === -999) State.currentCart = State.currentCart.filter(i => i.id !== id); 
-                    UI.renderCart(); 
-                }
+                if (item) { item.qty += delta; if (item.qty <= 0 || delta === -999) State.currentCart = State.currentCart.filter(i => i.id !== id); UI.renderCart(); }
             },
-
             calculateTotals() {
-                let subtotal = 0; 
-                const qtys = {}; 
-                State.currentCart.forEach(i => qtys[i.category] = (qtys[i.category] || 0) + i.qty);
-                
-                // Partner Deal Logic
-                const partnerCheckbox = document.getElementById('is-partner-deal');
-                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+                let subtotal = 0; const qtys = {}; State.currentCart.forEach(i => qtys[i.category] = (qtys[i.category] || 0) + i.qty);
+                const partnerCheckbox = document.getElementById('is-partner-deal'); const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
 
                 State.currentCart.forEach(i => {
                     let disc = 0; const tq = qtys[i.category];
-                    
                     if (!isPartner) {
-                        if (State.currentSaleType === 'Wholesale') { 
-                            if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; 
-                        } else if (State.currentSaleType === 'Credit') { 
-                            if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; 
-                        }
+                        if (State.currentSaleType === 'Wholesale') { if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; } 
+                        else if (State.currentSaleType === 'Credit') { if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; }
                     }
-                    
-                    i.discountRate = disc; 
-                    i.effectivePrice = i.basePrice * (1 - disc); 
-                    i.total = i.effectivePrice * i.qty; 
-                    subtotal += i.total;
+                    i.discountRate = disc; i.effectivePrice = i.basePrice * (1 - disc); i.total = i.effectivePrice * i.qty; subtotal += i.total;
                 });
 
-                // Smart Manual Discount parsing
-                const discountInput = document.getElementById('summary-discount').value.trim();
-                let manual = 0;
-                
-                if (discountInput.endsWith('%')) {
-                    const perc = parseFloat(discountInput.replace('%', '')) || 0;
-                    manual = subtotal * (perc / 100);
-                } else {
-                    manual = parseFloat(discountInput) || 0;
-                }
+                const discountInput = document.getElementById('summary-discount').value.trim(); let manual = 0;
+                if (discountInput.endsWith('%')) { const perc = parseFloat(discountInput.replace('%', '')) || 0; manual = subtotal * (perc / 100); } 
+                else { manual = parseFloat(discountInput) || 0; }
                 
                 const grand = Math.max(0, subtotal - manual);
+                document.getElementById('summary-subtotal').innerText = Utils.formatMMK(subtotal) + " MMK"; document.getElementById('summary-total').innerText = Utils.formatMMK(grand) + " MMK";
                 
-                document.getElementById('summary-subtotal').innerText = Utils.formatMMK(subtotal) + " MMK";
-                document.getElementById('summary-total').innerText = Utils.formatMMK(grand) + " MMK";
+                const totItems = State.currentCart.reduce((s, i) => s + i.qty, 0); const floatCart = document.getElementById('mobile-floating-cart');
+                if (floatCart) { if (totItems > 0) floatCart.classList.remove('hidden'); else floatCart.classList.add('hidden'); }
                 
-                const totItems = State.currentCart.reduce((s, i) => s + i.qty, 0);
-                const floatCart = document.getElementById('mobile-floating-cart');
-                if (floatCart) {
-                    if (totItems > 0) floatCart.classList.remove('hidden');
-                    else floatCart.classList.add('hidden');
-                }
-                
-                document.getElementById('mobile-cart-badge').innerText = totItems; 
-                document.getElementById('mobile-cart-total').innerText = Utils.formatMMK(grand) + " MMK";
-                
-                PosLogic.validateCheckout(); 
-                return { subtotal: subtotal, manualDiscount: manual, grandTotal: grand, manual: manual, grand: grand };
+                document.getElementById('mobile-cart-badge').innerText = totItems; document.getElementById('mobile-cart-total').innerText = Utils.formatMMK(grand) + " MMK";
+                PosLogic.validateCheckout(); return { subtotal: subtotal, manualDiscount: manual, grandTotal: grand, manual: manual, grand: grand };
             },
-
             validateCheckout() {
                 const btn = document.getElementById('checkout-btn'); if (!btn) return;
-                const hasItems = State.currentCart.length > 0; 
-                const hasName = document.getElementById('cust-name').value.trim() !== '';
-                let hasPayment = false;
+                const hasItems = State.currentCart.length > 0; const hasName = document.getElementById('cust-name').value.trim() !== ''; let hasPayment = false;
                 
                 if (State.currentSaleType === 'Credit') hasPayment = document.getElementById('credit-period').value !== '';
                 else hasPayment = document.getElementById('payment-method').value !== '';
 
-                const partnerCheckbox = document.getElementById('is-partner-deal');
-                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
-                const discInput = document.getElementById('summary-discount');
-                let isDiscValid = true;
+                const partnerCheckbox = document.getElementById('is-partner-deal'); const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+                const discInput = document.getElementById('summary-discount'); let isDiscValid = true;
 
                 if (isPartner) {
-                    discInput.classList.add('border-red-400', 'bg-red-50');
-                    const dVal = discInput.value.trim();
-                    if (!dVal || parseFloat(dVal) === 0 || isNaN(parseFloat(dVal))) {
-                        isDiscValid = false;
-                    }
-                } else {
-                    discInput.classList.remove('border-red-400', 'bg-red-50');
-                }
+                    discInput.classList.add('border-red-400', 'bg-red-50'); const dVal = discInput.value.trim();
+                    if (!dVal || parseFloat(dVal) === 0 || isNaN(parseFloat(dVal))) { isDiscValid = false; }
+                } else { discInput.classList.remove('border-red-400', 'bg-red-50'); }
                 
                 btn.disabled = !(hasItems && hasName && hasPayment && isDiscValid);
             },
-            
             populateVoucherHTML(saleRec) {
-                const d = new Date(saleRec.isoDate);
-                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                const dd = String(d.getDate()).padStart(2, '0');
-                const yy = String(d.getFullYear()).slice(-2);
-                const hh = String(d.getHours()).padStart(2, '0');
-                const min = String(d.getMinutes()).padStart(2, '0');
+                const d = new Date(saleRec.isoDate); const mm = String(d.getMonth() + 1).padStart(2, '0'); const dd = String(d.getDate()).padStart(2, '0'); const yy = String(d.getFullYear()).slice(-2);
+                const hh = String(d.getHours()).padStart(2, '0'); const min = String(d.getMinutes()).padStart(2, '0');
                 
-                document.getElementById('print-date').innerText = `${mm}/${dd}/${yy}, ${hh}:${min}`;
-                document.getElementById('print-id').innerText = saleRec.id; 
-                document.getElementById('print-type').innerText = saleRec.saleType; 
-                document.getElementById('print-payment').innerText = saleRec.paymentMethod;
+                document.getElementById('print-date').innerText = `${mm}/${dd}/${yy}, ${hh}:${min}`; document.getElementById('print-id').innerText = saleRec.id; 
+                document.getElementById('print-type').innerText = saleRec.saleType; document.getElementById('print-payment').innerText = saleRec.paymentMethod;
                 
-                const dueRow = document.getElementById('print-due-date-row');
-                const settleRow = document.getElementById('print-settle-date-row');
+                const dueRow = document.getElementById('print-due-date-row'); const settleRow = document.getElementById('print-settle-date-row');
                 
                 if (saleRec.saleType.includes('Credit')) { 
-                    dueRow.classList.remove('hidden'); 
-                    const days = parseInt(saleRec.paymentMethod) || 0;
-                    if(days) {
-                        const due = new Date(new Date(saleRec.isoDate).getTime() + (days*86400000));
-                        document.getElementById('print-due-date').innerText = due.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); 
-                    } else document.getElementById('print-due-date').innerText = "-";
+                    dueRow.classList.remove('hidden'); const days = parseInt(saleRec.paymentMethod) || 0;
+                    if(days) { const due = new Date(new Date(saleRec.isoDate).getTime() + (days*86400000)); document.getElementById('print-due-date').innerText = due.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); } 
+                    else document.getElementById('print-due-date').innerText = "-";
                 } else dueRow.classList.add('hidden');
                 
-                if (saleRec.paymentStatus === 'Paid' && saleRec.settleDate) {
-                    settleRow.classList.remove('hidden');
-                    document.getElementById('print-settle-date').innerText = new Date(saleRec.settleDate).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-                } else {
-                    settleRow.classList.add('hidden');
-                }
+                if (saleRec.paymentStatus === 'Paid' && saleRec.settleDate) { settleRow.classList.remove('hidden'); document.getElementById('print-settle-date').innerText = new Date(saleRec.settleDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}); } 
+                else { settleRow.classList.add('hidden'); }
                 
                 document.getElementById('print-customer-name').innerText = saleRec.customer;
                 if(saleRec.phone) { document.getElementById('print-phone-row').classList.remove('hidden'); document.getElementById('print-phone').innerText = saleRec.phone; } else document.getElementById('print-phone-row').classList.add('hidden');
-                if(saleRec.notes || saleRec.settleNotes) { 
-                    document.getElementById('print-notes-container').classList.remove('hidden'); 
-                    document.getElementById('print-notes').innerText = [saleRec.notes, saleRec.settleNotes].filter(Boolean).join('\n'); 
-                } else document.getElementById('print-notes-container').classList.add('hidden');
+                if(saleRec.notes || saleRec.settleNotes) { document.getElementById('print-notes-container').classList.remove('hidden'); document.getElementById('print-notes').innerText = [saleRec.notes, saleRec.settleNotes].filter(Boolean).join('\n'); } else document.getElementById('print-notes-container').classList.add('hidden');
                 
                 document.getElementById('print-items').innerHTML = saleRec.items.map(i=>`<tr><td style="padding: 4px 0; vertical-align: top; padding-right: 4px; overflow: hidden;"><div style="font-weight: bold;">${i.category} (${i.size})</div><div style="font-size: 10px; color: #444;">@ ${Utils.formatMMK(i.price)}</div></td><td style="text-align: center; padding: 4px 0; vertical-align: top; width: 40px;">${i.qty}</td><td style="text-align: right; padding: 4px 0; vertical-align: top; width: 70px;">${Utils.formatMMK(i.total)}</td></tr>`).join('');
-                document.getElementById('print-subtotal').innerText = Utils.formatMMK(saleRec.totals.subtotal); 
-                document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); 
-                document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";
+                document.getElementById('print-subtotal').innerText = Utils.formatMMK(saleRec.totals.subtotal); document.getElementById('print-discount').innerText = Utils.formatMMK(saleRec.totals.manualDiscount || saleRec.totals.manual || 0); document.getElementById('print-total').innerText = Utils.formatMMK(saleRec.totals.grandTotal || saleRec.totals.grand || 0) + " MMK";
                 
-                const voidStamp = document.getElementById('print-void-stamp');
-                const voidBtn = document.getElementById('btn-modal-void');
-                if (saleRec.status === 'Voided') {
-                    voidStamp.classList.remove('hidden');
-                    if (voidBtn) voidBtn.classList.add('hidden');
-                } else {
-                    voidStamp.classList.add('hidden');
-                    if (voidBtn) voidBtn.classList.remove('hidden');
-                }
+                const voidStamp = document.getElementById('print-void-stamp'); const voidBtn = document.getElementById('btn-modal-void');
+                if (saleRec.status === 'Voided') { voidStamp.classList.remove('hidden'); if (voidBtn) voidBtn.classList.add('hidden'); } 
+                else { voidStamp.classList.add('hidden'); if (voidBtn) voidBtn.classList.remove('hidden'); }
             },
-            
             viewVoucher(id) {
                 const sale = State.allFirebaseSales.find(s => s.id === id);
-                if(sale) {
-                    State.currentVoucherId = id;
-                    PosLogic.populateVoucherHTML(sale);
-                    document.getElementById('voucher-modal').classList.remove('hidden');
-                }
+                if(sale) { State.currentVoucherId = id; PosLogic.populateVoucherHTML(sale); document.getElementById('voucher-modal').classList.remove('hidden'); }
             },
-            
-            closeVoucher() {
-                document.getElementById('voucher-modal').classList.add('hidden');
-                State.currentVoucherId = null;
-            },
-            
+            closeVoucher() { document.getElementById('voucher-modal').classList.add('hidden'); State.currentVoucherId = null; },
             downloadVoucherImage() {
-                const area = document.getElementById('print-area');
-                if(!area) return;
-                
+                const area = document.getElementById('print-area'); if(!area) return;
                 area.style.backgroundColor = 'white';
                 
-                // Temporarily force max height to ensure html2canvas captures overflowing content
+                // Fix height for html2canvas to capture entire voucher accurately
                 const originalHeight = area.style.height;
                 area.style.height = area.scrollHeight + 'px';
-
-                html2canvas(area, { scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, useCORS: true, backgroundColor: '#ffffff', scrollY: -window.scrollY }).then(canvas => {
+                
+                html2canvas(area, { scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
                     area.style.height = originalHeight;
                     const link = document.createElement('a'); link.download = `Voucher-${State.currentVoucherId || 'Export'}.png`; link.href = canvas.toDataURL('image/png'); link.click(); Utils.showToast("Voucher Image Saved!");
                 }).catch(err => { 
@@ -1709,36 +1424,20 @@
                     console.error(err); Utils.showToast("Error saving image", "error"); 
                 });
             },
-
             async processCheckout() {
-                const btn = document.getElementById('checkout-btn');
-                btn.disabled = true; btn.innerText = "Saving...";
-                
-                const totals = PosLogic.calculateTotals();
-                const now = Utils.getYangonTime();
-                
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const yy = String(now.getFullYear()).slice(-2);
-                const prefix = `${mm}${yy}-`;
+                const btn = document.getElementById('checkout-btn'); btn.disabled = true; btn.innerText = "Saving...";
+                const totals = PosLogic.calculateTotals(); const now = Utils.getYangonTime();
+                const mm = String(now.getMonth() + 1).padStart(2, '0'); const yy = String(now.getFullYear()).slice(-2); const prefix = `${mm}${yy}-`;
                 
                 const currentMonthSales = (State.allFirebaseSales || []).filter(s => s.id && s.id.startsWith(prefix));
-                const maxSequence = currentMonthSales.reduce((max, s) => {
-                    const seq = parseInt(s.id.split('-')[1]);
-                    return (!isNaN(seq) && seq > max) ? seq : max;
-                }, 0);
+                const maxSequence = currentMonthSales.reduce((max, s) => { const seq = parseInt(s.id.split('-')[1]); return (!isNaN(seq) && seq > max) ? seq : max; }, 0);
+                const sequence = String(maxSequence + 1).padStart(4, '0'); const id = `${prefix}${sequence}`;
                 
-                const sequence = String(maxSequence + 1).padStart(4, '0');
-                const id = `${prefix}${sequence}`;
-                
-                const cName = document.getElementById('cust-name').value.trim(); 
-                const cPhone = document.getElementById('cust-phone').value.trim();
-                const notes = document.getElementById('sale-notes').value.trim();
-                
+                const cName = document.getElementById('cust-name').value.trim(); const cPhone = document.getElementById('cust-phone').value.trim(); const notes = document.getElementById('sale-notes').value.trim();
                 let pay = State.currentSaleType === 'Credit' ? document.getElementById('credit-period').value + ' Days' : document.getElementById('payment-method').value;
                 let payStatus = (State.currentSaleType === 'Credit' || pay === 'Cash on Delivery') ? 'Pending' : 'Paid';
                 
-                const partnerCheckbox = document.getElementById('is-partner-deal');
-                const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
+                const partnerCheckbox = document.getElementById('is-partner-deal'); const isPartner = partnerCheckbox ? partnerCheckbox.checked : false;
                 const finalSaleType = isPartner ? `${State.currentSaleType} (Partner)` : State.currentSaleType;
 
                 const saleRec = { 
@@ -1747,182 +1446,90 @@
                     notes: notes, status: "Active", items: State.currentCart.map(i=>({category:i.category, size:i.size, qty:i.qty, price:i.effectivePrice, total:i.total})), totals: totals 
                 };
 
-                PosLogic.populateVoucherHTML(saleRec);
-                State.currentVoucherId = id;
-                
+                PosLogic.populateVoucherHTML(saleRec); State.currentVoucherId = id;
                 const success = await Backend.pushSale(saleRec, State.currentCart);
                 
                 if (success) {
                     if (State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(saleRec) }).catch(e=>{});
-                    
                     document.getElementById('voucher-modal').classList.remove('hidden');
-                    
-                    State.currentCart = []; 
-                    document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
+                    State.currentCart = []; document.getElementById('cust-name').value = ''; document.getElementById('cust-phone').value = ''; document.getElementById('sale-notes').value = ''; document.getElementById('payment-method').value = ''; document.getElementById('credit-period').value = ''; document.getElementById('summary-discount').value = '';
                     if(partnerCheckbox) partnerCheckbox.checked = false;
-                    if(State.isMobileCartOpen) UI.toggleMobileCart(); 
-                    UI.renderCart(); 
-                    Utils.showToast('Sale Saved Successfully!');
-                } else {
-                    Utils.showToast("Database Error: Could not save sale.", "error");
-                }
+                    if(State.isMobileCartOpen) UI.toggleMobileCart(); UI.renderCart(); Utils.showToast('Sale Saved Successfully!');
+                } else { Utils.showToast("Database Error: Could not save sale.", "error"); }
                 
                 btn.innerHTML = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Save & Check Out`;
                 PosLogic.validateCheckout();
             },
-
             applyFilters() {
-                let start, end, label;
-                const d = State.historyAnchorDate;
-                
-                if (State.historyMode === 'day') {
-                    start = Utils.startOfDay(d);
-                    end = Utils.endOfDay(d);
-                    label = start.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-                } else if (State.historyMode === 'week') {
-                    const range = Utils.getWeekRange(d);
-                    start = range.start; end = range.end;
-                    label = `Week of ${start.toLocaleDateString('en-US', {month:'short', day:'numeric'})}`;
-                } else {
-                    const range = Utils.getMonthRange(d);
-                    start = range.start; end = range.end;
-                    label = start.toLocaleDateString('en-US', {month:'long', year:'numeric'});
-                }
+                let start, end, label; const d = State.historyAnchorDate;
+                if (State.historyMode === 'day') { start = Utils.startOfDay(d); end = Utils.endOfDay(d); label = start.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}); } 
+                else if (State.historyMode === 'week') { const range = Utils.getWeekRange(d); start = range.start; end = range.end; label = `Week of ${start.toLocaleDateString('en-US', {month:'short', day:'numeric'})}`; } 
+                else { const range = Utils.getMonthRange(d); start = range.start; end = range.end; label = start.toLocaleDateString('en-US', {month:'long', year:'numeric'}); }
                 
                 document.getElementById('hist-date-label').innerText = label;
-                
                 if (!State.allFirebaseSales) return;
                 
-                const startIso = start.toISOString();
-                const endIso = end.toISOString();
-                
+                const startIso = start.toISOString(); const endIso = end.toISOString();
                 State.sessionSales = State.allFirebaseSales.filter(s => s.isoDate >= startIso && s.isoDate <= endIso);
                 
                 const validSales = State.sessionSales.filter(s => s.status !== 'Voided');
                 document.getElementById('stat-total-vouchers').innerText = validSales.length;
                 document.getElementById('stat-total-revenue').innerText = Utils.formatMMK(validSales.reduce((sum, s) => sum + (s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0), 0)) + " MMK";
                 
-                UI.renderHistory();
-                UI.renderSalesSummary();
+                UI.renderHistory(); UI.renderSalesSummary();
             }
         };
 
         const InventoryLogic = {
             updateInvSizeDropdown() {
-                const p = document.getElementById('inv-product').value; 
-                const sSel = document.getElementById('inv-size'); 
-                sSel.innerHTML = '<option value="" disabled selected>Select Size</option>';
-                if(p) { 
-                    sSel.disabled = false; sSel.classList.remove('bg-slate-200','disabled:cursor-not-allowed'); sSel.classList.add('bg-white'); 
-                    ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size))); 
-                }
+                const p = document.getElementById('inv-product').value; const sSel = document.getElementById('inv-size'); sSel.innerHTML = '<option value="" disabled selected>Select Size</option>';
+                if(p) { sSel.disabled = false; sSel.classList.remove('bg-slate-200','disabled:cursor-not-allowed'); sSel.classList.add('bg-white'); ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size))); }
             },
             updateInvLogSizeDropdown() {
-                const p = document.getElementById('inv-log-product').value;
-                const sSel = document.getElementById('inv-log-size');
-                sSel.innerHTML = '<option value="All">All Sizes</option>';
-                if (p && p !== 'All' && ProductData[p]) {
-                    ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size)));
-                }
+                const p = document.getElementById('inv-log-product').value; const sSel = document.getElementById('inv-log-size'); sSel.innerHTML = '<option value="All">All Sizes</option>';
+                if (p && p !== 'All' && ProductData[p]) { ProductData[p].forEach(i => sSel.appendChild(new Option(i.size, i.size))); }
                 UI.renderInventoryLogs();
             },
             addToAdjCart(mode) {
-                const p = document.getElementById('inv-product').value;
-                const s = document.getElementById('inv-size').value;
-                const q = parseInt(document.getElementById('inv-qty').value);
-                
+                const p = document.getElementById('inv-product').value; const s = document.getElementById('inv-size').value; const q = parseInt(document.getElementById('inv-qty').value);
                 if(p && s && q > 0) {
-                    const finalQty = mode === 'in' ? q : -q;
-                    const existing = State.adjustmentCart.find(i => i.product === p && i.size === s);
-                    
-                    if(existing) {
-                        existing.change += finalQty;
-                        if(existing.change === 0) State.adjustmentCart = State.adjustmentCart.filter(i => i !== existing);
-                    } else {
-                        State.adjustmentCart.push({ id: Date.now() + Math.random(), product: p, size: s, change: finalQty, action: mode === 'in' ? 'Stock In' : 'Remove' });
-                    }
-                    
-                    InventoryLogic.renderAdjCart();
-                    document.getElementById('inv-qty').value = '';
-                } else {
-                    Utils.showToast("Please select product, size, and quantity", "error");
-                }
+                    const finalQty = mode === 'in' ? q : -q; const existing = State.adjustmentCart.find(i => i.product === p && i.size === s);
+                    if(existing) { existing.change += finalQty; if(existing.change === 0) State.adjustmentCart = State.adjustmentCart.filter(i => i !== existing); } 
+                    else { State.adjustmentCart.push({ id: Date.now() + Math.random(), product: p, size: s, change: finalQty, action: mode === 'in' ? 'Stock In' : 'Remove' }); }
+                    InventoryLogic.renderAdjCart(); document.getElementById('inv-qty').value = '';
+                } else { Utils.showToast("Please select product, size, and quantity", "error"); }
             },
-            removeFromAdjCart(id) {
-                State.adjustmentCart = State.adjustmentCart.filter(i => i.id !== id);
-                InventoryLogic.renderAdjCart();
-            },
+            removeFromAdjCart(id) { State.adjustmentCart = State.adjustmentCart.filter(i => i.id !== id); InventoryLogic.renderAdjCart(); },
             renderAdjCart() {
-                const cont = document.getElementById('adj-cart-items-list');
-                const msg = document.getElementById('empty-adj-msg');
-                const btn = document.getElementById('submit-adj-btn');
-                
-                if(State.adjustmentCart.length === 0) {
-                    cont.innerHTML = ''; 
-                    msg.classList.remove('hidden'); 
-                    btn.disabled = true;
-                } else {
-                    msg.classList.add('hidden'); 
-                    btn.disabled = false;
+                const cont = document.getElementById('adj-cart-items-list'); const msg = document.getElementById('empty-adj-msg'); const btn = document.getElementById('submit-adj-btn');
+                if(State.adjustmentCart.length === 0) { cont.innerHTML = ''; msg.classList.remove('hidden'); btn.disabled = true; } 
+                else {
+                    msg.classList.add('hidden'); btn.disabled = false;
                     cont.innerHTML = State.adjustmentCart.map(i => {
-                        const color = i.change > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50';
-                        const prefix = i.change > 0 ? '+' : '';
-                        return `
-                        <div class="flex justify-between items-center p-2 mb-2 bg-white rounded-lg border border-slate-100 shadow-sm">
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-slate-800">${i.product}</p>
-                                <p class="text-xs text-slate-500">${i.size}</p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="font-bold text-sm px-2 py-1 rounded ${color}">${prefix}${i.change}</span>
-                                <button type="button" data-action="remove-adj-item" data-id="${i.id}" class="text-red-400 hover:text-red-600 p-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                            </div>
-                        </div>`;
+                        const color = i.change > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50'; const prefix = i.change > 0 ? '+' : '';
+                        return `<div class="flex justify-between items-center p-2 mb-2 bg-white rounded-lg border border-slate-100 shadow-sm"><div class="flex-1"><p class="text-sm font-bold text-slate-800">${i.product}</p><p class="text-xs text-slate-500">${i.size}</p></div><div class="flex items-center gap-3"><span class="font-bold text-sm px-2 py-1 rounded ${color}">${prefix}${i.change}</span><button type="button" data-action="remove-adj-item" data-id="${i.id}" class="text-red-400 hover:text-red-600 p-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div></div>`;
                     }).join('');
                 }
             },
             async submitAdjustment() {
                 if (State.adjustmentCart.length === 0) return;
-                const btn = document.getElementById('submit-adj-btn');
-                btn.disabled = true; btn.innerText = "Submitting...";
-                
-                const notes = document.getElementById('inv-notes').value.trim();
-                const now = Utils.getYangonTime();
-                
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const yy = String(now.getFullYear()).slice(-2);
-                const prefix = `INV-${mm}${yy}-`;
+                const btn = document.getElementById('submit-adj-btn'); btn.disabled = true; btn.innerText = "Submitting...";
+                const notes = document.getElementById('inv-notes').value.trim(); const now = Utils.getYangonTime();
+                const mm = String(now.getMonth() + 1).padStart(2, '0'); const yy = String(now.getFullYear()).slice(-2); const prefix = `INV-${mm}${yy}-`;
                 
                 const currentMonthLogs = (State.allFirebaseInventoryLogs || []).filter(l => l.id && l.id.startsWith(prefix));
-                const maxSequence = currentMonthLogs.reduce((max, l) => {
-                    const seq = parseInt(l.id.split('-')[2]);
-                    return (!isNaN(seq) && seq > max) ? seq : max;
-                }, 0);
-                
-                const sequence = String(maxSequence + 1).padStart(4, '0');
-                const id = `${prefix}${sequence}`;
+                const maxSequence = currentMonthLogs.reduce((max, l) => { const seq = parseInt(l.id.split('-')[2]); return (!isNaN(seq) && seq > max) ? seq : max; }, 0);
+                const sequence = String(maxSequence + 1).padStart(4, '0'); const id = `${prefix}${sequence}`;
 
                 try {
-                    const batch = writeBatch(State.db);
-                    const changes = [];
-                    
-                    State.adjustmentCart.forEach(i => {
-                        batch.set(doc(State.db, 'inventory', `${i.product}_${i.size}`), { product: i.product, size: i.size, stock: increment(i.change) }, { merge: true });
-                        changes.push({ product: i.product, size: i.size, change: i.change, action: i.action });
-                    });
-                    
+                    const batch = writeBatch(State.db); const changes = [];
+                    State.adjustmentCart.forEach(i => { batch.set(doc(State.db, 'inventory', `${i.product}_${i.size}`), { product: i.product, size: i.size, stock: increment(i.change) }, { merge: true }); changes.push({ product: i.product, size: i.size, change: i.change, action: i.action }); });
                     const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: notes || "-", id: id, changes: changes };
-                    batch.set(doc(State.db, 'inventory_logs', id), logRec);
-                    
-                    await batch.commit();
-                    
+                    batch.set(doc(State.db, 'inventory_logs', id), logRec); await batch.commit();
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(logRec) }).catch(e=>{});
                     
-                    State.adjustmentCart = []; InventoryLogic.renderAdjCart(); document.getElementById('inv-notes').value = '';
-                    Utils.showToast("Stock Adjusted Successfully!");
-                } catch(e) { 
-                    console.error("Adjustment Error", e); Utils.showToast("Database Error: Could not save.", "error"); 
-                }
+                    State.adjustmentCart = []; InventoryLogic.renderAdjCart(); document.getElementById('inv-notes').value = ''; Utils.showToast("Stock Adjusted Successfully!");
+                } catch(e) { console.error("Adjustment Error", e); Utils.showToast("Database Error: Could not save.", "error"); }
                 
                 btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v-8m0 8l-3-3m3 3l3-3"></path></svg> Submit Adjustment`;
                 if(State.adjustmentCart.length > 0) btn.disabled = false;
@@ -1931,356 +1538,184 @@
 
         const ExpenseLogic = {
             updateExpenseSubCat() {
-                const dept = document.getElementById('exp-dept').value;
-                const subSel = document.getElementById('exp-sub');
-                subSel.innerHTML = '<option value="" disabled selected>Select Sub-Category</option>';
-                if (dept && ExpenseCategories[dept]) {
-                    subSel.disabled = false; subSel.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed'); subSel.classList.add('bg-white');
-                    ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
-                }
+                const dept = document.getElementById('exp-dept').value; const subSel = document.getElementById('exp-sub'); subSel.innerHTML = '<option value="" disabled selected>Select Sub-Category</option>';
+                if (dept && ExpenseCategories[dept]) { subSel.disabled = false; subSel.classList.remove('bg-slate-50', 'disabled:cursor-not-allowed'); subSel.classList.add('bg-white'); ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat))); }
             },
             updateEditExpenseSubCat() {
-                const dept = document.getElementById('edit-exp-dept').value;
-                const subSel = document.getElementById('edit-exp-sub');
-                subSel.innerHTML = '<option value="" disabled>Select Sub-Category</option>';
-                if (dept && ExpenseCategories[dept]) {
-                    ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat)));
-                }
+                const dept = document.getElementById('edit-exp-dept').value; const subSel = document.getElementById('edit-exp-sub'); subSel.innerHTML = '<option value="" disabled>Select Sub-Category</option>';
+                if (dept && ExpenseCategories[dept]) { ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat))); }
+            },
+            updateExpenseFilterSubCat() {
+                const dept = document.getElementById('expense-dept-filter').value; const subSel = document.getElementById('expense-sub-filter'); subSel.innerHTML = '<option value="All">All Categories</option>';
+                if (dept && dept !== 'All' && ExpenseCategories[dept]) { ExpenseCategories[dept].forEach(cat => subSel.appendChild(new Option(cat, cat))); }
+                UI.renderExpenses();
             },
             async processTopUp() {
-                const amount = parseInt(document.getElementById('topup-amount').value);
-                if (!amount || amount <= 0) { Utils.showToast('Enter a valid amount', 'error'); return; }
-                
-                const now = Utils.getYangonTime();
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const id = `TOP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
-                
+                const amount = parseInt(document.getElementById('topup-amount').value); if (!amount || amount <= 0) { Utils.showToast('Enter a valid amount', 'error'); return; }
+                const now = Utils.getYangonTime(); const mm = String(now.getMonth() + 1).padStart(2, '0'); const dd = String(now.getDate()).padStart(2, '0'); const id = `TOP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
                 const rec = { id: id, type: "Top-Up", isoDate: now.toISOString(), amount: amount, notes: "Manual Top-Up" };
                 
                 try {
-                    const batch = writeBatch(State.db);
-                    batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(amount) }, { merge: true });
-                    batch.set(doc(State.db, 'expenses', id), rec);
-                    await batch.commit();
-                    
+                    const batch = writeBatch(State.db); batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(amount) }, { merge: true }); batch.set(doc(State.db, 'expenses', id), rec); await batch.commit();
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
-                    document.getElementById('topup-amount').value = '';
-                    Utils.showToast(`Added ${Utils.formatMMK(amount)} to Petty Cash`);
-                } catch(e) { 
-                    console.error(e); Utils.showToast("Database Error", "error"); 
-                }
+                    document.getElementById('topup-amount').value = ''; Utils.showToast(`Added ${Utils.formatMMK(amount)} to Petty Cash`);
+                } catch(e) { console.error(e); Utils.showToast("Database Error", "error"); }
             },
             async submitExpense() {
-                const amt = parseInt(document.getElementById('exp-amount').value);
-                const dept = document.getElementById('exp-dept').value;
-                const sub = document.getElementById('exp-sub').value;
-                const paidBy = document.getElementById('exp-paidby').value;
-                const notes = document.getElementById('exp-notes').value.trim();
+                const amt = parseInt(document.getElementById('exp-amount').value); const dept = document.getElementById('exp-dept').value; const sub = document.getElementById('exp-sub').value; const paidBy = document.getElementById('exp-paidby').value; const notes = document.getElementById('exp-notes').value.trim();
+                if (!amt || !dept || !sub || !paidBy) { Utils.showToast("Missing required fields", "error"); return; }
                 
-                if (!amt || !dept || !sub) return;
-                
-                const now = Utils.getYangonTime();
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const id = `EXP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
-                
+                const now = Utils.getYangonTime(); const mm = String(now.getMonth() + 1).padStart(2, '0'); const dd = String(now.getDate()).padStart(2, '0'); const id = `EXP-${mm}${dd}-${String(Date.now()).slice(-4)}`;
                 const rec = { id: id, type: "Expense", isoDate: now.toISOString(), amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes };
 
                 try {
                     const batch = writeBatch(State.db);
                     if (rec.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-rec.amount) }, { merge: true }); }
-                    batch.set(doc(State.db, 'expenses', id), rec);
-                    await batch.commit();
+                    batch.set(doc(State.db, 'expenses', id), rec); await batch.commit();
                     
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(rec) }).catch(e=>{});
                     
-                    document.getElementById('exp-amount').value = ''; document.getElementById('exp-notes').value = '';
-                    document.getElementById('exp-dept').value = ''; document.getElementById('exp-sub').value = ''; 
-                    ExpenseLogic.updateExpenseSubCat();
-                    Utils.showToast('Expense Logged Successfully!');
-                } catch(e) { 
-                    console.error(e); Utils.showToast("Database Error", "error"); 
-                }
+                    document.getElementById('exp-amount').value = ''; document.getElementById('exp-notes').value = ''; document.getElementById('exp-dept').value = ''; document.getElementById('exp-sub').value = ''; document.getElementById('exp-paidby').value = '';
+                    ExpenseLogic.updateExpenseSubCat(); Utils.showToast('Expense Logged Successfully!');
+                } catch(e) { console.error(e); Utils.showToast("Database Error", "error"); }
             },
             async updateEditedExpense() {
-                const btn = document.getElementById('btn-submit-edit-exp');
-                btn.disabled = true; btn.innerText = "Saving...";
-                
-                const firestoreId = document.getElementById('edit-exp-id').value;
-                const amt = parseInt(document.getElementById('edit-exp-amount').value);
-                const dept = document.getElementById('edit-exp-dept').value;
-                const sub = document.getElementById('edit-exp-sub').value;
-                const paidBy = document.getElementById('edit-exp-paidby').value;
-                const notes = document.getElementById('edit-exp-notes').value.trim();
-                
+                const btn = document.getElementById('btn-submit-edit-exp'); btn.disabled = true; btn.innerText = "Saving...";
+                const firestoreId = document.getElementById('edit-exp-id').value; const amt = parseInt(document.getElementById('edit-exp-amount').value); const dept = document.getElementById('edit-exp-dept').value; const sub = document.getElementById('edit-exp-sub').value; const paidBy = document.getElementById('edit-exp-paidby').value; const notes = document.getElementById('edit-exp-notes').value.trim();
                 await Backend.editExpense(firestoreId, { amount: amt, department: dept, subCategory: sub, paidBy: paidBy, notes: notes });
-                
                 btn.disabled = false; btn.innerText = "Update Expense";
             }
         };
 
         const AppSettings = {
-            save() {
-                State.webAppUrl = document.getElementById('sheet-url').value.trim();
-                localStorage.setItem('khaymay_sheet_url', State.webAppUrl);
-                UI.toggleSettings(); 
-                Utils.showToast('Settings Saved!');
-            },
+            save() { State.webAppUrl = document.getElementById('sheet-url').value.trim(); localStorage.setItem('khaymay_sheet_url', State.webAppUrl); UI.toggleSettings(); Utils.showToast('Settings Saved!'); },
             forceSyncInventory() {
                 if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
-                
                 const payload = { type: "ForceSyncInventory", date: Utils.getYangonTime().toISOString(), inventory: [] };
+                for (const p in ProductData) { ProductData[p].forEach(i => { payload.inventory.push({ product: p, size: i.size, stock: State.localInventory[`${p}_${i.size}`] || 0 }); }); }
                 
-                for (const p in ProductData) {
-                    ProductData[p].forEach(i => {
-                        payload.inventory.push({ product: p, size: i.size, stock: State.localInventory[`${p}_${i.size}`] || 0 });
-                    });
-                }
-                
-                const btn = document.getElementById('btn-force-sync');
-                btn.innerText = "Syncing..."; btn.disabled = true;
-                
-                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-                    .then(() => {
-                        Utils.showToast('Live Inventory forced pushed to Sheets!');
-                        setTimeout(() => { btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false; }, 2000);
-                    }).catch(e => {
-                        console.error(e); Utils.showToast('Error syncing to sheets', 'error');
-                        btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false;
-                    });
+                const btn = document.getElementById('btn-force-sync'); btn.innerText = "Syncing..."; btn.disabled = true;
+                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).then(() => { Utils.showToast('Live Inventory forced pushed to Sheets!'); setTimeout(() => { btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false; }, 2000); }).catch(e => { console.error(e); Utils.showToast('Error syncing to sheets', 'error'); btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false; });
             }
         };
 
-        // --- 5. FIREBASE & BACKEND CONFIGURATION ---
         const Backend = {
             async pushSale(saleRec, cart) {
                 try { 
-                    const batch = writeBatch(State.db); 
-                    batch.set(doc(State.db, 'sales', saleRec.id), saleRec);
+                    const batch = writeBatch(State.db); batch.set(doc(State.db, 'sales', saleRec.id), saleRec);
                     if(cart && cart.length > 0) {
                         const changes = [];
-                        cart.forEach(i => {
-                            batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(-i.qty) }, { merge: true });
-                            changes.push({ product: i.category, size: i.size, change: -i.qty, action: "Sale" });
-                        });
-                        
+                        cart.forEach(i => { batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(-i.qty) }, { merge: true }); changes.push({ product: i.category, size: i.size, change: -i.qty, action: "Sale" }); });
                         const logRec = { type: "Consolidated_Inventory", date: saleRec.date, isoDate: saleRec.isoDate, notes: `Voucher: ${saleRec.id}`, id: saleRec.id, changes: changes };
                         batch.set(doc(State.db, 'inventory_logs', saleRec.id), logRec);
                     }
-                    await batch.commit();
-                    return true;
+                    await batch.commit(); return true;
                 } catch(e) { console.error("Firebase save error:", e); return false; }
             },
-            
             async settlePayment(id, notes) {
                 try {
-                    const now = Utils.getYangonTime();
-                    await setDoc(doc(State.db, 'sales', id), { paymentStatus: 'Paid', settleNotes: notes, settleDate: now.toISOString() }, { merge: true });
-                    
+                    const now = Utils.getYangonTime(); await setDoc(doc(State.db, 'sales', id), { paymentStatus: 'Paid', settleNotes: notes, settleDate: now.toISOString() }, { merge: true });
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "SettlePayment", id: id, txnId: notes }) }).catch(e=>{});
-                    
-                    Utils.showToast("Payment Settled!");
-                    document.getElementById('settle-modal').classList.add('hidden');
-                } catch(e) {
-                    console.error("Settle Error", e); Utils.showToast("Error updating database", "error");
-                }
+                    Utils.showToast("Payment Settled!"); document.getElementById('settle-modal').classList.add('hidden');
+                } catch(e) { console.error("Settle Error", e); Utils.showToast("Error updating database", "error"); }
             },
-            
             async voidVoucher(id) {
                 if(!confirm(`WARNING: Are you sure you want to VOID voucher ${id}?\n\nThis will cross it out in history and return all items back into live inventory.`)) return;
-                
-                const sale = State.allFirebaseSales.find(s => s.id === id);
-                if(!sale) return;
+                const sale = State.allFirebaseSales.find(s => s.id === id); if(!sale) return;
                 
                 try {
-                    const batch = writeBatch(State.db);
-                    
-                    batch.set(doc(State.db, 'sales', id), { status: 'Voided' }, { merge: true });
-                    
+                    const batch = writeBatch(State.db); batch.set(doc(State.db, 'sales', id), { status: 'Voided' }, { merge: true });
                     const changes = [];
-                    sale.items.forEach(i => {
-                        batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(i.qty) }, { merge: true });
-                        changes.push({ product: i.category, size: i.size, change: i.qty, action: "Voided" });
-                    });
+                    sale.items.forEach(i => { batch.set(doc(State.db, 'inventory', `${i.category}_${i.size}`), { product: i.category, size: i.size, stock: increment(i.qty) }, { merge: true }); changes.push({ product: i.category, size: i.size, change: i.qty, action: "Voided" }); });
                     
-                    const now = Utils.getYangonTime();
-                    const logId = `REVERT-${id}`;
-                    const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Reverted Voucher: ${id}`, id: logId, changes: changes };
-                    batch.set(doc(State.db, 'inventory_logs', logId), logRec);
-                    
-                    await batch.commit();
+                    const now = Utils.getYangonTime(); const logId = `REVERT-${id}`; const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Reverted Voucher: ${id}`, id: logId, changes: changes };
+                    batch.set(doc(State.db, 'inventory_logs', logId), logRec); await batch.commit();
                     
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidSale", id: id }) }).catch(e=>{});
-                    
-                    PosLogic.closeVoucher();
-                    Utils.showToast("Voucher Voided Successfully");
-                } catch(e) {
-                    console.error("Void error", e); Utils.showToast("Error voiding voucher", "error");
-                }
+                    PosLogic.closeVoucher(); Utils.showToast("Voucher Voided Successfully");
+                } catch(e) { console.error("Void error", e); Utils.showToast("Error voiding voucher", "error"); }
             },
-
             async deleteExpense(firestoreId) {
                 if (!confirm("ADMIN: Are you sure you want to permanently delete this expense? This action cannot be undone.")) return;
-                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
-                if (!exp) return;
+                const exp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId); if (!exp) return;
                 
                 try {
                     const batch = writeBatch(State.db);
+                    if (exp.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(exp.amount) }, { merge: true }); }
+                    batch.delete(doc(State.db, 'expenses', firestoreId)); await batch.commit();
                     
-                    // Refund petty cash if applicable
-                    if (exp.paidBy === "Petty Cash") {
-                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(exp.amount) }, { merge: true });
-                    }
-                    
-                    batch.delete(doc(State.db, 'expenses', firestoreId));
-                    await batch.commit();
-                    
-                    if(State.webAppUrl) {
-                        fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidExpense", id: exp.id, amount: exp.amount, isoDate: exp.isoDate }) }).catch(e=>{});
-                    }
+                    if(State.webAppUrl) { fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidExpense", id: exp.id, amount: exp.amount, isoDate: exp.isoDate }) }).catch(e=>{}); }
                     Utils.showToast("Expense Deleted Successfully!");
-                } catch(e) {
-                    console.error(e); Utils.showToast("Error deleting expense", "error");
-                }
+                } catch(e) { console.error(e); Utils.showToast("Error deleting expense", "error"); }
             },
-
             async editExpense(firestoreId, newData) {
-                const oldExp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId);
-                if (!oldExp) return;
+                const oldExp = State.allFirebaseExpenses.find(e => e.firestoreId === firestoreId); if (!oldExp) return;
                 
                 try {
                     const batch = writeBatch(State.db);
+                    if (oldExp.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(oldExp.amount) }, { merge: true }); }
+                    if (newData.paidBy === "Petty Cash") { batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-newData.amount) }, { merge: true }); }
                     
-                    // 1. Refund the OLD amount mathematically
-                    if (oldExp.paidBy === "Petty Cash") {
-                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(oldExp.amount) }, { merge: true });
-                    }
+                    const merged = { ...oldExp, ...newData }; batch.set(doc(State.db, 'expenses', firestoreId), merged); await batch.commit();
                     
-                    // 2. Deduct the NEW amount mathematically
-                    if (newData.paidBy === "Petty Cash") {
-                        batch.set(doc(State.db, 'settings', 'pettyCash'), { balance: increment(-newData.amount) }, { merge: true });
-                    }
-                    
-                    // 3. Save the new document info
-                    const merged = { ...oldExp, ...newData };
-                    batch.set(doc(State.db, 'expenses', firestoreId), merged);
-                    await batch.commit();
-                    
-                    // Push to Google Sheets (Void old, log new)
-                    if(State.webAppUrl) {
-                        fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "EditExpense", oldId: oldExp.id, newExp: merged, isoDate: oldExp.isoDate }) }).catch(e=>{});
-                    }
-                    
-                    document.getElementById('edit-expense-modal').classList.add('hidden');
-                    Utils.showToast("Expense Updated Successfully!");
-                } catch(e) {
-                    console.error(e); Utils.showToast("Error editing expense", "error");
-                }
+                    if(State.webAppUrl) { fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "EditExpense", oldId: oldExp.id, newExp: merged, isoDate: oldExp.isoDate }) }).catch(e=>{}); }
+                    document.getElementById('edit-expense-modal').classList.add('hidden'); Utils.showToast("Expense Updated Successfully!");
+                } catch(e) { console.error(e); Utils.showToast("Error editing expense", "error"); }
             },
-
             async revertInventoryLog(id) {
                 if (!confirm("ADMIN: Are you sure you want to REVERT this inventory log? This will undo all stock changes made in this batch.")) return;
-                const log = State.allFirebaseInventoryLogs.find(l => l.id === id);
-                if (!log) return;
+                const log = State.allFirebaseInventoryLogs.find(l => l.id === id); if (!log) return;
                 
                 try {
-                    const batch = writeBatch(State.db);
-                    const reverseChanges = [];
-                    
+                    const batch = writeBatch(State.db); const reverseChanges = [];
                     const changesArray = log.type === "Consolidated_Inventory" ? (log.changes || []) : [{ product: log.product, size: log.size, change: log.change, action: log.action }];
                     
-                    // Reverse math on Master Stock
-                    changesArray.forEach(c => {
-                        batch.set(doc(State.db, 'inventory', `${c.product}_${c.size}`), { stock: increment(-c.change) }, { merge: true });
-                        reverseChanges.push({ product: c.product, size: c.size, change: -c.change, action: "Revert" });
-                    });
-                    
-                    // Mark original log as reverted
+                    changesArray.forEach(c => { batch.set(doc(State.db, 'inventory', `${c.product}_${c.size}`), { stock: increment(-c.change) }, { merge: true }); reverseChanges.push({ product: c.product, size: c.size, change: -c.change, action: "Revert" }); });
                     batch.set(doc(State.db, 'inventory_logs', id), { isReverted: true }, { merge: true });
                     
-                    // Create new reverse log for audit trail
-                    const now = Utils.getYangonTime();
-                    const revId = `REVERT-${id}`;
-                    const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Admin Reversal: ${id}`, id: revId, changes: reverseChanges };
-                    batch.set(doc(State.db, 'inventory_logs', revId), logRec);
-                    
-                    await batch.commit();
+                    const now = Utils.getYangonTime(); const revId = `REVERT-${id}`; const logRec = { type: "Consolidated_Inventory", date: now.toISOString().split('T')[0], isoDate: now.toISOString(), notes: `Admin Reversal: ${id}`, id: revId, changes: reverseChanges };
+                    batch.set(doc(State.db, 'inventory_logs', revId), logRec); await batch.commit();
                     
                     if(State.webAppUrl) fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ type: "VoidInventory", id: id, isoDate: log.isoDate }) }).catch(e=>{});
-                    
                     Utils.showToast("Inventory Successfully Reverted!");
-                } catch(e) {
-                    console.error(e); Utils.showToast("Error reverting inventory", "error");
-                }
+                } catch(e) { console.error(e); Utils.showToast("Error reverting inventory", "error"); }
             },
-            
             init() {
-                // IMPORTANT: Replace these with your actual Firebase config keys
-                const p1 = "AIzaSyC_y2V"; const p2 = "R9T9-PGQ5Y-mKnK"; const p3 = "JSdslJm3ISQWc";
-                const config = {
-                    apiKey: p1 + p2 + p3, authDomain: "khay-may-pos.firebaseapp.com", projectId: "khay-may-pos",
-                    storageBucket: "khay-may-pos.firebasestorage.app", messagingSenderId: "1058775733436", appId: "1:1058775733436:web:a932499046aa82816aacb9"
-                };
-
                 try {
-                    const app = initializeApp(config); State.db = getFirestore(app); const auth = getAuth(app);
-                    enableIndexedDbPersistence(State.db).catch(err => console.warn(err.code));
+                    const app = initializeApp(FIREBASE_CONFIG); State.db = getFirestore(app); const auth = getAuth(app);
+                    enableIndexedDbPersistence(State.db).catch(err => console.warn("Persistence:", err.code));
 
                     signInAnonymously(auth).then(() => {
                         let salesTimeout, invTimeout, expTimeout, logTimeout;
-                        
-                        const salesQuery = query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000));
-                        onSnapshot(salesQuery, (snap) => {
+                        onSnapshot(query(collection(State.db, 'sales'), orderBy('isoDate', 'desc'), limit(2000)), (snap) => {
                             const d = []; snap.forEach(doc => d.push(doc.data())); 
-                            clearTimeout(salesTimeout);
-                            salesTimeout = setTimeout(() => {
-                                State.allFirebaseSales = d; 
-                                PosLogic.applyFilters(); UI.renderPendingPayments();
-                            }, 300);
+                            clearTimeout(salesTimeout); salesTimeout = setTimeout(() => { State.allFirebaseSales = d; PosLogic.applyFilters(); UI.renderPendingPayments(); }, 300);
                         });
-                        
                         onSnapshot(collection(State.db, 'inventory'), (snap) => {
-                            clearTimeout(invTimeout);
-                            invTimeout = setTimeout(() => {
-                                State.localInventory={}; snap.forEach(doc => { State.localInventory[doc.id] = doc.data().stock; }); 
-                                UI.updateInventoryUI();
-                            }, 300);
+                            clearTimeout(invTimeout); invTimeout = setTimeout(() => { State.localInventory={}; snap.forEach(doc => { State.localInventory[doc.id] = doc.data().stock; }); UI.updateInventoryUI(); }, 300);
                         });
-                        
-                        const logsQuery = query(collection(State.db, 'inventory_logs'), orderBy('isoDate', 'desc'), limit(1500));
-                        onSnapshot(logsQuery, (snap) => {
+                        onSnapshot(query(collection(State.db, 'inventory_logs'), orderBy('isoDate', 'desc'), limit(1500)), (snap) => {
                             const d = []; snap.forEach(doc => d.push(doc.data()));
-                            clearTimeout(logTimeout);
-                            logTimeout = setTimeout(() => {
-                                State.allFirebaseInventoryLogs = d; UI.renderInventoryLogs();
-                            }, 300);
+                            clearTimeout(logTimeout); logTimeout = setTimeout(() => { State.allFirebaseInventoryLogs = d; UI.renderInventoryLogs(); }, 300);
                         });
-                        
                         onSnapshot(doc(State.db, 'settings', 'pettyCash'), (docSnap) => {
-                            State.currentPettyCash = docSnap.exists() ? (docSnap.data().balance || 0) : 0;
-                            UI.updatePettyCashUI();
+                            State.currentPettyCash = docSnap.exists() ? (docSnap.data().balance || 0) : 0; UI.updatePettyCashUI();
                         });
-                        
                         onSnapshot(collection(State.db, 'expenses'), (snap) => {
                             const d = []; snap.forEach(doc => d.push({ ...doc.data(), firestoreId: doc.id })); 
-                            clearTimeout(expTimeout);
-                            expTimeout = setTimeout(() => {
-                                State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate)); UI.renderExpenses();
-                            }, 300);
+                            clearTimeout(expTimeout); expTimeout = setTimeout(() => { State.allFirebaseExpenses = d.sort((a,b)=>new Date(b.isoDate)-new Date(a.isoDate)); UI.renderExpenses(); }, 300);
                         });
-                    }).catch((error) => { console.error("Auth failed. Check Firebase config.", error); });
-                } catch(e) { console.error("Firebase init error:", e); }
+                    }).catch((error) => { console.error("Auth failed:", error); Utils.showToast("Database connecting... Missing Config?", "error"); });
+                } catch(e) { console.error("Firebase init error:", e); Utils.showToast("Setup Incomplete: Add Firebase Config", "error"); }
             }
         };
 
         // --- 6. EVENT DELEGATION SETUP ---
         function attachEvents() {
             document.body.addEventListener('click', (e) => {
-                const btn = e.target.closest('[data-action]');
-                if (!btn) return;
-                
+                const btn = e.target.closest('[data-action]'); if (!btn) return;
                 const action = btn.dataset.action;
+                
                 if (action === 'switch-tab') UI.switchTab(btn.dataset.target);
                 if (action === 'switch-sales-tab') UI.switchSubTab('sales', btn.dataset.tab);
                 if (action === 'switch-inv-tab') UI.switchSubTab('inv', btn.dataset.tab);
@@ -2294,11 +1729,11 @@
                 if (action === 'add-adj-out') InventoryLogic.addToAdjCart('out');
                 if (action === 'remove-adj-item') InventoryLogic.removeFromAdjCart(Number(btn.dataset.id));
                 if (action === 'submit-adjustment') InventoryLogic.submitAdjustment();
+                if (action === 'revert-inv') Backend.revertInventoryLog(btn.dataset.id);
                 
                 if (action === 'toggle-cart') UI.toggleMobileCart();
                 if (action === 'toggle-settings') UI.toggleSettings();
                 if (action === 'toggle-admin') UI.toggleAdmin();
-                
                 if (action === 'set-sale-type') UI.setSaleType(btn.dataset.type);
                 if (action === 'update-qty') PosLogic.updateQuantity(Number(btn.dataset.id), Number(btn.dataset.delta));
                 if (action === 'remove-item') PosLogic.updateQuantity(Number(btn.dataset.id), -999);
@@ -2308,8 +1743,6 @@
                 if (action === 'del-exp') Backend.deleteExpense(btn.dataset.id);
                 if (action === 'edit-exp') UI.openEditModal(btn.dataset.id);
                 if (action === 'close-edit-exp') document.getElementById('edit-expense-modal').classList.add('hidden');
-                
-                if (action === 'revert-inv') Backend.revertInventoryLog(btn.dataset.id);
                 
                 if (action === 'save-settings') AppSettings.save();
                 if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
@@ -2321,21 +1754,15 @@
                 if (action === 'void-voucher') Backend.voidVoucher(State.currentVoucherId);
                 
                 if (action === 'open-settle') {
-                    const id = btn.dataset.id;
-                    document.getElementById('settle-voucher-id').innerText = id;
-                    document.getElementById('settle-hidden-id').value = id;
-                    document.getElementById('settle-notes').value = '';
+                    const id = btn.dataset.id; document.getElementById('settle-voucher-id').innerText = id;
+                    document.getElementById('settle-hidden-id').value = id; document.getElementById('settle-notes').value = '';
                     document.getElementById('settle-modal').classList.remove('hidden');
                 }
                 if (action === 'close-settle') document.getElementById('settle-modal').classList.add('hidden');
                 if (action === 'confirm-settle') {
-                    const btnSettle = document.getElementById('btn-confirm-settle');
-                    btnSettle.disabled = true; btnSettle.innerText = "Saving...";
-                    const id = document.getElementById('settle-hidden-id').value;
-                    const notes = document.getElementById('settle-notes').value.trim();
-                    Backend.settlePayment(id, notes).then(() => {
-                        btnSettle.disabled = false; btnSettle.innerText = "Mark as Paid";
-                    });
+                    const btnSettle = document.getElementById('btn-confirm-settle'); btnSettle.disabled = true; btnSettle.innerText = "Saving...";
+                    const id = document.getElementById('settle-hidden-id').value; const notes = document.getElementById('settle-notes').value.trim();
+                    Backend.settlePayment(id, notes).then(() => { btnSettle.disabled = false; btnSettle.innerText = "Mark as Paid"; });
                 }
             });
 
@@ -2350,23 +1777,21 @@
             document.getElementById('sales-search').addEventListener('input', UI.renderHistory);
             
             document.getElementById('inv-product').addEventListener('change', InventoryLogic.updateInvSizeDropdown);
+            
             document.getElementById('expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.submitExpense(); });
             document.getElementById('edit-expense-form').addEventListener('submit', (e) => { e.preventDefault(); ExpenseLogic.updateEditedExpense(); });
-            
             document.getElementById('exp-dept').addEventListener('change', ExpenseLogic.updateExpenseSubCat);
             document.getElementById('edit-exp-dept').addEventListener('change', ExpenseLogic.updateEditExpenseSubCat);
             
-            const expFilter = document.getElementById('expense-month-filter');
-            if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
+            // Expense Filters
+            const expFilter = document.getElementById('expense-month-filter'); if (expFilter) expFilter.addEventListener('change', UI.renderExpenses);
+            const expDeptFilter = document.getElementById('expense-dept-filter'); if (expDeptFilter) expDeptFilter.addEventListener('change', ExpenseLogic.updateExpenseFilterSubCat);
+            const expSubFilter = document.getElementById('expense-sub-filter'); if (expSubFilter) expSubFilter.addEventListener('change', UI.renderExpenses);
             
-            const invLogDate = document.getElementById('inv-log-date');
-            if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
-            
-            const invLogProduct = document.getElementById('inv-log-product');
-            if(invLogProduct) invLogProduct.addEventListener('change', InventoryLogic.updateInvLogSizeDropdown);
-            
-            const invLogSize = document.getElementById('inv-log-size');
-            if(invLogSize) invLogSize.addEventListener('change', UI.renderInventoryLogs);
+            // Inventory Filters
+            const invLogDate = document.getElementById('inv-log-date'); if(invLogDate) invLogDate.addEventListener('change', UI.renderInventoryLogs);
+            const invLogProduct = document.getElementById('inv-log-product'); if(invLogProduct) invLogProduct.addEventListener('change', InventoryLogic.updateInvLogSizeDropdown);
+            const invLogSize = document.getElementById('inv-log-size'); if(invLogSize) invLogSize.addEventListener('change', UI.renderInventoryLogs);
 
             document.querySelectorAll('.validator-inputs input, .validator-inputs select, .validator-inputs textarea').forEach(el => {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.addEventListener('input', PosLogic.validateCheckout);
@@ -2393,19 +1818,11 @@
             if (expFilter) expFilter.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
 
             State.historyAnchorDate = localDate;
-
-            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || DEFAULT_SHEET_URL;
+            State.webAppUrl = localStorage.getItem('khaymay_sheet_url') || APPS_SCRIPT_URL;
             document.getElementById('sheet-url').value = State.webAppUrl;
 
-            attachEvents();
-            Backend.init();
-            
-            UI.switchTab('pos-tab'); 
-            UI.switchSubTab('sales', 'list');
-            UI.switchSubTab('inv', 'log');
-            UI.setSaleType('Retail'); 
-            
-            UI.renderCart(); 
+            attachEvents(); Backend.init();
+            UI.switchTab('pos-tab'); UI.switchSubTab('sales', 'list'); UI.switchSubTab('inv', 'log'); UI.setSaleType('Retail'); UI.renderCart(); 
         });
     </script>
 </body>

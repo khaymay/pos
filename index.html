@@ -500,7 +500,7 @@
                         <h3 class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide" id="petty-cash-title">Live Petty Cash</h3>
                         <p id="petty-cash-balance" class="text-4xl font-bold text-emerald-500">0 MMK</p>
                         
-                        <div class="mt-5 border-t border-slate-100 pt-5">
+                        <div id="topup-controls" class="hidden mt-5 border-t border-slate-100 pt-5">
                             <div class="flex gap-2">
                                 <input type="number" inputmode="numeric" pattern="[0-9]*" id="topup-amount" min="1" placeholder="Amount (MMK)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                                 <button type="button" data-action="process-topup" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-colors">Top-Up</button>
@@ -537,6 +537,7 @@
                             <div>
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Paid By</label>
                                 <select id="exp-paidby" required class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white text-amber-700 font-bold">
+                                    <option value="" disabled selected>Select Payment Source</option>
                                     <option value="Petty Cash">Petty Cash</option>
                                     <option value="Business Owner">Business Owner (Out of pocket)</option>
                                 </select>
@@ -693,7 +694,7 @@
             
             <div class="p-6 overflow-y-auto bg-slate-100 flex flex-col items-center justify-start flex-1 w-full" id="voucher-scroll-area">
                 
-                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template relative" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
+                <div id="print-area" class="bg-white p-5 w-[302px] shadow-sm text-black print-template relative shrink-0" style="min-height: 350px; font-family: 'Quicksand', 'Padauk', sans-serif; box-sizing: border-box;">
                     <!-- Void Stamp Overlay -->
                     <div id="print-void-stamp" class="hidden absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                         <div class="border-4 border-red-500 text-red-500 font-black text-4xl uppercase tracking-widest px-4 py-2 rounded-lg transform -rotate-12 opacity-80">VOIDED</div>
@@ -941,6 +942,11 @@
                         Utils.showToast("Incorrect PIN", "error");
                     }
                 }
+                const topupControls = document.getElementById('topup-controls');
+                if (topupControls) {
+                    if (State.isAdmin) topupControls.classList.remove('hidden');
+                    else topupControls.classList.add('hidden');
+                }
                 UI.renderExpenses();
                 UI.renderInventoryLogs();
             },
@@ -1074,6 +1080,13 @@
                         const opacity = isVoid ? 'opacity-50 grayscale' : '';
                         const voidBadge = isVoid ? `<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">VOIDED</span>` : '';
                         const stClass = isVoid ? 'line-through text-slate-400' : 'text-slate-800';
+                        
+                        let payBadge = '';
+                        if (s.paymentStatus === 'Paid') {
+                            payBadge = `<div class="mt-1"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PAID</span></div>`;
+                        } else if (s.paymentStatus === 'Pending') {
+                            payBadge = `<div class="mt-1"><span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold inline-block">PENDING</span></div>`;
+                        }
 
                         return `
                         <div class="flex flex-col md:grid md:grid-cols-[1fr_1fr_1.5fr_1.5fr_auto_auto] gap-2 md:gap-4 p-4 hover:bg-slate-50 transition-colors border-b border-slate-50 items-center ${opacity}">
@@ -1089,7 +1102,10 @@
                             <div class="flex justify-between items-center md:hidden w-full mb-1">
                                 <div>
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span>
-                                    <span class="text-sm font-bold ${stClass} ml-2">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
+                                    <div class="mt-1">
+                                        <span class="text-sm font-bold ${stClass}">${s.customer||'-'}</span> <span class="text-xs text-slate-500">(${s.paymentMethod||'-'})</span>
+                                    </div>
+                                    ${payBadge}
                                 </div>
                             </div>
                             <div class="text-xs text-slate-600 md:hidden w-full line-clamp-2 ${isVoid?'line-through':''}">
@@ -1103,7 +1119,11 @@
                             <!-- Desktop View -->
                             <div class="hidden md:block"><span class="font-bold ${stClass}">${dStr} <span class="text-xs text-slate-500 ml-1">${tStr}</span></span><br><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${color}">${s.saleType}</span></div>
                             <div class="hidden md:block font-mono text-sm text-slate-500 ${isVoid?'line-through':''}">${s.id} ${voidBadge}</div>
-                            <div class="hidden md:block text-sm"><span class="font-bold ${stClass}">${s.customer||'-'}</span><br><span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span></div>
+                            <div class="hidden md:block text-sm">
+                                <span class="font-bold ${stClass}">${s.customer||'-'}</span><br>
+                                <span class="text-xs text-slate-500">${s.paymentMethod||'-'}</span>
+                                ${payBadge}
+                            </div>
                             <div class="hidden md:block text-xs text-slate-600 ${isVoid?'line-through':''}"><ul class="space-y-1">${(s.items||[]).map(i=>`<li class="truncate">• ${i.category} (${i.size}) x ${i.qty}</li>`).join('')}</ul></div>
                             <div class="hidden md:block text-right font-bold ${stClass}">${Utils.formatMMK(s.totals ? (s.totals.grandTotal !== undefined ? s.totals.grandTotal : (s.totals.grand || 0)) : 0)}</div>
                             <div class="hidden md:flex justify-end">
@@ -1676,9 +1696,18 @@
                 if(!area) return;
                 
                 area.style.backgroundColor = 'white';
-                html2canvas(area, { scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+                
+                // Temporarily force max height to ensure html2canvas captures overflowing content
+                const originalHeight = area.style.height;
+                area.style.height = area.scrollHeight + 'px';
+
+                html2canvas(area, { scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, useCORS: true, backgroundColor: '#ffffff', scrollY: -window.scrollY }).then(canvas => {
+                    area.style.height = originalHeight;
                     const link = document.createElement('a'); link.download = `Voucher-${State.currentVoucherId || 'Export'}.png`; link.href = canvas.toDataURL('image/png'); link.click(); Utils.showToast("Voucher Image Saved!");
-                }).catch(err => { console.error(err); Utils.showToast("Error saving image", "error"); });
+                }).catch(err => { 
+                    area.style.height = originalHeight;
+                    console.error(err); Utils.showToast("Error saving image", "error"); 
+                });
             },
 
             async processCheckout() {

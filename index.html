@@ -701,7 +701,16 @@
                         Data Troubleshooting
                     </h3>
                     <p class="text-xs text-orange-600 mb-4 leading-relaxed">If Google Sheets is missing data, force the web app to push its live numbers to the 'Live Master Stock' sheet.</p>
-                    <button type="button" data-action="force-sync-inventory" id="btn-force-sync" class="w-full bg-orange-200 hover:bg-orange-300 text-orange-800 py-3 rounded-xl font-bold transition-colors text-sm min-h-[44px]">Force Sync Inventory to Sheets</button>
+                    <button type="button" data-action="force-sync-inventory" id="btn-force-sync" class="w-full bg-orange-200 hover:bg-orange-300 text-orange-800 py-3 rounded-xl font-bold transition-colors text-sm mb-4 min-h-[44px]">Force Sync Inventory to Sheets</button>
+
+                    <hr class="border-orange-200/50 mb-4">
+                    
+                    <h3 class="text-sm font-bold text-orange-800 mb-2">Sync Missing Sales</h3>
+                    <p class="text-xs text-orange-600 mb-4 leading-relaxed">Push all sales for a specific month to Google Sheets if they failed to sync.</p>
+                    <div class="flex gap-2">
+                        <input type="month" id="sync-sales-month" class="w-1/2 px-3 py-2 rounded-lg border border-orange-200 text-sm focus:ring-2 focus:ring-orange-500 outline-none bg-white">
+                        <button type="button" data-action="force-sync-sales" id="btn-force-sync-sales" class="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-bold transition-colors text-sm shadow-sm">Sync Sales</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2161,6 +2170,32 @@
                         console.error(e); Utils.showToast('Error syncing to sheets', 'error');
                         btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false;
                     });
+            },
+            forceSyncSales() {
+                const monthInput = document.getElementById('sync-sales-month').value;
+                if (!monthInput) { Utils.showToast("Please select a month", "error"); return; }
+                if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
+                
+                const btn = document.getElementById('btn-force-sync-sales');
+                btn.innerText = "Syncing..."; btn.disabled = true;
+                
+                const targetSales = State.allFirebaseSales.filter(s => s.isoDate.startsWith(monthInput));
+                if (targetSales.length === 0) {
+                    Utils.showToast("No sales found for this month", "error");
+                    btn.innerText = "Sync Sales"; btn.disabled = false;
+                    return;
+                }
+                
+                const payload = { type: "ForceSyncSales", sales: targetSales };
+                
+                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+                    .then(() => {
+                        Utils.showToast(`Pushed ${targetSales.length} sales to Sheets!`);
+                        setTimeout(() => { btn.innerText = "Sync Sales"; btn.disabled = false; }, 2000);
+                    }).catch(e => {
+                        console.error(e); Utils.showToast('Error syncing sales', 'error');
+                        btn.innerText = "Sync Sales"; btn.disabled = false;
+                    });
             }
         };
 
@@ -2329,6 +2364,7 @@
                 if (action === 'process-topup') ExpenseLogic.processTopUp();
                 if (action === 'save-settings') AppSettings.save();
                 if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
+                if (action === 'force-sync-sales') AppSettings.forceSyncSales();
                 
                 // Admin Actions
                 if (action === 'admin-edit-exp') AdminLogic.openEditExpense(btn.dataset.id);
@@ -2416,6 +2452,9 @@
             
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
+
+            const syncSalesMonth = document.getElementById('sync-sales-month');
+            if (syncSalesMonth) syncSalesMonth.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
 
             State.historyAnchorDate = localDate;
 

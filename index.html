@@ -114,6 +114,9 @@
                         <h2 class="text-[clamp(1.25rem,2vw,1.5rem)] font-bold flex items-center gap-2 text-slate-800">
                             <svg class="h-6 w-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> Add Item
                         </h2>
+                        <button data-action="toggle-settings" class="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-colors" title="Settings">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </button>
                     </div>
                     
                     <form id="add-item-form" class="space-y-4">
@@ -247,9 +250,6 @@
         <section id="sales-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
             <div class="flex justify-between items-center mb-5 shrink-0">
                 <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-slate-800">Sales Tracking</h2>
-                <div class="flex items-center gap-2">
-                    <button data-action="toggle-settings" class="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-xl transition-colors" title="Settings"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></button>
-                </div>
             </div>
             
             <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[450px]">
@@ -395,7 +395,12 @@
 
         <!-- Inventory Tab -->
         <section id="inventory-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
-            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-slate-800 mb-5 flex items-center gap-2">Inventory Management</h2>
+            <div class="flex justify-between items-center mb-5 shrink-0">
+                <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-slate-800 flex items-center gap-2">Inventory Management</h2>
+                <button data-action="toggle-settings" class="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-xl transition-colors" title="Settings">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+            </div>
             
             <div class="bg-slate-200/70 p-1.5 rounded-xl flex gap-1 mb-5 shrink-0 max-w-[400px]">
                 <button data-action="switch-inv-tab" data-tab="log" id="btn-inv-log" class="inv-btn flex-1 py-2.5 rounded-lg bg-white shadow-sm text-sm font-bold text-slate-800 transition-all min-h-[44px]">Adjust & Daily Log</button>
@@ -497,6 +502,13 @@
 
         <!-- Expenses Tab -->
         <section id="expense-tab" class="hidden flex-1 flex-col p-4 lg:p-8 overflow-y-auto w-full max-w-6xl mx-auto pb-24 lg:pb-8">
+            <div class="flex justify-between items-center mb-5 shrink-0">
+                <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-slate-800">Expense Management</h2>
+                <button data-action="toggle-settings" class="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-xl transition-colors" title="Settings">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column -->
                 <div class="space-y-6 lg:col-span-1">
@@ -701,15 +713,17 @@
                         Data Troubleshooting
                     </h3>
                     <p class="text-xs text-orange-600 mb-4 leading-relaxed">If Google Sheets is missing data, force the web app to push its live numbers to the 'Live Master Stock' sheet.</p>
-                    <button type="button" data-action="force-sync-inventory" id="btn-force-sync" class="w-full bg-orange-200 hover:bg-orange-300 text-orange-800 py-3 rounded-xl font-bold transition-colors text-sm mb-4 min-h-[44px]">Force Sync Inventory to Sheets</button>
+                    <button type="button" data-action="force-sync-inventory" id="btn-force-sync" class="w-full bg-orange-200 hover:bg-orange-300 text-orange-800 py-3 rounded-xl font-bold transition-colors text-sm mb-4 min-h-[44px]">Force Sync Live Master Stock</button>
 
                     <hr class="border-orange-200/50 mb-4">
                     
-                    <h3 class="text-sm font-bold text-orange-800 mb-2">Sync Missing Sales</h3>
-                    <p class="text-xs text-orange-600 mb-4 leading-relaxed">Push all sales for a specific month to Google Sheets if they failed to sync.</p>
-                    <div class="flex gap-2">
-                        <input type="month" id="sync-sales-month" class="w-1/2 px-3 py-2 rounded-lg border border-orange-200 text-sm focus:ring-2 focus:ring-orange-500 outline-none bg-white">
-                        <button type="button" data-action="force-sync-sales" id="btn-force-sync-sales" class="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-bold transition-colors text-sm shadow-sm">Sync Sales</button>
+                    <h3 class="text-sm font-bold text-orange-800 mb-2">Sync Missing Data</h3>
+                    <p class="text-xs text-orange-600 mb-4 leading-relaxed">Push missing data for a specific month to Google Sheets. (Excludes Petty Cash top-ups).</p>
+                    <div class="flex flex-col gap-2">
+                        <input type="month" id="sync-data-month" class="w-full bg-white border border-orange-200 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer min-h-[44px] mb-1">
+                        <button type="button" data-action="force-sync-sales" id="btn-force-sync-sales" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-bold transition-colors text-sm shadow-sm min-h-[44px]">Sync Sales History</button>
+                        <button type="button" data-action="force-sync-inv-logs" id="btn-force-sync-inv-logs" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-bold transition-colors text-sm shadow-sm min-h-[44px]">Sync Inventory Logs</button>
+                        <button type="button" data-action="force-sync-expenses" id="btn-force-sync-expenses" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-lg font-bold transition-colors text-sm shadow-sm min-h-[44px]">Sync Expenses</button>
                     </div>
                 </div>
             </div>
@@ -2152,27 +2166,11 @@
                 if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
                 
                 const payload = { type: "ForceSyncInventory", date: Utils.getYangonTime().toISOString(), inventory: [] };
-                
-                for (const p in ProductData) {
-                    ProductData[p].forEach(i => {
-                        payload.inventory.push({ product: p, size: i.size, stock: State.localInventory[`${p}_${i.size}`] || 0 });
-                    });
-                }
-                
-                const btn = document.getElementById('btn-force-sync');
-                btn.innerText = "Syncing..."; btn.disabled = true;
-                
-                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-                    .then(() => {
-                        Utils.showToast('Live Inventory forced pushed to Sheets!');
-                        setTimeout(() => { btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false; }, 2000);
-                    }).catch(e => {
-                        console.error(e); Utils.showToast('Error syncing to sheets', 'error');
-                        btn.innerText = "Force Sync Inventory to Sheets"; btn.disabled = false;
+                        btn.innerText = "Force Sync Live Master Stock"; btn.disabled = false;
                     });
             },
             forceSyncSales() {
-                const monthInput = document.getElementById('sync-sales-month').value;
+                const monthInput = document.getElementById('sync-data-month').value;
                 if (!monthInput) { Utils.showToast("Please select a month", "error"); return; }
                 if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
                 
@@ -2182,7 +2180,7 @@
                 const targetSales = State.allFirebaseSales.filter(s => s.isoDate.startsWith(monthInput));
                 if (targetSales.length === 0) {
                     Utils.showToast("No sales found for this month", "error");
-                    btn.innerText = "Sync Sales"; btn.disabled = false;
+                    btn.innerText = "Sync Sales History"; btn.disabled = false;
                     return;
                 }
                 
@@ -2191,10 +2189,63 @@
                 fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
                     .then(() => {
                         Utils.showToast(`Pushed ${targetSales.length} sales to Sheets!`);
-                        setTimeout(() => { btn.innerText = "Sync Sales"; btn.disabled = false; }, 2000);
+                        setTimeout(() => { btn.innerText = "Sync Sales History"; btn.disabled = false; }, 2000);
                     }).catch(e => {
                         console.error(e); Utils.showToast('Error syncing sales', 'error');
-                        btn.innerText = "Sync Sales"; btn.disabled = false;
+                        btn.innerText = "Sync Sales History"; btn.disabled = false;
+                    });
+            },
+            forceSyncInvLogs() {
+                const monthInput = document.getElementById('sync-data-month').value;
+                if (!monthInput) { Utils.showToast("Please select a month", "error"); return; }
+                if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
+                
+                const btn = document.getElementById('btn-force-sync-inv-logs');
+                btn.innerText = "Syncing..."; btn.disabled = true;
+                
+                const targetLogs = State.allFirebaseInventoryLogs.filter(l => l.isoDate.startsWith(monthInput));
+                if (targetLogs.length === 0) {
+                    Utils.showToast("No logs found for this month", "error");
+                    btn.innerText = "Sync Inventory Logs"; btn.disabled = false;
+                    return;
+                }
+                
+                const payload = { type: "ForceSyncInventoryLogs", logs: targetLogs };
+                
+                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+                    .then(() => {
+                        Utils.showToast(`Pushed ${targetLogs.length} logs to Sheets!`);
+                        setTimeout(() => { btn.innerText = "Sync Inventory Logs"; btn.disabled = false; }, 2000);
+                    }).catch(e => {
+                        console.error(e); Utils.showToast('Error syncing logs', 'error');
+                        btn.innerText = "Sync Inventory Logs"; btn.disabled = false;
+                    });
+            },
+            forceSyncExpenses() {
+                const monthInput = document.getElementById('sync-data-month').value;
+                if (!monthInput) { Utils.showToast("Please select a month", "error"); return; }
+                if (!State.webAppUrl) { Utils.showToast("No Web App URL configured", "error"); return; }
+                
+                const btn = document.getElementById('btn-force-sync-expenses');
+                btn.innerText = "Syncing..."; btn.disabled = true;
+                
+                // Exclude Petty Cash Top-Up
+                const targetExpenses = State.allFirebaseExpenses.filter(e => e.isoDate.startsWith(monthInput) && e.type !== "Top-Up");
+                if (targetExpenses.length === 0) {
+                    Utils.showToast("No expenses found for this month", "error");
+                    btn.innerText = "Sync Expenses"; btn.disabled = false;
+                    return;
+                }
+                
+                const payload = { type: "ForceSyncExpenses", expenses: targetExpenses };
+                
+                fetch(State.webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
+                    .then(() => {
+                        Utils.showToast(`Pushed ${targetExpenses.length} expenses to Sheets!`);
+                        setTimeout(() => { btn.innerText = "Sync Expenses"; btn.disabled = false; }, 2000);
+                    }).catch(e => {
+                        console.error(e); Utils.showToast('Error syncing expenses', 'error');
+                        btn.innerText = "Sync Expenses"; btn.disabled = false;
                     });
             }
         };
@@ -2365,6 +2416,8 @@
                 if (action === 'save-settings') AppSettings.save();
                 if (action === 'force-sync-inventory') AppSettings.forceSyncInventory();
                 if (action === 'force-sync-sales') AppSettings.forceSyncSales();
+                if (action === 'force-sync-inv-logs') AppSettings.forceSyncInvLogs();
+                if (action === 'force-sync-expenses') AppSettings.forceSyncExpenses();
                 
                 // Admin Actions
                 if (action === 'admin-edit-exp') AdminLogic.openEditExpense(btn.dataset.id);
@@ -2453,8 +2506,8 @@
             const expFilter = document.getElementById('expense-month-filter');
             if (expFilter) expFilter.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
 
-            const syncSalesMonth = document.getElementById('sync-sales-month');
-            if (syncSalesMonth) syncSalesMonth.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
+            const syncDataMonth = document.getElementById('sync-data-month');
+            if (syncDataMonth) syncDataMonth.value = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}`;
 
             State.historyAnchorDate = localDate;
 

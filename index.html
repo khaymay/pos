@@ -1345,7 +1345,7 @@
                     if (filteredChanges.length > 0) {
                         hasVisibleLogs = true;
                         const tStr = new Date(logBox.isoDate).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-                        const isSale = logBox.id && logBox.id.includes('-');
+                        const isSale = logBox.id && logBox.id.includes('-') && !logBox.id.startsWith('INV-');
                         const isRevert = logBox.notes && (logBox.notes.includes('Revert') || logBox.notes.includes('Reverted'));
                         const isManualRevert = logBox.notes && logBox.notes.includes('Admin Revert');
                         

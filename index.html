@@ -873,12 +873,12 @@
         const ProductData = {
             "Footie Pants": [{ size: "0-3 m", price: 15000 }, { size: "3-6 m", price: 15000 }, { size: "6-9 m", price: 15000 }, { size: "9-12 m", price: 15000 }, { size: "12-18 m", price: 15000 }, { size: "18-24 m", price: 15000 }],
             "Wrap-Up Romper": [{ size: "S", price: 11000 }, { size: "M", price: 11000 }, { size: "L", price: 11000 }],
-            "Cozy Baby Set - လက်တို": [{ size: "XS", price: 13500 }, { size: "S", price: 13500 }, { size: "M", price: 13500 }, { size: "L", price: 13500 }, { size: "XL", price: 13500 }],
-            "Cozy Baby Set - လက်ရှည်": [{ size: "XS", price: 14500 }, { size: "S", price: 14500 }, { size: "M", price: 14500 }, { size: "L", price: 14500 }, { size: "XL", price: 14500 }],
+            "Cozy Baby Set - လက်တို": [{ size: "XS", price: 13500 }, { size: "S", price: 13500 }, { size: "M", price: 13500 }, { size: "L", price: 15500 }, { size: "XL", price: 15500 }],
+            "Cozy Baby Set - လက်ရှည်": [{ size: "XS", price: 14500 }, { size: "S", price: 14500 }, { size: "M", price: 14500 }, { size: "L", price: 16500 }, { size: "XL", price: 16500 }],
             "Girl's Stocking": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 16500 }, { size: "XL", price: 18000 }, { size: "XXL", price: 18000 }],
             "Legging": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 16500 }, { size: "XL", price: 18000 }, { size: "XXL", price: 18000 }],
-            "Spant Set - လက်တို": [{ size: "S", price: 10500 }, { size: "M", price: 10500 }, { size: "L", price: 10500 }, { size: "XL", price: 10500 }],
-            "Spant Set - လက်ရှည်": [{ size: "S", price: 11500 }, { size: "M", price: 11500 }, { size: "L", price: 11500 }, { size: "XL", price: 11500 }],
+            "Spant Set - လက်တို": [{ size: "S", price: 10500 }, { size: "M", price: 10500 }, { size: "L", price: 12500 }, { size: "XL", price: 12500 }],
+            "Spant Set - လက်ရှည်": [{ size: "S", price: 11500 }, { size: "M", price: 11500 }, { size: "L", price: 13500 }, { size: "XL", price: 13500 }],
             "Flower Dress": [{ size: "S", price: 14500 }, { size: "M", price: 14500 }, { size: "L", price: 14500 }],
             "Sleeper": [{ size: "S", price: 16500 }, { size: "M", price: 16500 }, { size: "L", price: 18500 }, { size: "XL", price: 18500 }],
             "Sleeping Bag": [{ size: "S", price: 15500 }, { size: "M", price: 17500 }],
@@ -1564,10 +1564,11 @@
                     let disc = 0; const tq = qtys[i.category];
                     
                     if (!isPartner) {
+                        const allow12Tier = i.category !== 'Footie Pants';
                         if (State.currentSaleType === 'Wholesale') { 
-                            if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12) disc = 0.15; 
+                            if (tq >= 48) disc = 0.23; else if (tq >= 24) disc = 0.20; else if (tq >= 12 && allow12Tier) disc = 0.15; 
                         } else if (State.currentSaleType === 'Credit') { 
-                            if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12) disc = 0.14; 
+                            if (tq >= 48) disc = 0.22; else if (tq >= 24) disc = 0.19; else if (tq >= 12 && allow12Tier) disc = 0.14; 
                         }
                     }
                     
